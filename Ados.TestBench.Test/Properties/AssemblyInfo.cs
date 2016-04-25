@@ -8,12 +8,12 @@ using System.Windows;
 // 제어됩니다. 어셈블리와 관련된 정보를 수정하려면
 // 이러한 특성 값을 변경하세요.
 [assembly: AssemblyTitle("Ados.TestBench.Test")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("ADOS 테스트용 프로그램")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("MediaEver")]
 [assembly: AssemblyProduct("Ados.TestBench.Test")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright © MediaEver  2016")]
+[assembly: AssemblyTrademark("ADOS.TESTBENCH")]
 [assembly: AssemblyCulture("")]
 
 // ComVisible을 false로 설정하면 이 어셈블리의 형식이 COM 구성 요소에 

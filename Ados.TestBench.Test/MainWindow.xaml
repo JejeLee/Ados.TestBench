@@ -1,12 +1,78 @@
-﻿<Window x:Class="Ados.TestBench.Test.MainWindow"
+﻿<metro:MetroWindow
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ados.TestBench.Test"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Ados.TestBench.Test.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Height="700" Width="1000" 
+        Title="ADOS TestBench - 테스트 모드" SaveWindowPosition="True"
+        Icon="pack://application:,,,/Resources/AppIcon.ico">
+    <metro:MetroWindow.Resources>
+        <!-- add color resources for com states -->
+        <LinearGradientBrush x:Key="rLive" ></LinearGradientBrush>
+    </metro:MetroWindow.Resources>
+    <metro:MetroWindow.Flyouts>
+        <metro:FlyoutsControl>
+            <metro:Flyout x:Name="_flyGraphSetting" Header="그래프 설정" Position="Right" Width="200" Theme="Accent">
+                <Border BorderThickness="1" CornerRadius="2" Width="150" Height="147" Background="#FFC3B586"></Border>
+            </metro:Flyout>
+            <metro:Flyout x:Name="_flyAppInfo" Header="정보" Position="Right" Width="350" Theme="Adapt" >
+                <Border BorderThickness="1" CornerRadius="2" Margin="10,10,10,10" Background="#FF77DC7C" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel Margin="10,10,10,10">
+                    <Label FontSize="16">프로그램 명: ADOS TESTBENCH for Test</Label>
+                        <Label FontSize="16">버젼: v1.0, 2016-06-06</Label>
+                        <Label FontSize="16">제작사: MEDIA EVER</Label>
+                        <Label FontSize="16">저작권: MEDIA EVER Co.,Ltd.</Label>
+                    </StackPanel>
+                </Border>
+            </metro:Flyout>
+        </metro:FlyoutsControl>
+    </metro:MetroWindow.Flyouts>
+    <metro:MetroWindow.RightWindowCommands>
+    <metro:WindowCommands>
+        <ToggleButton Content="Graph Setting" 
+        IsChecked="{Binding ElementName=_flyGraphSetting, Path=IsOpen}" Cursor="Hand"/>
+            <ToggleButton IsChecked="{Binding ElementName=_flyAppInfo, Path=IsOpen}" Cursor="Hand">
+                ?
+            </ToggleButton>
+        </metro:WindowCommands>       
+    </metro:MetroWindow.RightWindowCommands>
+    
+       <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="_toolbarsPanel">
+            <StackPanel Orientation="Horizontal">
+            <metro:MetroAnimatedTabControl x:Name="_modeNavigation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True">
+                <TabItem Header="수동 테스트" FontWeight="Bold" />
+                <TabItem Header="자동 테스트" FontWeight="Bold" />
+            </metro:MetroAnimatedTabControl>
+                <Ellipse x:Name="_comTx" Fill="Black" Width="32" Height="32" />
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1" x:Name="_contentsPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Frame Grid.Column="0" x:Name="_modePages" Source="ManualPage.xaml" NavigationUIVisibility="Hidden"/>
+            <Grid Grid.Column="1" x:Name="_dataPanel">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" x:Name="_dataNaviPanel">
+                    <metro:MetroAnimatedTabControl x:Name="_dataNaviation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True" >
+                        <TabItem Header="그래프" FontWeight="Bold"/>
+                        <TabItem Header="목록" FontWeight="Bold" />
+                    </metro:MetroAnimatedTabControl>
+                </Grid>
+                <Frame Grid.Row="1" x:Name="dataPages" Source="ManualGraphPage.xaml" NavigationUIVisibility="Hidden"/>
+            </Grid>
+        </Grid>
     </Grid>
-</Window>
+</metro:MetroWindow>
