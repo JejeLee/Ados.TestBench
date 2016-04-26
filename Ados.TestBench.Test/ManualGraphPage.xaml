@@ -4,11 +4,23 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Ados.TestBench.Test"
+      xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="ManualGraphPage">
 
     <Grid>
-        
+        <d3:ChartPlotter x:Name="plotter" Grid.Row="1" Grid.Column="1">
+            <d3:HorizontalAxis>
+                <d3:HorizontalDateTimeAxis Name="dateAxis"/>
+            </d3:HorizontalAxis>
+            <d3:VerticalAxis >
+                <d3:VerticalAxis Name="vAxis" Width="50" Placement="Right"/>
+            </d3:VerticalAxis>
+            <d3:Header FontFamily="Georgia" Content="Door Latch status"/>
+            <d3:VerticalAxisTitle FontFamily="Georgia" Content="Door Switch Voltage [V]" />
+            <d3:LineGraph x:Name="ref" Stroke="OrangeRed" StrokeThickness="1"></d3:LineGraph>
+            <d3:LineGraph x:Name="val" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" ></d3:LineGraph>
+        </d3:ChartPlotter>
     </Grid>
 </Page>

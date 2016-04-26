@@ -23,6 +23,13 @@ namespace Ados.TestBench.Test
         public ManualPage()
         {
             InitializeComponent();
+
+            _graphPage = new ManualGraphPage();
+            _listPage = new ManualListPage();
+            _dataPages.Navigate(_graphPage);
         }
+
+        ManualGraphPage _graphPage;
+        ManualListPage _listPage;
     }
 }

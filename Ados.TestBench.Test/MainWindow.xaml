@@ -4,14 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ados.TestBench.Test"
-        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls" x:Class="Ados.TestBench.Test.MainWindow"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls" 
+        x:Class="Ados.TestBench.Test.MainWindow"
+        xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Height="700" Width="1000" 
         Title="ADOS TestBench - 테스트 모드" SaveWindowPosition="True"
         Icon="pack://application:,,,/Resources/AppIcon.ico">
     <metro:MetroWindow.Resources>
         <!-- add color resources for com states -->
-        <LinearGradientBrush x:Key="rLive" ></LinearGradientBrush>
+        <RadialGradientBrush x:Key="rampError">
+            <GradientStop Color="#FFF51111" Offset="0"/>
+            <GradientStop Color="#FFF7EF39" Offset="1"/>
+            <GradientStop Color="#FF7E3C06" Offset="0.88"/>
+        </RadialGradientBrush>
+        <RadialGradientBrush x:Key="rampTrans">
+            <GradientStop Color="#FF0732F7" Offset="0"/>
+            <GradientStop Color="#FF089E3F" Offset="1"/>
+            <GradientStop Color="#FF3A5AE6" Offset="0.777"/>
+        </RadialGradientBrush>
+        <RadialGradientBrush x:Key="rampIdle">
+            <GradientStop Color="#FFF5F5F7" Offset="0"/>
+            <GradientStop Color="#FF4F5150" Offset="1"/>
+            <GradientStop Color="#FFBEC0CB" Offset="0.677"/>
+        </RadialGradientBrush>
+        <core:Double x:Key="toolFontSize">18</core:Double>
     </metro:MetroWindow.Resources>
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>
@@ -21,7 +38,7 @@
             <metro:Flyout x:Name="_flyAppInfo" Header="정보" Position="Right" Width="350" Theme="Adapt" >
                 <Border BorderThickness="1" CornerRadius="2" Margin="10,10,10,10" Background="#FF77DC7C" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <StackPanel Margin="10,10,10,10">
-                    <Label FontSize="16">프로그램 명: ADOS TESTBENCH for Test</Label>
+                        <Label FontSize="16">프로그램 명: ADOS TESTBENCH for Test</Label>
                         <Label FontSize="16">버젼: v1.0, 2016-06-06</Label>
                         <Label FontSize="16">제작사: MEDIA EVER</Label>
                         <Label FontSize="16">저작권: MEDIA EVER Co.,Ltd.</Label>
@@ -31,48 +48,56 @@
         </metro:FlyoutsControl>
     </metro:MetroWindow.Flyouts>
     <metro:MetroWindow.RightWindowCommands>
-    <metro:WindowCommands>
-        <ToggleButton Content="Graph Setting" 
+        <metro:WindowCommands>
+            <ToggleButton Content="Graph Setting" 
         IsChecked="{Binding ElementName=_flyGraphSetting, Path=IsOpen}" Cursor="Hand"/>
             <ToggleButton IsChecked="{Binding ElementName=_flyAppInfo, Path=IsOpen}" Cursor="Hand">
                 ?
             </ToggleButton>
-        </metro:WindowCommands>       
+        </metro:WindowCommands>
     </metro:MetroWindow.RightWindowCommands>
-    
-       <Grid>
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="_toolbarsPanel">
             <StackPanel Orientation="Horizontal">
-            <metro:MetroAnimatedTabControl x:Name="_modeNavigation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True">
-                <TabItem Header="수동 테스트" FontWeight="Bold" />
-                <TabItem Header="자동 테스트" FontWeight="Bold" />
-            </metro:MetroAnimatedTabControl>
-                <Ellipse x:Name="_comTx" Fill="Black" Width="32" Height="32" />
+                <metro:MetroAnimatedTabControl x:Name="_modeNavigation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True">
+                    <TabItem Header="수동 테스트" />
+                    <TabItem Header="자동 테스트"  />
+                </metro:MetroAnimatedTabControl>
+
+                <ComboBox x:Name="_devList" IsReadOnly="True" IsSynchronizedWithCurrentItem="True" Width="100" FontSize="{StaticResource toolFontSize}"/>
+                <ComboBox x:Name="_chList" IsReadOnly="True" IsSynchronizedWithCurrentItem="True" Width="30"  FontSize="{StaticResource toolFontSize}"/>
+                <metro:ToggleSwitch x:Name="_connect">Connect</metro:ToggleSwitch>
+                <Button Background="{x:Null}" x:Name="_comTx" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Tx"  FontSize="{StaticResource toolFontSize}"/>
+                            <Ellipse Width="36" Height="36"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Background="{x:Null}" x:Name="_comRx" >
+                    <Button.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Rx"  FontSize="{StaticResource toolFontSize}"/>
+                            <Ellipse Width="36" Height="36"/>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" x:Name="_contentsPanel">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Frame Grid.Column="0" x:Name="_modePages" Source="ManualPage.xaml" NavigationUIVisibility="Hidden"/>
-            <Grid Grid.Column="1" x:Name="_dataPanel">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" x:Name="_dataNaviPanel">
-                    <metro:MetroAnimatedTabControl x:Name="_dataNaviation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True" >
-                        <TabItem Header="그래프" FontWeight="Bold"/>
-                        <TabItem Header="목록" FontWeight="Bold" />
-                    </metro:MetroAnimatedTabControl>
-                </Grid>
-                <Frame Grid.Row="1" x:Name="dataPages" Source="ManualGraphPage.xaml" NavigationUIVisibility="Hidden"/>
-            </Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Frame Grid.Row="0" x:Name="_modePages"  NavigationUIVisibility="Hidden"/>
+            <DataGrid Grid.Row="1" x:Name ="_outMsg" Style="{StaticResource AzureDataGrid}" >
+            </DataGrid>
         </Grid>
     </Grid>
 </metro:MetroWindow>

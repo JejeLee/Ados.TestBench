@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Research.DynamicDataDisplay.Common;
 
 namespace Ados.TestBench.Test
 {
@@ -25,4 +26,25 @@ namespace Ados.TestBench.Test
             InitializeComponent();
         }
     }
+
+    public class VoltagePointCollection : D3Collection<VoltagePoint>
+    {
+        public VoltagePointCollection()
+        {
+        }
+    }
+
+    public class VoltagePoint
+    {
+        public DateTime Date { get; set; }
+
+        public double Voltage { get; set; }
+
+        public VoltagePoint(double voltage, DateTime date)
+        {
+            this.Date = date;
+            this.Voltage = voltage;
+        }
+    }
+
 }

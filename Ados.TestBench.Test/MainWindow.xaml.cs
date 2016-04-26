@@ -24,6 +24,14 @@ namespace Ados.TestBench.Test
         public MainWindow()
         {
             InitializeComponent();
+
+            _manualPage = new ManualPage();
+            _autoPage = new AutoPage();
+
+            _modePages.Navigate(_manualPage);
         }
+
+        ManualPage _manualPage;
+        AutoPage _autoPage;
     }
 }
