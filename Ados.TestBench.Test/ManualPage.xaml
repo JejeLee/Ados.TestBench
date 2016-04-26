@@ -4,21 +4,61 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Ados.TestBench.Test"
-      xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls" 
+      xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="ManualPage">
 
     <Grid x:Name="_baseGrid">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" x:Name="_propPanel">
             <!-- 속성 목록 및 버튼들 -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="170" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,0,0,0">Update</Label>
+                    <metro:ToggleSwitchButton  x:Name="_liveUpdate" Margin="144,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="56" Height="28"/>
+                    <Button x:Name="_btnReadAll" Content="전체 읽기 (F2)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,120,0,0" Width="90"/>
+                    <Button x:Name="_btnReadSel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,120,0,0" Width="90">선택 항목들 읽기</Button>
+                    <Button x:Name="_btnWriteAll" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,145,0,0" Width="90">전체 쓰기 (F3)</Button>
+                    <Button x:Name="_btnWriteSel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,145,0,0" Width="90">선택 항목들 쓰기</Button>
+                    <TextBox x:Name="_inputDuration" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Margin="106,60,0,0" Height="25" />
+                    <Button x:Name="_btnOpen" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,90,0,0" Width="90">Door Open</Button>
+                    <Button x:Name="_btnClose" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="95,90,0,0" Width="90">Door Close</Button>
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,31,0,0" Width="104" Height="24" Content="수신시간 (msec)"/>
+                    <Image Source="Resources/car.png" Stretch="Fill" Margin="0,0,149,89"/>
+                    <Rectangle Stroke="Black" Margin="51,37,144,89" RenderTransformOrigin="0.5,0">
+                        <Rectangle.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="-32.005"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Rectangle.RenderTransform>
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF19198D" Offset="0"/>
+                                <GradientStop Color="#FFEE2C2C" Offset="1"/>
+                                <GradientStop Color="#FF3CF0C7" Offset="0.46"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Label HorizontalAlignment="Left" Content="30도" VerticalAlignment="Top" Margin="51,0,0,0" Width="40"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <DataGrid x:Name="_gridParams" Style="{StaticResource AzureDataGrid}" />
+                </Grid>
+            </Grid>
         </Grid>
-        
+
         <Grid Grid.Column="1" x:Name="_dataPanel">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>

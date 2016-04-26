@@ -9,6 +9,8 @@
       Title="ManualListPage">
 
     <Grid>
-        
+        <DataGrid x:Name="_datas">
+            
+        </DataGrid>
     </Grid>
 </Page>
