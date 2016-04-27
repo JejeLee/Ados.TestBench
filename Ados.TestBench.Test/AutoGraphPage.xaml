@@ -5,11 +5,16 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Ados.TestBench.Test"
       xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
+      xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="AutoGraphPage">
     <ScrollViewer>
     <StackPanel Orientation="Vertical">
+            <Grid>
+                <Label Content="그래프 갱신"/>
+                <metro:ToggleSwitchButton x:Name="_useUpdate"/>
+            </Grid>
             <Expander IsExpanded="True" Header="Door Velocity">
         <d3:ChartPlotter x:Name="a1" >
             <d3:HorizontalAxis>

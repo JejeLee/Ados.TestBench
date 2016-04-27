@@ -16,19 +16,13 @@ using System.Windows.Shapes;
 namespace Ados.TestBench.Analysis
 {
     /// <summary>
-    /// MainWindow.xaml에 대한 상호 작용 논리
+    /// ManualListPage.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ListPage : Page
     {
-        public MainWindow()
+        public ListPage()
         {
             InitializeComponent();
-            _graphPage = new GraphPage();
-            _listPage = new ListPage();
-            _dataPages.Navigate(_graphPage);
         }
-
-        GraphPage _graphPage;
-        ListPage _listPage;
     }
 }

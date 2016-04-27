@@ -4,9 +4,69 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ados.TestBench.Analysis"
+        xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MainWindow" Height="600" Width="800" Icon="Resources/AppIcon.ico">
+    <Grid x:Name="_baseGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" x:Name="_propPanel">
+            <!-- 속성 목록 및 버튼들 -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="170" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,0,0,0">Update</Label>
+                    <Button x:Name="_btnShowParam" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,145,0,0" Width="180">선택 파라미터 목록</Button>
+                    <Button x:Name="_btnClose" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="420,14,-310,0" Width="90">Excel로 열기</Button>
+                    <Image Source="Resources/car.png" Stretch="Fill" Margin="-1,89,240,0"/>
+                    <Rectangle Stroke="Black" Margin="59,127,236,-1" RenderTransformOrigin="0.5,0">
+                        <Rectangle.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform Angle="-32.005"/>
+                                <TranslateTransform/>
+                            </TransformGroup>
+                        </Rectangle.RenderTransform>
+                        <Rectangle.Fill>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FF19198D" Offset="0"/>
+                                <GradientStop Color="#FFEE2C2C" Offset="1"/>
+                                <GradientStop Color="#FF3CF0C7" Offset="0.46"/>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Label HorizontalAlignment="Left" Content="30도" VerticalAlignment="Top" Margin="51,0,0,0" Width="40"/>
+                    <ComboBox x:Name="_sheetCombo" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300"/>
+                    <Label x:Name="label" Content="버젼" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" Width="81"/>
+                    <Label x:Name="_txtVersion" Content="(....)" HorizontalAlignment="Left" Margin="96,31,0,0" VerticalAlignment="Top" Width="204"/>
+                    <Label x:Name="label_Copy1" Content="설명" HorizontalAlignment="Left" Margin="10,58,0,0" VerticalAlignment="Top" Width="81"/>
+                    <Label x:Name="_txtDescription" Content="(....)" HorizontalAlignment="Left" Margin="96,58,0,0" VerticalAlignment="Top" Width="204"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <DataGrid x:Name="_gridParams" Style="{StaticResource AzureDataGrid}" />
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1" x:Name="_dataPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" x:Name="_dataNaviPanel">
+                <metro:MetroAnimatedTabControl x:Name="_dataNaviation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True" >
+                    <TabItem Header="그래프" FontWeight="Bold"/>
+                    <TabItem Header="목록" FontWeight="Bold" />
+                </metro:MetroAnimatedTabControl>
+            </Grid>
+            <Frame Grid.Row="1" x:Name="_dataPages" NavigationUIVisibility="Hidden"/>
+        </Grid>
     </Grid>
 </Window>

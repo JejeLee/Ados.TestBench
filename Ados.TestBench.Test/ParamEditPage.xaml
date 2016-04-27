@@ -1,0 +1,46 @@
+﻿<Page x:Class="Ados.TestBench.Test.ParamEditPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Ados.TestBench.Test"
+      xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="800"
+      Title="ParamEditPage">
+
+    <Grid x:Name="_baseGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="255"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" x:Name="_ctrlGrid">
+            <Button x:Name="_btnSheet" Content="&lt;&lt; 시트 편집" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="0,0,700,0" Click="시트편집_클릭"/>
+            <Label x:Name="label" Content="시트 명칭" HorizontalAlignment="Left" Margin="194,10,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+            <Label x:Name="_txtName" Content="(시트를 선택하게요)" HorizontalAlignment="Left" Margin="270,10,0,0" VerticalAlignment="Top" Width="485" FontSize="14" FontWeight="Bold"/>
+            <Label x:Name="label_Copy" Content="버젼" HorizontalAlignment="Left" Margin="194,55,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+            <TextBox x:Name="_txtVersion" HorizontalAlignment="Left" Height="23" Margin="270,55,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="485"/>
+            <Label x:Name="label_Copy1" Content="설명" HorizontalAlignment="Left" Margin="194,86,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+            <TextBox x:Name="_txtDescrition" HorizontalAlignment="Left" Height="23" Margin="270,86,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="485"/>
+            <Button x:Name="_btnNew" Content="목록 새로 만들기 " HorizontalAlignment="Left" Margin="10,135,0,0" VerticalAlignment="Top" Width="280"/>
+            <Button x:Name="_btnDelAll" Content="전체 목록들 삭제" HorizontalAlignment="Left" Margin="10,165,0,0" VerticalAlignment="Top" Width="280"/>
+            <Button x:Name="_btnDelSel" Content="선택 목록들 삭제" HorizontalAlignment="Left" Margin="10,195,0,0" VerticalAlignment="Top" Width="280"/>
+            <Label x:Name="label_Copy2" Content="파라미터 설정 목록" HorizontalAlignment="Left" Margin="10,226,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="280" HorizontalContentAlignment="Center"/>
+            <Label x:Name="label_Copy3" Content="파라미터 항목 설정" HorizontalAlignment="Left" Margin="295,226,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold" Width="495" HorizontalContentAlignment="Center"/>
+            <Button x:Name="_btnDelItemAll" Content="전체 항목들 삭제" HorizontalAlignment="Left" Margin="305,165,0,0" VerticalAlignment="Top" Width="485"/>
+            <Button x:Name="_btnDelItemSel" Content="선택 항목들 삭제" HorizontalAlignment="Left" Margin="305,195,0,0" VerticalAlignment="Top" Width="485"/>
+            <Button x:Name="_btnSave" Content="작업 저장" HorizontalAlignment="Right" VerticalAlignment="Top" Width="145" Margin="0,53,645,0" Height="57"/>
+
+        </Grid>
+        <Grid x:Name="_listGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="_gridParams" Grid.Column="0"/>
+            <DataGrid x:Name="_gridInfo" Grid.Column="1"/>
+        </Grid>
+
+    </Grid>
+
+</Page>

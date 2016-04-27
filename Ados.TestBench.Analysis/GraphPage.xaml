@@ -1,19 +1,19 @@
-﻿<Page x:Class="Ados.TestBench.Test.ManualGraphPage"
+﻿<Page x:Class="Ados.TestBench.Analysis.GraphPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Ados.TestBench.Test"
+      xmlns:local="clr-namespace:Ados.TestBench.Analysis"
       xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="ManualGraphPage">
+      Title="GraphPage">
     <ScrollViewer>
-    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical">
             <Expander Header="Door Velocity" IsExpanded="True">
                 <d3:ChartPlotter x:Name="a1">
                     <d3:HorizontalDateTimeAxis Name="a1d"/>
-                        <d3:VerticalAxis Name="a1v" Width="40" Placement="Right"/>
+                    <d3:VerticalAxis Name="a1v" Width="40" Placement="Right"/>
                     <d3:VerticalAxisTitle FontFamily="Georgia" Content="Speed [cm/sec]" VerticalContentAlignment="Center" Width="81" Foreground="White" />
                     <d3:LineGraph x:Name="a1m" Stroke="OrangeRed" StrokeThickness="1"/>
                     <d3:LineGraph x:Name="a1r" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
@@ -30,7 +30,7 @@
             <Expander Header="Motor Electrical Value" IsExpanded="True">
                 <d3:ChartPlotter x:Name="a3">
                     <d3:HorizontalDateTimeAxis Name="a3d"/>
-                        <d3:VerticalAxis Name="a3v" Width="50" Placement="Right"/>
+                    <d3:VerticalAxis Name="a3v" Width="50" Placement="Right"/>
                     <d3:VerticalAxisTitle FontFamily="Georgia" Content="Electrical [V/mA]" VerticalContentAlignment="Center" Width="81" Foreground="White" />
                     <d3:LineGraph x:Name="a3m" Stroke="OrangeRed" StrokeThickness="1"/>
                     <d3:LineGraph x:Name="a3r" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
@@ -47,52 +47,52 @@
             </Expander>
             <Expander Header="Door Run" IsExpanded="True">
                 <d3:ChartPlotter x:Name="d1">
-                <d3:HorizontalDateTimeAxis Name="d1d"/>              
-                <d3:VerticalAxis Name="d1v" Width="20" Placement="Right"/>               
-                <d3:LineGraph x:Name="d01" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
-            </d3:ChartPlotter>
+                    <d3:HorizontalDateTimeAxis Name="d1d"/>
+                    <d3:VerticalAxis Name="d1v" Width="20" Placement="Right"/>
+                    <d3:LineGraph x:Name="d01" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                </d3:ChartPlotter>
             </Expander>
             <Expander Header="Door Direction Open" IsExpanded="True">
                 <d3:ChartPlotter x:Name="d2">
-                <d3:HorizontalDateTimeAxis Name="d2d"/>
-                <d3:VerticalAxis Name="d2v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d02" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
-            </d3:ChartPlotter>
+                    <d3:HorizontalDateTimeAxis Name="d2d"/>
+                    <d3:VerticalAxis Name="d2v" Width="20" Placement="Right"/>
+                    <d3:LineGraph x:Name="d02" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                </d3:ChartPlotter>
             </Expander>
             <Expander Header="Door Direction Close" IsExpanded="True">
                 <d3:ChartPlotter x:Name="d3">
-                <d3:HorizontalDateTimeAxis Name="d3d"/>
-                <d3:VerticalAxis Name="d3v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d03" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
-            </d3:ChartPlotter>
+                    <d3:HorizontalDateTimeAxis Name="d3d"/>
+                    <d3:VerticalAxis Name="d3v" Width="20" Placement="Right"/>
+                    <d3:LineGraph x:Name="d03" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                </d3:ChartPlotter>
             </Expander>
             <Expander Header="Door Latch On" IsExpanded="True">
                 <d3:ChartPlotter x:Name="d4">
-                <d3:HorizontalDateTimeAxis Name="d4d"/>
-                <d3:VerticalAxis Name="d4v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d04" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
-            </d3:ChartPlotter>
+                    <d3:HorizontalDateTimeAxis Name="d4d"/>
+                    <d3:VerticalAxis Name="d4v" Width="20" Placement="Right"/>
+                    <d3:LineGraph x:Name="d04" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                </d3:ChartPlotter>
             </Expander>
             <Expander Header="Door Release On" IsExpanded="True">
                 <d3:ChartPlotter x:Name="d5">
-                <d3:HorizontalDateTimeAxis Name="d5d"/>
-                <d3:VerticalAxis Name="d5v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d05" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
-            </d3:ChartPlotter>
+                    <d3:HorizontalDateTimeAxis Name="d5d"/>
+                    <d3:VerticalAxis Name="d5v" Width="20" Placement="Right"/>
+                    <d3:LineGraph x:Name="d05" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                </d3:ChartPlotter>
             </Expander>
             <Expander Header="Door Clutch On" IsExpanded="True">
                 <d3:ChartPlotter x:Name="d6">
-                <d3:HorizontalDateTimeAxis Name="d6d"/>
-                <d3:VerticalAxis Name="d6v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d06" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
-            </d3:ChartPlotter>
+                    <d3:HorizontalDateTimeAxis Name="d6d"/>
+                    <d3:VerticalAxis Name="d6v" Width="20" Placement="Right"/>
+                    <d3:LineGraph x:Name="d06" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                </d3:ChartPlotter>
             </Expander>
             <Expander Header="Test" IsExpanded="True">
                 <d3:ChartPlotter x:Name="d7">
-                <d3:HorizontalDateTimeAxis Name="d7d"/>
-                <d3:VerticalAxis Name="d7v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d07" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
-            </d3:ChartPlotter>
+                    <d3:HorizontalDateTimeAxis Name="d7d"/>
+                    <d3:VerticalAxis Name="d7v" Width="20" Placement="Right"/>
+                    <d3:LineGraph x:Name="d07" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                </d3:ChartPlotter>
             </Expander>
         </StackPanel>
     </ScrollViewer>

@@ -4,11 +4,44 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Ados.TestBench.Test"
+      xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="AutoPage">
 
-    <Grid>
-        
+    <Grid x:Name="_baseGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" x:Name="_propPanel">
+            <!-- 속성 목록 및 버튼들 -->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,170,0,0" Width="75" Content="진행 상태"/>
+                    <Button x:Name="_btnStart" Content="Auto Test 시작" VerticalAlignment="Top" Margin="5,64,5,0" Width="190"/>
+                    <Button x:Name="_btnCancel" VerticalAlignment="Top" Margin="5,94,5,0" Width="190" Content="테스트  취소"/>
+                    <Button x:Name="_btnEdit" VerticalAlignment="Top" Margin="5,35,5,0" Width="190" Content="Test Sheet 편집"/>
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,141,0,0" Width="75" Height="29" Content="종료 시간"/>
+                    <Label HorizontalAlignment="Left" Content="시작 시간" VerticalAlignment="Top" Margin="5,123,0,0" Width="75" RenderTransformOrigin="0.5,0.615"/>
+                    <ComboBox x:Name="_sheetCombo" Margin="5,4,5,0" VerticalAlignment="Top"/>
+                    <Label Content="..."  x:Name="_txtStartTime" VerticalAlignment="Top" Margin="80,124,5,0" Width="115" RenderTransformOrigin="0.5,0.615"/>
+                    <Label Content="..."  x:Name="_txtEndTime" VerticalAlignment="Top" Margin="80,141,5,0" Width="115" RenderTransformOrigin="0.5,0.615"/>
+                    <Label Content="대기 중.." x:Name="_txtState" VerticalAlignment="Top" Margin="80,170,5,0" Width="115" RenderTransformOrigin="0.5,0.615"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <DataGrid x:Name="_gridSheet" Style="{StaticResource AzureDataGrid}" />
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1" x:Name="_dataPanel">
+            <Frame  x:Name="_dataPages" NavigationUIVisibility="Hidden" Source="AutoGraphPage.xaml"/>
+        </Grid>
     </Grid>
 </Page>

@@ -13,22 +13,25 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ados.TestBench.Analysis
+namespace Ados.TestBench.Test
 {
     /// <summary>
-    /// MainWindow.xaml에 대한 상호 작용 논리
+    /// AutoPage.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SheetEditPage : Page
     {
-        public MainWindow()
+        public SheetEditPage()
         {
             InitializeComponent();
-            _graphPage = new GraphPage();
-            _listPage = new ListPage();
-            _dataPages.Navigate(_graphPage);
+
+            _paramPage = new ParamEditPage();
         }
 
-        GraphPage _graphPage;
-        ListPage _listPage;
+        ParamEditPage _paramPage;
+
+        private void 파라미터편집_클릭(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(_paramPage);
+        }
     }
 }
