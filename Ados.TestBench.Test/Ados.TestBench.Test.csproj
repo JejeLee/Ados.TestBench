@@ -90,6 +90,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="StateShot.cs" />
     <Page Include="AutoGraphPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -118,7 +119,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AutoGraphPage.xaml.cs" />
+    <Compile Include="AutoGraphPage.xaml.cs">
+      <DependentUpon>AutoGraphPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ControllerModel.cs" />
+    <Compile Include="LinDevice.cs" />
+    <Compile Include="LinManager.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="ManualModel.cs" />
     <Compile Include="ParamEditPage.xaml.cs">
       <DependentUpon>ParamEditPage.xaml</DependentUpon>
     </Compile>
@@ -189,6 +197,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\car.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\refresh.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

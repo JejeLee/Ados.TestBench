@@ -8,7 +8,7 @@
         x:Class="Ados.TestBench.Test.MainWindow"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Height="700" Width="1000" 
+        Height="760" Width="1000" 
         Title="ADOS TestBench - 테스트 모드" SaveWindowPosition="True"
         Icon="pack://application:,,,/Resources/AppIcon.ico">
     <metro:MetroWindow.Resources>
@@ -18,7 +18,7 @@
             <GradientStop Color="#FFF7EF39" Offset="1"/>
             <GradientStop Color="#FF7E3C06" Offset="0.88"/>
         </RadialGradientBrush>
-        <RadialGradientBrush x:Key="rampTrans">
+        <RadialGradientBrush x:Key="rampActive">
             <GradientStop Color="#FF0732F7" Offset="0"/>
             <GradientStop Color="#FF089E3F" Offset="1"/>
             <GradientStop Color="#FF3A5AE6" Offset="0.777"/>
@@ -28,7 +28,7 @@
             <GradientStop Color="#FF4F5150" Offset="1"/>
             <GradientStop Color="#FFBEC0CB" Offset="0.677"/>
         </RadialGradientBrush>
-        <core:Double x:Key="toolFontSize">18</core:Double>
+        <core:Double x:Key="toolFontSize">16</core:Double>
     </metro:MetroWindow.Resources>
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>
@@ -56,38 +56,41 @@
             </ToggleButton>
         </metro:WindowCommands>
     </metro:MetroWindow.RightWindowCommands>
-
+    <metro:MetroWindow.DataContext>
+        <local:ControllerModel/>
+    </metro:MetroWindow.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="46"/>
+            <RowDefinition Height="600"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="_toolbarsPanel">
             <StackPanel Orientation="Horizontal">
-                <metro:MetroAnimatedTabControl x:Name="_modeNavigation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True">
-                    <TabItem Header="수동 테스트" />
-                    <TabItem Header="자동 테스트"  />
+
+                <metro:MetroAnimatedTabControl x:Name="_modeNavigation" HorizontalAlignment="Left" Margin="3,0,0,3" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True" Height="40" SelectedIndex="0" SelectionChanged="testMode_changed">
+                    <TabItem Header="수동 테스트" Height="39" />
+                    <TabItem Header="자동 테스트" Height="39"  />
                 </metro:MetroAnimatedTabControl>
 
-                <ComboBox x:Name="_devList" IsReadOnly="True" IsSynchronizedWithCurrentItem="True" Width="200" FontSize="{StaticResource toolFontSize}"/>
-                <ComboBox x:Name="_chList" IsReadOnly="True" IsSynchronizedWithCurrentItem="True" Width="80"  FontSize="{StaticResource toolFontSize}"/>
-                <metro:ToggleSwitchButton x:Name="_connect">Connect</metro:ToggleSwitchButton>
-                <Button Background="{x:Null}" x:Name="_comTx" >
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Tx"  FontSize="{StaticResource toolFontSize}"/>
-                            <Ellipse Width="36" Height="36"/>
-                        </StackPanel>
-                    </Button.Content>
+                <ComboBox x:Name="_devList" IsReadOnly="True" IsSynchronizedWithCurrentItem="True" Width="380" FontSize="{StaticResource toolFontSize}" 
+                          Margin="0,0,0,3" Height="40" ItemsSource="{Binding Devices}" SelectionChanged="cbDevices_SelectionChanged"/>
+                <Button x:Name="_btnRefresh" Width="36" BorderThickness="0" Height="36" Click="refresh_Click">
+                    <Image Source="Resources/refresh.png"/>
                 </Button>
-                <Button Background="{x:Null}" x:Name="_comRx" >
-                    <Button.Content>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Rx"  FontSize="{StaticResource toolFontSize}"/>
-                            <Ellipse Width="36" Height="36"/>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
+                <metro:ToggleSwitchButton x:Name="_connect" Margin="0,0,0,3" Content="Connect" Height="42"/>
+                <Border Background="{x:Null}" x:Name="_comTx" Margin="0" BorderThickness="0" >
+                    <StackPanel Orientation="Horizontal" Margin="0">
+                        <Label Content="Tx"  FontSize="{StaticResource toolFontSize}" Height="36" Width="40"/>
+                        <Ellipse Width="42" x:Name="_txLamp" Height="42"/>
+                    </StackPanel>
+                </Border>
+                <Border Background="{x:Null}" x:Name="_comRx" Margin="0" BorderThickness="0" >
+                    <StackPanel Orientation="Horizontal" Margin="0">
+                        <Label Content="Rx"  FontSize="{StaticResource toolFontSize}" Width="36" Height="40"/>
+                        <Ellipse Width="42" x:Name="_rxLamp" Height="42"/>
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" x:Name="_contentsPanel">
@@ -95,9 +98,27 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Frame Grid.Row="0" x:Name="_modePages"  NavigationUIVisibility="Hidden"/>
-            <DataGrid Grid.Row="1" x:Name ="_outMsg" Style="{StaticResource AzureDataGrid}" >
-            </DataGrid>
+            <Frame Grid.Row="0" x:Name="_modePages"  NavigationUIVisibility="Hidden"/>            
         </Grid>
+        <DataGrid Grid.Row="2" x:Name ="_outMsg" Style="{StaticResource AzureDataGrid}" Loaded="outMsg_Loaded" 
+            AlternatingRowBackground="WhiteSmoke" ItemsSource="{Binding Source=LogsData}" 
+        AutoGenerateColumns="False" CanUserResizeColumns="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn  CanUserSort="False" 
+        Binding="{Binding Path=Time}" Header="시간" HeaderStringFormat="HH:mm:ss'FF" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="_gcMsg"  CanUserSort="False" CanUserReorder="False" 
+        Binding="{Binding Path=Message}" Header="메세지"  HeaderStringFormat="" IsReadOnly="True" Width="*">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsError}" Value="True">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </metro:MetroWindow>

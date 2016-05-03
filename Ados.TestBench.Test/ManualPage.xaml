@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:Ados.TestBench.Test"
       xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
-      Title="ManualPage">
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="ManualPage" Height="Auto">
 
     <Grid x:Name="_baseGrid">
         <Grid.ColumnDefinitions>
@@ -23,18 +23,16 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,0,0,0">Update</Label>
-                    <metro:ToggleSwitchButton  x:Name="_liveUpdate" Margin="144,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="56" Height="28"/>
                     <Button x:Name="_btnReadAll" Content="전체 읽기 (F2)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,120,0,0" Width="90"/>
                     <Button x:Name="_btnReadSel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,120,0,0" Width="90">선택 항목들 읽기</Button>
                     <Button x:Name="_btnWriteAll" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,145,0,0" Width="90">전체 쓰기 (F3)</Button>
                     <Button x:Name="_btnWriteSel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="96,145,0,0" Width="90">선택 항목들 쓰기</Button>
-                    <TextBox x:Name="_inputDuration" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Margin="106,60,0,0" Height="25" />
+                    <TextBox x:Name="_inputDuration" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Margin="106,60,0,0" Height="26" />
                     <Button x:Name="_btnOpen" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1,90,0,0" Width="90">Door Open</Button>
                     <Button x:Name="_btnClose" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="95,90,0,0" Width="90">Door Close</Button>
-                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="105,31,0,0" Width="104" Height="24" Content="수신시간 (msec)"/>
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="108,28,-4,0" Width="96" Height="27" Content="수신시간 (msec)"/>
                     <Image Source="Resources/car.png" Stretch="Fill" Margin="0,0,149,89"/>
-                    <Rectangle Stroke="Black" Margin="51,37,144,89" RenderTransformOrigin="0.5,0">
+                    <Rectangle Stroke="Black" Margin="47,33,148,93" RenderTransformOrigin="0.5,0">
                         <Rectangle.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform/>
@@ -61,15 +59,17 @@
 
         <Grid Grid.Column="1" x:Name="_dataPanel">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="46"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" x:Name="_dataNaviPanel">
-                <metro:MetroAnimatedTabControl x:Name="_dataNaviation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True" >
+                <metro:MetroAnimatedTabControl x:Name="_dataNaviation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True" SelectedIndex="0" >
                     <TabItem Header="그래프" FontWeight="Bold"/>
                     <TabItem Header="목록" FontWeight="Bold" />
                 </metro:MetroAnimatedTabControl>
             </Grid>
+            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="219,13,0,0" Content="Update" Width="57" FontSize="14"/>
+            <metro:ToggleSwitchButton  x:Name="_liveUpdate" Margin="278,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="67" Height="31"/>
             <Frame Grid.Row="1" x:Name="_dataPages" NavigationUIVisibility="Hidden"/>
         </Grid>
     </Grid>
