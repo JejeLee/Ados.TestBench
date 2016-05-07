@@ -1,0 +1,30 @@
+﻿{
+  "Header": {
+    "CreateDate": "2016-05-06T10:20:10",
+    "UpdateDate": "2016-05-06T10:20:10",
+    "DataType": "ParametersSetting",
+    "Version": "1.0",
+    "Description": "Manual Parameters setting list"
+  },
+  "ParametersSetting": [
+    {
+      "Name": "door1",
+      "Use": true,
+      "ReadValue": 0,
+      "WriteValue": 100
+    },
+    {
+      "Name": "door2",
+      "Use": false,
+      "ReadValue": 0,
+      "WriteValue": 100
+    },
+    {
+      "Name": "door3",
+      "Use": true,
+      "ReadValue": 0,
+      "WriteValue": 100
+    }
+
+  ]
+}

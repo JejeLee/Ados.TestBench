@@ -37,25 +37,28 @@ namespace Ados.TestBench.Test
         public bool ReadState(out StateShot aShot)
         {
             aShot = null;
+            Peak.Lin.TLINRcvMsg rmsg1;
 
             WriteMessage(PID.STATE1);
-            Peak.Lin.TLINRcvMsg rmsg; ;
-            if (!ReadMessages(out rmsg, 50))
+            
+            if (!ReadMessages(out rmsg1, 50))
             {
                 return false;
             }
-            aShot = new StateShot();
-            aShot.SetState1(rmsg.Data);
 #if TYPE_B
+            Peak.Lin.TLINRcvMsg rmsg2;
             WriteMessage(PID.STATE2);
-            Peak.Lin.TLINRcvMsg rmsg; ;
-            if (!ReadMessages(out rmsg, 50))
+            if (!ReadMessages(out rmsg2, 50))
             {
                 return false;
             }
             aShot.SetState1(rmsg.Data);
 #endif
-
+            aShot = new StateShot();
+            aShot.SetState1(rmsg1.Data);
+#if TYPE_B
+            aShot.SetState1(rmsg2.Data);
+#endif
             return true;
         }
 

@@ -1,0 +1,101 @@
+﻿{
+  "Header": {
+    "CreateDate": "2016-05-06T10:20:10",
+    "UpdateDate": "2016-05-06T10:20:10",
+    "DataType": "Graphs",
+    "Version": "1.0",
+    "Description": "Graph Settings information"
+  },
+  "Graphs": [
+    {
+      "Name": "a1",
+      "Title": "Door Velocity",
+      "VerticalTitle": "Speed [cm/sec]",
+      "Min": 0,
+      "Max": 100,
+      "Visible": true
+    },
+    {
+      "Name": "a2",
+      "Title": "Door Angle",
+      "VerticalTitle": "Angle [G]",
+      "Min": 0,
+      "Max": 100,
+      "Visible": true
+    },
+    {
+      "Name": "a3",
+      "Title": "Motor Electrical Value",
+      "VerticalTitle": "Electrical [V/mA]",
+      "Min": 0,
+      "Max": 100,
+      "Visible": true
+    },
+    {
+      "Name": "a4",
+      "Title": "거리 측정값",
+      "VerticalTitle": "Distance [cm]",
+      "Min": 0,
+      "Max": 100,
+      "Visible": true
+    },
+    {
+      "Name": "d1",
+      "Title": "Door Run",
+      "VerticalTitle": "On / Off",
+      "Min": 0,
+      "Max": 1,
+      "Visible": true
+    },
+    {
+      "Name": "d2",
+      "Title": "Door Direction Open",
+      "VerticalTitle": "On / Off",
+      "Min": 0,
+      "Max": 1,
+      "Visible": true
+    },
+    {
+      "Name": "d3",
+      "Title": "Door Direction Close",
+      "VerticalTitle": "On / Off",
+      "Min": 0,
+      "Max": 1,
+      "Visible": true
+    },
+    {
+      "Name": "d4",
+      "Title": "Door Latch On",
+      "VerticalTitle": "On / Off",
+      "Min": 0,
+      "Max": 1,
+      "Visible": true
+    },
+    {
+      "Name": "d5",
+      "Title": "aaaa",
+      "VerticalTitle": "On / Off",
+      "Min": 0,
+      "Max": 1,
+      "Visible": true
+    },
+    {
+      "Name": "d6",
+      "Title": "Door Clutch On",
+      "VerticalTitle": "On / Off",
+      "Min": 0,
+      "Max": 1,
+      "Visible": true
+    },
+    {
+      "Name": "d7",
+      "Title": "Test",
+      "VerticalTitle": "On / Off",
+      "Min": 0,
+      "Max": 1,
+      "Visible": true
+    }
+  ]
+}
+
+        

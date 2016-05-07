@@ -13,9 +13,6 @@ namespace Ados.TestBench.Test
         public ManualModel(ControllerModel aCtrlModel)
         {
             _controller = aCtrlModel;
-
-            LinManager.StateReceivedEvent += LMgr_StateReceived;
-            LinManager.ParameterReceivedEvent += LMgr_ParameterReceived;
         }
 
         private void LMgr_ParameterReceived(int aAddr, int aValue)
@@ -39,6 +36,35 @@ namespace Ados.TestBench.Test
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public void ClearStates()
+        {
+            _states.Clear();
+        }
+
+        public bool IsActive {
+            get { return _active; }
+            set {
+                if (value != _active)
+                {
+                    _active = value;
+                    if (_active)
+                    {
+                        LinManager.StateReceivedEvent += LMgr_StateReceived;
+                        LinManager.ParameterReceivedEvent += LMgr_ParameterReceived;
+                    }
+                    else
+                    {
+                        LinManager.StateReceivedEvent -= LMgr_StateReceived;
+                        LinManager.ParameterReceivedEvent -= LMgr_ParameterReceived;
+                    }
+                }        
+            }
+        }
+
+        public ControllerModel Controller { get { return _controller; } }
+
+        private bool _active = false;
 
         ObservableCollection<StateShot> _states = new ObservableCollection<StateShot>();
         ControllerModel _controller;
