@@ -12,10 +12,10 @@
     <StackPanel Orientation="Vertical">
             <Expander DataContext="{Binding Path=A1}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="a1e" Visibility="{Binding Path=Visibility}" >
                 <d3:ChartPlotter x:Name="a1">
-                    <d3:HorizontalDateTimeAxis Name="a1d" ShowMajorLabels="False"/>
+                    <d3:HorizontalDateTimeAxis Name="a1d" />
                     <d3:VerticalIntegerAxis Name="a1v" Width="30" Placement="Right"/>
                     <d3:VerticalAxisTitle FontFamily="Georgia" Content="Speed [cm/sec]" HorizontalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"  />
-                    <d3:LineGraph x:Name="a1m" Stroke="OrangeRed" StrokeThickness="1" DataSource="{Binding Path=DataSource}" SmoothLinesJoin="False" />
+                    <d3:LineGraph x:Name="a1m" Stroke="OrangeRed" StrokeThickness="1"  DataSource="{Binding Path=DataSource}"  ForceCursor="True" />
                     <d3:LineGraph x:Name="a1r" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource2}" ForceCursor="True" />
                 </d3:ChartPlotter>
             </Expander>

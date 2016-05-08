@@ -49,6 +49,10 @@ namespace Ados.TestBench.Test
             }
         }
 
+        public string Description1 { get; private set; }
+
+        public string Description2 { get; private set; }
+
         public void SetDataSource(System.Collections.ObjectModel.ObservableCollection<StateShot> aSource)
         {
             _ds = new EnumerableDataSource<StateShot>(aSource);
@@ -128,6 +132,8 @@ namespace Ados.TestBench.Test
                     Min = ja.Value<int>("Min"),
                     Max = ja.Value<int>("Max"),
                     Visible = ja.Value<bool>("Visible"),
+                    Description1 = ja["Description1"].ToString(),
+                    Description2 = ja["Description2"].ToString(),
                 };
                 gs[p.Name] = p;
             }

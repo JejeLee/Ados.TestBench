@@ -15,6 +15,8 @@
         "Name": "a1",
         "Title": "Door Velocity",
         "VerticalTitle": "Speed [cm/sec]",
+        "Description1": "Measured",
+        "Description2": "Reference",
         "Min": 0,
         "Max": 100,
         "Visible": true
@@ -23,6 +25,8 @@
         "Name": "a2",
         "Title": "Door Angle",
         "VerticalTitle": "Angle [G]",
+        "Description1": "Measured",
+        "Description2": "",
         "Min": 0,
         "Max": 100,
         "Visible": true
@@ -31,6 +35,8 @@
         "Name": "a3",
         "Title": "Motor Electrical Value",
         "VerticalTitle": "Electrical [V/mA]",
+        "Description1": "Volt",
+        "Description2": "Amp",
         "Min": 0,
         "Max": 100,
         "Visible": true
@@ -39,6 +45,8 @@
         "Name": "a4",
         "Title": "거리 측정값",
         "VerticalTitle": "Distance [cm]",
+        "Description1": "Filtered",
+        "Description2": "Raw1",
         "Min": 0,
         "Max": 100,
         "Visible": true
@@ -47,6 +55,8 @@
         "Name": "d1",
         "Title": "Door Run",
         "VerticalTitle": "On / Off",
+        "Description1": "",
+        "Description2": "",
         "Min": 0,
         "Max": 1,
         "Visible": true
@@ -55,6 +65,8 @@
         "Name": "d2",
         "Title": "Door Direction Open",
         "VerticalTitle": "On / Off",
+        "Description1": "",
+        "Description2": "",
         "Min": 0,
         "Max": 1,
         "Visible": true
@@ -63,6 +75,8 @@
         "Name": "d3",
         "Title": "Door Direction Close",
         "VerticalTitle": "On / Off",
+        "Description1": "",
+        "Description2": "",
         "Min": 0,
         "Max": 1,
         "Visible": true
@@ -71,6 +85,8 @@
         "Name": "d4",
         "Title": "Door Latch On",
         "VerticalTitle": "On / Off",
+        "Description1": "",
+        "Description2": "",
         "Min": 0,
         "Max": 1,
         "Visible": true
@@ -79,6 +95,8 @@
         "Name": "d5",
         "Title": "aaaa",
         "VerticalTitle": "On / Off",
+        "Description1": "",
+        "Description2": "",
         "Min": 0,
         "Max": 1,
         "Visible": true
@@ -87,6 +105,8 @@
         "Name": "d6",
         "Title": "Door Clutch On",
         "VerticalTitle": "On / Off",
+        "Description1": "",
+        "Description2": "",
         "Min": 0,
         "Max": 1,
         "Visible": true
@@ -95,6 +115,8 @@
         "Name": "d7",
         "Title": "Test",
         "VerticalTitle": "On / Off",
+        "Description1": "",
+        "Description2": "",
         "Min": 0,
         "Max": 1,
         "Visible": true

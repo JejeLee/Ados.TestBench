@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Research.DynamicDataDisplay.Common;
+using Microsoft.Research.DynamicDataDisplay;
 
 namespace Ados.TestBench.Test
 {
@@ -26,8 +26,17 @@ namespace Ados.TestBench.Test
             this.DataContext = aModel;
 
             InitializeComponent();
+
+            SetLineGraph();
         }
+
+        void SetLineGraph()
+        {
+            a1m.Description = new PenDescription(Model.A1.Description1);
+            a1r.Description = new PenDescription(Model.A1.Description2);
+        }
+
+        internal ManualModel Model { get { return (ManualModel)this.DataContext; } }
     }
     
-
 }
