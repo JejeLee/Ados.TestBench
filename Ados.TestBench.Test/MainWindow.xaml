@@ -8,7 +8,7 @@
         x:Class="Ados.TestBench.Test.MainWindow"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Height="760" Width="1000" 
+        Height="800" Width="1000" 
         Title="ADOS TestBench - 테스트 모드" SaveWindowPosition="True"
         Icon="pack://application:,,,/Resources/AppIcon.ico">
     <metro:MetroWindow.Resources>
@@ -75,7 +75,7 @@
 
                 <ComboBox x:Name="_devList" IsReadOnly="True" IsSynchronizedWithCurrentItem="True" Width="380" FontSize="{StaticResource toolFontSize}" 
                           Margin="0,0,0,3" Height="40" ItemsSource="{Binding Devices}" SelectionChanged="cbDevices_SelectionChanged"/>
-                <Button x:Name="_btnRefresh" Width="36" BorderThickness="0" Height="36" Click="refresh_Click">
+                <Button x:Name="_btnRefresh" Width="36" BorderThickness="0" Height="36" Command="{Binding Command, Mode=OneWay}" CommandParameter="refreshDevices">
                     <Image Source="Resources/refresh.png"/>
                 </Button>
                 <metro:ToggleSwitchButton x:Name="_connect" Margin="0,0,0,3" Content="Connect" Height="42"/>
@@ -100,24 +100,31 @@
             </Grid.RowDefinitions>
             <Frame Grid.Row="0" x:Name="_modePages"  NavigationUIVisibility="Hidden"/>            
         </Grid>
-        <DataGrid Grid.Row="2" x:Name ="_outMsg" Style="{StaticResource AzureDataGrid}" Loaded="outMsg_Loaded" 
-            AlternatingRowBackground="WhiteSmoke" ItemsSource="{Binding Source=LogsData}" 
-        AutoGenerateColumns="False" CanUserResizeColumns="True">
+        <DataGrid Grid.Row="2" x:Name ="_outMsg" Style="{StaticResource AzureDataGrid}" 
+            AlternatingRowBackground="#FF8B8787" ItemsSource="{Binding LogsData}" BorderThickness="1"
+        AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" CanUserSortColumns="False">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridCell" x:Key="ValueColumn">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsError}" Value="True">
+                            <Setter Property="Foreground" Value="Red" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="모두 지우기" CommandParameter="clearLog" Command="{Binding Command, Mode=OneWay}"/>
+                    <MenuItem Header="맨 아래로 스크롤" Click="LogScroll_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn  CanUserSort="False" 
-        Binding="{Binding Path=Time}" Header="시간" HeaderStringFormat="HH:mm:ss'FF" IsReadOnly="True"/>
+        Binding="{Binding Path=Time}" Header="시간" HeaderStringFormat="HH:mm:ss'FF" />
                 <DataGridTextColumn x:Name="_gcMsg"  CanUserSort="False" CanUserReorder="False" 
-        Binding="{Binding Path=Message}" Header="메세지"  HeaderStringFormat="" IsReadOnly="True" Width="*">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsError}" Value="True">
-                                    <Setter Property="Foreground" Value="Red" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+        Binding="{Binding Path=Message}" Header="메세지"  Width="*"  CellStyle="{StaticResource ValueColumn}" />
+
+                <DataGridTextColumn Header="IsError" Binding="{Binding Path=IsError}" Visibility="Hidden" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

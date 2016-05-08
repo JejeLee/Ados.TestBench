@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.Research.DynamicDataDisplay.DataSources;
 
 namespace Ados.TestBench.Test
 {
@@ -43,10 +44,70 @@ namespace Ados.TestBench.Test
                 if (_visible != value)
                 {
                     _visible = value;
-                    OnPropertyChanged("Visible");
+                    OnPropertyChanged("Visibility");
                 }
             }
         }
+
+        public void SetDataSource(System.Collections.ObjectModel.ObservableCollection<StateShot> aSource)
+        {
+            _ds = new EnumerableDataSource<StateShot>(aSource);
+            _ds.SetXMapping(x => x.Time.Ticks);
+
+            switch(this.Name)
+            {
+                case "a1":
+                    _ds.SetYMapping(y => y.SpeedM);
+                    _ds2 = new EnumerableDataSource<StateShot>(aSource);
+                    _ds2.SetXMapping(x => x.Time.Ticks);
+                    _ds.SetYMapping(y => y.SpeedR);
+                    break;
+                case "a2":
+                    _ds.SetYMapping(y => y.DoorAngle);
+                    break;
+                case "a3":
+                    _ds.SetYMapping(y => y.MotorV);
+                    _ds2 = new EnumerableDataSource<StateShot>(aSource);
+                    _ds2.SetXMapping(x => x.Time.Ticks);
+                    _ds.SetYMapping(y => y.MotorA);
+                    break;
+                case "a4":
+                    _ds.SetYMapping(y => y.DistanceF);
+                    _ds2 = new EnumerableDataSource<StateShot>(aSource);
+                    _ds2.SetXMapping(x => x.Time.Ticks);
+                    _ds.SetYMapping(y => y.DistanceR);
+                    break;
+                case "d1":
+                    _ds.SetYMapping(y => y.DoorRun ? 1 : 0);
+                    break;
+                case "d2":
+                    _ds.SetYMapping(y => y.DirectionOpen ? 1 : 0);
+                    break;
+                case "d3":
+                    _ds.SetYMapping(y => y.DirectionClose ? 1 : 0);
+                    break;
+                case "d4":
+                    _ds.SetYMapping(y => y.LatchOn ? 1 : 0);
+                    break;
+                case "d5":
+                    _ds.SetYMapping(y => y.ReleaseOn ? 1 : 0);
+                    break;
+                case "d6":
+                    _ds.SetYMapping(y => y.Clutch ? 1 : 0);
+                    break;
+                case "d7":
+                    _ds.SetYMapping(y => y.Test ? 1 : 0);
+                    break;
+            }
+
+           
+        }
+
+        public System.Windows.Visibility Visibility { get {
+                return Visible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+            } }
+
+        public static double TimeRange { get; set; }
 
         public static Dictionary<string, GraphInfo> Load(string aPath)
         {
@@ -55,7 +116,9 @@ namespace Ados.TestBench.Test
 
             var gs = new Dictionary<string, GraphInfo>();
 
-            foreach (var ja in root["Graphs"])
+            GraphInfo.TimeRange = root["Graphs"]["Common"].Value<double>("TimeRange");
+
+            foreach (var ja in root["Graphs"]["Details"])
             {
                 var p = new GraphInfo()
                 {
@@ -101,10 +164,14 @@ namespace Ados.TestBench.Test
 
         }
 
+        public EnumerableDataSource<StateShot> DataSource { get { return _ds; } }
+        public EnumerableDataSource<StateShot> DataSource2 { get { return _ds2; } }
 
         private int _max;
         private int _min;
         private bool _visible;
+        private EnumerableDataSource<StateShot> _ds;
+        private EnumerableDataSource<StateShot> _ds2;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

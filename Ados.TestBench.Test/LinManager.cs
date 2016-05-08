@@ -19,12 +19,13 @@ namespace Ados.TestBench.Test
     public delegate void StateReceivedHandler(StateShot aShot);
     public delegate void ParameterReceivedHandler(int aAddr, int aValue);
 
+    public delegate void JobStateChangedHandler(bool aUnderLoopJob);
+
     public sealed class LinManager
     {
         public LinManager()
         {
             UnderLoopJob = false;
-            RefreshHardware();
         }
 
         public bool WriteCommand(params byte[] aData)
@@ -98,12 +99,12 @@ namespace Ados.TestBench.Test
             Task.Run( () => { ReadStateLoop(aPeriodMS); } );
         }
 
-        public bool WriteParameter(int aAddr, int aValue)
+        public bool WriteParameter(ParameterSetting aSetting)
         {
-            byte high = (byte)((aValue >> 8) & 0xFF);
-            byte low = (byte)(aValue & 0xFF);
+            byte high = (byte)((aSetting.WriteValue >> 8) & 0xFF);
+            byte low = (byte)(aSetting.WriteValue & 0xFF);
 
-            Log.i("Lin/Parameter>> {0}={1}", aAddr, aValue);
+            Log.i("Lin/Parameter>> {0}={1}", aSetting.Info.Address, aSetting.WriteValue);
 
             if (!WriteMessage(PID.WR_ADDR, high, low))
             {
@@ -113,22 +114,23 @@ namespace Ados.TestBench.Test
             return true;
         }
 
-        public void WriteParameters(IEnumerable<KeyValuePair<int, int>> aList)
+        public void WriteParameters(IEnumerable<ParameterSetting> aSettings)
         {
             UnderLoopJob = true;
 
             try
             {
-                foreach (var item in aList)
+                foreach (var item in aSettings)
                 {
                     if (_stopLoopJob)
                     {
                         break;
                     }
 
-                    if (!WriteParameter(item.Key, item.Value))
+                    if (!WriteParameter(item))
                     {
-                        //return false;
+                        Log.e("WriteParameter Error");
+                        return;
                     }
                     //System.Threading.Thread.Sleep(30);
                 }
@@ -139,13 +141,14 @@ namespace Ados.TestBench.Test
             }
         }
 
-        public void WriteParametersAsync(IEnumerable<KeyValuePair<int, int>> aList)
+        public void WriteParametersAsync(IEnumerable<ParameterSetting> aSettings)
         {
-            Task.Run(() => { WriteParameters(aList); });
+            Task.Run(() => { WriteParameters(aSettings); });
         }
 
         public bool ReadParameter(int aAddr)
         {
+            Log.i("Lin/Parameter<< {0}", aAddr);
             if (!WriteMessage(PID.RD_ADDR))
             {
                 return false;
@@ -163,22 +166,23 @@ namespace Ados.TestBench.Test
             return true;
         }
 
-        public void ReadParameters(IEnumerable<int> aAddrs)
+        public void ReadParameters(IEnumerable<ParameterSetting> aSettings)
         {
             UnderLoopJob = true;
 
             try
             {
-                foreach (var item in aAddrs)
+                foreach (var item in aSettings)
                 {
                     if (_stopLoopJob)
                     {
                         break;
                     }
 
-                    if (!ReadParameter(item))
+                    if (!ReadParameter(item.Info.Address))
                     {
-                        //return false;
+                        Log.e("ReadParameter Error");
+                        return;
                     }
                     //System.Threading.Thread.Sleep(30);
                 }
@@ -189,9 +193,9 @@ namespace Ados.TestBench.Test
             }
         }
 
-        public void ReadParametersAsync(IEnumerable<int> aAddrs)
+        public void ReadParametersAsync(IEnumerable<ParameterSetting> aSettings)
         {
-            Task.Run(() => { ReadParameters(aAddrs); });
+            Task.Run(() => { ReadParameters(aSettings); });
         }
 
         //
@@ -207,7 +211,10 @@ namespace Ados.TestBench.Test
             ushort lwCount = 0;
             _err = Peak.Lin.PLinApi.GetAvailableHardware(new ushort[0], 0, out lwCount);
             if (_err != Peak.Lin.TLINError.errOK || lwCount == 0)
+            {
+                Log.e("검색된 LIN 통신 장치가 없습니다.");
                 return 0;
+            }
 
             var lwHwHandles = new ushort[lwCount];
             var lwBuffSize = Convert.ToUInt16(lwCount * sizeof(ushort));
@@ -443,6 +450,8 @@ namespace Ados.TestBench.Test
                 _stopLoopJob = true;
             }
         }
+
+
         private static bool _stopLoopJob = false;
         private static bool _underLoopJob = false;
 
@@ -450,11 +459,19 @@ namespace Ados.TestBench.Test
             get { return _underLoopJob;
             }
             private set {
-                _underLoopJob = value;
-                if (!_underLoopJob)
-                    _stopLoopJob = false;
+                if (_underLoopJob != value)
+                {
+                    _underLoopJob = value;
+                    if (!_underLoopJob)
+                        _stopLoopJob = false;
+
+                    if (JobStateChangedEvent != null)
+                        JobStateChangedEvent(_underLoopJob);
+                }
             }
         }
+
+        public static event JobStateChangedHandler JobStateChangedEvent;
 
         static public event StateReceivedHandler StateReceivedEvent;
 

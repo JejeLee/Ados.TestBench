@@ -7,91 +7,91 @@
       xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="ManualGraphPage">
+      Title="ManualGraphPage" >
     <ScrollViewer>
     <StackPanel Orientation="Vertical">
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="a1e">
+            <Expander DataContext="{Binding Path=A1}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="a1e" Visibility="{Binding Path=Visibility}" >
                 <d3:ChartPlotter x:Name="a1">
-                    <d3:HorizontalDateTimeAxis Name="a1d"/>
-                        <d3:VerticalAxis Name="a1v" Width="40" Placement="Right"/>
-                    <d3:VerticalAxisTitle FontFamily="Georgia" Content="Speed [cm/sec]" VerticalContentAlignment="Center" Width="81" Foreground="White" />
-                    <d3:LineGraph x:Name="a1m" Stroke="OrangeRed" StrokeThickness="1"/>
-                    <d3:LineGraph x:Name="a1r" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:HorizontalDateTimeAxis Name="a1d" ShowMajorLabels="False"/>
+                    <d3:VerticalIntegerAxis Name="a1v" Width="30" Placement="Right"/>
+                    <d3:VerticalAxisTitle FontFamily="Georgia" Content="Speed [cm/sec]" HorizontalAlignment="Center" VerticalContentAlignment="Center" Foreground="White"  />
+                    <d3:LineGraph x:Name="a1m" Stroke="OrangeRed" StrokeThickness="1" DataSource="{Binding Path=DataSource}" SmoothLinesJoin="False" />
+                    <d3:LineGraph x:Name="a1r" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource2}" ForceCursor="True" />
                 </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="a2e">
+            <Expander DataContext="{Binding Path=A2}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="a2e">
                 <d3:ChartPlotter x:Name="a2">
                     <d3:HorizontalDateTimeAxis Name="a2d"/>
                     <d3:VerticalAxis Name="a2v" Width="50" Placement="Right"/>
                     <d3:VerticalAxisTitle FontFamily="Georgia" Content="Angle [G]" VerticalContentAlignment="Center" Width="81" Foreground="White" />
-                    <d3:LineGraph x:Name="a2m" Stroke="OrangeRed" StrokeThickness="1"/>
+                    <d3:LineGraph x:Name="a2m" Stroke="OrangeRed" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
                 </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="a3e">
+            <Expander DataContext="{Binding Path=A3}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="a3e">
                 <d3:ChartPlotter x:Name="a3">
                     <d3:HorizontalDateTimeAxis Name="a3d"/>
                         <d3:VerticalAxis Name="a3v" Width="50" Placement="Right"/>
                     <d3:VerticalAxisTitle FontFamily="Georgia" Content="Electrical [V/mA]" VerticalContentAlignment="Center" Width="81" Foreground="White" />
-                    <d3:LineGraph x:Name="a3m" Stroke="OrangeRed" StrokeThickness="1"/>
-                    <d3:LineGraph x:Name="a3r" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:LineGraph x:Name="a3m" Stroke="OrangeRed" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
+                    <d3:LineGraph x:Name="a3r" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource2}" />
                 </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="a4e">
+            <Expander DataContext="{Binding Path=A4}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="a4e">
                 <d3:ChartPlotter x:Name="a4">
                     <d3:HorizontalDateTimeAxis Name="a4d"/>
                     <d3:VerticalAxis Name="a4v" Width="50" Placement="Right"/>
                     <d3:VerticalAxisTitle FontFamily="Georgia" Content="Distance [cm]" VerticalContentAlignment="Center" Width="81" Foreground="White" />
-                    <d3:LineGraph x:Name="a4m" Stroke="OrangeRed" StrokeThickness="1"/>
-                    <d3:LineGraph x:Name="a4r" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:LineGraph x:Name="a4m" Stroke="OrangeRed" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
+                    <d3:LineGraph x:Name="a4r" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource2}" />
                 </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="d1e">
+            <Expander DataContext="{Binding Path=D1}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="d1e">
                 <d3:ChartPlotter x:Name="d1">
                 <d3:HorizontalDateTimeAxis Name="d1d"/>              
-                <d3:VerticalAxis Name="d1v" Width="20" Placement="Right"/>               
-                <d3:LineGraph x:Name="d01" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                <d3:VerticalAxis Name="d1v" Width="20" Placement="Right"/>
+                    <d3:LineGraph x:Name="d01" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
             </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="d2e">
+            <Expander DataContext="{Binding Path=D2}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="d2e">
                 <d3:ChartPlotter x:Name="d2">
                 <d3:HorizontalDateTimeAxis Name="d2d"/>
                 <d3:VerticalAxis Name="d2v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d02" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:LineGraph x:Name="d02" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
             </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="d3e">
+            <Expander DataContext="{Binding Path=D3}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="d3e">
                 <d3:ChartPlotter x:Name="d3">
                 <d3:HorizontalDateTimeAxis Name="d3d"/>
                 <d3:VerticalAxis Name="d3v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d03" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:LineGraph x:Name="d03" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
             </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="d4e">
+            <Expander DataContext="{Binding Path=D4}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="d4e">
                 <d3:ChartPlotter x:Name="d4">
                 <d3:HorizontalDateTimeAxis Name="d4d"/>
                 <d3:VerticalAxis Name="d4v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d04" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:LineGraph x:Name="d04" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
             </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="d5e">
+            <Expander DataContext="{Binding Path=D5}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="d5e">
                 <d3:ChartPlotter x:Name="d5">
                 <d3:HorizontalDateTimeAxis Name="d5d"/>
                 <d3:VerticalAxis Name="d5v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d05" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:LineGraph x:Name="d05" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
             </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="d6e">
+            <Expander DataContext="{Binding Path=D6}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="d6e">
                 <d3:ChartPlotter x:Name="d6">
                 <d3:HorizontalDateTimeAxis Name="d6d"/>
                 <d3:VerticalAxis Name="d6v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d06" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:LineGraph x:Name="d06" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
             </d3:ChartPlotter>
             </Expander>
-            <Expander Header="{Binding Path=Title}" IsExpanded="True" x:Name="d7e">
+            <Expander DataContext="{Binding Path=A}" Header="{Binding Path=Title}" IsExpanded="True" x:Name="d7e">
                 <d3:ChartPlotter x:Name="d7">
                 <d3:HorizontalDateTimeAxis Name="d7d"/>
                 <d3:VerticalAxis Name="d7v" Width="20" Placement="Right"/>
-                <d3:LineGraph x:Name="d07" Stroke="BlueViolet" StrokeThickness="1" OverridesDefaultStyle="True" />
+                    <d3:LineGraph x:Name="d07" Stroke="BlueViolet" StrokeThickness="1" DataSource="{Binding Path=DataSource}" />
             </d3:ChartPlotter>
             </Expander>
         </StackPanel>

@@ -4,23 +4,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.ComponentModel;
 
 namespace Ados.TestBench.Test
 {
-    public class ParameterSetting : ICloneable
+    public class ParameterSetting : ICloneable, INotifyPropertyChanged
     {
         public ParameterSetting()
         {
         }
         public ParameterSetting(string aName)
         {
-            ParameterInfo.Parameters.FirstOrDefault(x => x.Name == aName);
+            this.Info = ParameterInfo.Parameters.FirstOrDefault(x => x.Name == aName);
         }
 
         public ParameterInfo Info { get; private set; }
         public bool Use { get; set; }
-        public int ReadValue { get; set; }
+        public int ReadValue { get { return _readValue; }
+            set {
+                if (_readValue != value)
+                {
+                    _readValue = value;
+                    OnPropertyChanged("ReadValue");
+                }
+            } }
         public int WriteValue { get; set; }
+
+        int _readValue = 0;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(String propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
 
         public object Clone()
         {

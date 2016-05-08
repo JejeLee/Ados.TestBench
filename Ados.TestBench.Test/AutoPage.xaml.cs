@@ -20,8 +20,10 @@ namespace Ados.TestBench.Test
     /// </summary>
     public partial class AutoPage : Page
     {
-        public AutoPage()
+        public AutoPage(object aModel)
         {
+            this.DataContext = aModel;
+
             InitializeComponent();
         }
     }

@@ -41,7 +41,7 @@
         </Grid>
 
         <Grid Grid.Column="1" x:Name="_dataPanel">
-            <Frame  x:Name="_dataPages" NavigationUIVisibility="Hidden" Source="AutoGraphPage.xaml"/>
+            <Frame  x:Name="_dataPages" NavigationUIVisibility="Hidden" />
         </Grid>
     </Grid>
 </Page>

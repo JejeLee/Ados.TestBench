@@ -20,8 +20,10 @@ namespace Ados.TestBench.Test
     /// </summary>
     public partial class ManualListPage : Page
     {
-        public ManualListPage()
+        public ManualListPage(object aModel)
         {
+            this.DataContext = aModel;
+
             InitializeComponent();
         }
     }

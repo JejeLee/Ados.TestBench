@@ -26,18 +26,7 @@ namespace Ados.TestBench.Test
         {
             InitializeComponent();
 
-            _manualPage = new ManualPage();
-            _autoPage = new AutoPage();
-
-            DispatcherTimer timer = new DispatcherTimer()
-            {
-                Interval = new TimeSpan(100 * 10000),
-            };
-            timer.Tick += Transfer_Tick;
-            timer.Start();
-
-
-            _modePages.Navigate(_manualPage);
+            this.Loaded += MainWindow_Loaded;
 
             if (_devList.Items.Count > 0)
                 _devList.SelectedIndex =
@@ -46,6 +35,21 @@ namespace Ados.TestBench.Test
 
         }
 
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            _manualPage = new ManualPage(Model.Manual);
+            _autoPage = new AutoPage(Model.Auto);
+
+            DispatcherTimer timer = new DispatcherTimer()
+            {
+                Interval = new TimeSpan(100 * 10000),
+            };
+
+            _modePages.Navigate(_manualPage);
+
+            timer.Tick += Transfer_Tick;
+            timer.Start();
+        }
 
         private void Transfer_Tick(object sender, EventArgs e)
         {
@@ -70,22 +74,11 @@ namespace Ados.TestBench.Test
                     (Brush)this.Resources["rampActive"] : (Brush)this.Resources["rampIdle"];
             }
         }
-
-        private void refresh_Click(object sender, RoutedEventArgs e)
-        {
-            model.RefreshDevice();
-        }
-
+       
         private void cbDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             model.LinMgr.Device = (LinDevice)_devList.SelectedItem;
         }
-
-        private void outMsg_Loaded(object sender, RoutedEventArgs e)
-        {
-            _outMsg.ItemsSource = model.LogsData;
-        }
-
 
         ControllerModel model { get { return (ControllerModel)this.DataContext; } }
 
@@ -94,10 +87,29 @@ namespace Ados.TestBench.Test
 
         private void testMode_changed(object sender, SelectionChangedEventArgs e)
         {
+            if (_manualPage == null)
+                return;
+
             if (_modeNavigation.SelectedIndex == 0)
+            {
                 _modePages.Navigate(_manualPage);
+                Model.Auto.IsActive = false;
+                Model.Manual.IsActive = true;
+            }
             else
+            {
                 _modePages.Navigate(_autoPage);
+                Model.Manual.IsActive = false;
+                Model.Auto.IsActive = true;
+            }
         }
+
+        private void LogScroll_Click(object sender, RoutedEventArgs e)
+        {
+            if (Model.LogsData.Count > 0)
+                _outMsg.ScrollIntoView(Model.LogsData.Last());
+        }
+
+        internal ControllerModel Model { get { return (ControllerModel)this.DataContext; } }
     }
 }

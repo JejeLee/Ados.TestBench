@@ -20,25 +20,67 @@ namespace Ados.TestBench.Test
                 LoadSettings();
 
                 _mmodel = new ManualModel(this);
+                _amodel = new AutoModel(this);
                 _linmgr = new LinManager();
 
-                _linmgr.RefreshHardware();
+                RefreshDevice();
+
+                _cmd.ExecuteHandler = ExecuteCommand;
+                _cmd.CanExecuteHandler = CanExecuteCommand;
             }
             catch(Exception e)
             {
-                System.Windows.MessageBox.Show("초기화 중 에러 발생:" + e.ToString());
-                Environment.Exit(1);
+                System.Windows.MessageBox.Show("ControllerModel: 초기화 중 에러 발생:" + e.ToString());
+                if (!Extension.IsDesignMode)
+                    Environment.Exit(1);
             }
+        }
+
+        void ExecuteCommand(object aInput)
+        {
+            if (aInput == null)
+                return;
+
+            string input = aInput.ToString();
+
+            switch(input)
+            {
+                case "refreshDevices":
+                    RefreshDevice();
+                    break;
+                case "clearLog":
+                    LogSave();
+                    break;
+            }
+        }
+
+        bool CanExecuteCommand(object aInput)
+        {
+            if (aInput == null)
+                return false;
+
+            string input = aInput.ToString();
+            bool cando = true;
+
+            switch (input)
+            {
+                case "refreshDevices":
+                    cando = true;
+                    break;
+                case "clearLog":
+                    cando = _logs.Count > 0;
+                    break;
+            }
+            return cando;
         }
 
         private void LoadSettings()
         {
             var fi = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
             var dir = fi.DirectoryName;
-
+            if (Extension.IsDesignMode)
+                dir = @"f:\prj\mediaever\Ados.TestBench\Ados.TestBench.Test\bin\Debug";
             ParameterInfo.Load(dir + "\\Settings\\Parameters.json");
-
-            this.ManaulParameterSetting = ParameterSettings.Load(dir + "\\Settings\\ManualParameters.json");
 
             _graphs = GraphInfo.Load(dir + "\\Settings\\Graphs.json");
         }
@@ -125,18 +167,22 @@ namespace Ados.TestBench.Test
 
         public ManualModel Manual { get { return _mmodel; } }
 
+        public AutoModel Auto { get { return _amodel; } }
+
         public LinManager LinMgr { get { return _linmgr; } }
 
         public IEnumerable<ParameterInfo> Parameters { get { return ParameterInfo.Parameters; } }
 
-        public ParameterSettings ManaulParameterSetting { get; private set; }
-
         public Dictionary<string, GraphInfo> Graphs { get { return _graphs; } }
+
+        public DelegateCommand Command { get { return _cmd; } }
 
         ObservableCollection<LogData> _logs = new ObservableCollection<LogData>();
         ObservableCollection<StateShot> _states = new ObservableCollection<StateShot>();
         ManualModel _mmodel;
+        AutoModel _amodel;
         LinManager _linmgr;
         Dictionary<string, GraphInfo> _graphs = new Dictionary<string, GraphInfo>();
+        DelegateCommand _cmd = new DelegateCommand();
     }
 }

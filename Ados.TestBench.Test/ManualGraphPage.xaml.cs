@@ -21,30 +21,13 @@ namespace Ados.TestBench.Test
     /// </summary>
     public partial class ManualGraphPage : Page
     {
-        public ManualGraphPage()
+        public ManualGraphPage(object aModel)
         {
+            this.DataContext = aModel;
+
             InitializeComponent();
         }
     }
-
-    public class VoltagePointCollection : D3Collection<VoltagePoint>
-    {
-        public VoltagePointCollection()
-        {
-        }
-    }
-
-    public class VoltagePoint
-    {
-        public DateTime Date { get; set; }
-
-        public double Voltage { get; set; }
-
-        public VoltagePoint(double voltage, DateTime date)
-        {
-            this.Date = date;
-            this.Voltage = voltage;
-        }
-    }
+    
 
 }

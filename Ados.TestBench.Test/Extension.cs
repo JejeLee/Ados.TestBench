@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Ados.TestBench.Test
 {
@@ -21,5 +22,7 @@ namespace Ados.TestBench.Test
             }
             return result;
         }
+
+        public static bool IsDesignMode { get { return System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject()); } }
     }
 }

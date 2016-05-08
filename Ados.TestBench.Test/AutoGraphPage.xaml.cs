@@ -21,8 +21,10 @@ namespace Ados.TestBench.Test
     /// </summary>
     public partial class AutoGraphPage : Page
     {
-        public AutoGraphPage()
+        public AutoGraphPage(object aModel)
         {
+            this.DataContext = aModel;
+
             InitializeComponent();
         }
     }
