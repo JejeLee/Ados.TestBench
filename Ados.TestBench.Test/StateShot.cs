@@ -44,7 +44,7 @@ namespace Ados.TestBench.Test
 
         public override string ToString()
         {
-            return string.Format("DoorRun:{0}, DirectionOpen:{1}, MotorV:{2}, MotorA:{3}, DoorAngle:{4}", 
+            return string.Format("DoorRun:{0}, DirOpen:{1}, MotorV:{2}, MotorA:{3}, DoorAngle:{4}", 
                 DoorRun, DirectionOpen, MotorV, MotorA, DoorAngle);
         }
 

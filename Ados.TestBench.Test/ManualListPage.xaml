@@ -15,8 +15,22 @@
                               PreviewKeyDown="_gridParams_PreviewKeyDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="시간" Binding="{Binding Path=Info.Name}" IsReadOnly="True" FontWeight="Bold"  Width="100" />
-                <DataGridTextColumn Header="시간" Binding="{Binding Path=Info.Name}" IsReadOnly="True" Width="100"/>
-                
+                <DataGridTextColumn Header="Error" Binding="{Binding Path=DoorError}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Run" Binding="{Binding Path=DoorRun}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Open" Binding="{Binding Path=DirectionOpen}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Close" Binding="{Binding Path=DirectionClose}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Latch" Binding="{Binding Path=LatchOn}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Release" Binding="{Binding Path=ReleaseOn}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Clutch" Binding="{Binding Path=Clutch}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Test" Binding="{Binding Path=Test}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="SpeedM" Binding="{Binding Path=SpeedM}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="SpeedR" Binding="{Binding Path=SpeedR}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Angle" Binding="{Binding Path=DoorAngle}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="MotorV" Binding="{Binding Path=MotorV}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="MotroM" Binding="{Binding Path=MotorA}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="DistF" Binding="{Binding Path=DistanceF}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="DistR" Binding="{Binding Path=DistanceR}" IsReadOnly="True" Width="100"/>
+                <DataGridTextColumn Header="Pos" Binding="{Binding Path=Position}" IsReadOnly="True" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
