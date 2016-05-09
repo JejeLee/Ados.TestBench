@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Windows;
 
 namespace Ados.TestBench.Test
 {
@@ -37,6 +38,17 @@ namespace Ados.TestBench.Test
 
         private void LinManager_JobStateChangedEvent(bool aUnderLoopJob)
         {
+            if (FrameElement == null)
+                return;
+
+            if (!FrameElement.CheckAccess())
+            {
+                FrameElement.Dispatcher.Invoke(() => {
+                    LinManager_JobStateChangedEvent(aUnderLoopJob);
+                });
+                return;
+            }
+
             if (aUnderLoopJob == false && UpdateData == false)
             {
                 foreach (var s in _statesTmp)
@@ -58,18 +70,18 @@ namespace Ados.TestBench.Test
             {
                 case "readall":
                     {
-                        Controller.LinMgr.ReadParameters(ManaulParameterSetting.Settings);
+                        Controller.LinMgr.ReadParametersAsync(ManaulParameterSetting.Settings);
                     }
                     break;
                 case "writeall":
                     {
-                        Controller.LinMgr.WriteParameters(ManaulParameterSetting.Settings);
+                        Controller.LinMgr.WriteParametersAsync(ManaulParameterSetting.Settings);
                     }
                     break;
                 case "dooropen":
                     if (Controller.LinMgr.WriteCommand(1))
                     {
-                        Controller.LinMgr.ReadStateLoop(this.ReadDuration);
+                        Controller.LinMgr.ReadStateLoopAsync(this.ReadDuration);
                     }
                     break;
                 case "doorclose":
@@ -107,6 +119,17 @@ namespace Ados.TestBench.Test
 
         private void LMgr_ParameterReceived(int aAddr, int aValue)
         {
+            if (FrameElement == null)
+                return;
+
+            if (!FrameElement.CheckAccess())
+            {
+                FrameElement.Dispatcher.Invoke(() => {
+                    LMgr_ParameterReceived( aAddr,  aValue);
+                    return;
+                });
+            }
+
             var set = ManaulParameterSetting.Settings.First(x => x.Info.Address == aAddr);
             if (set != null)
                 set.ReadValue = aValue;
@@ -135,6 +158,11 @@ namespace Ados.TestBench.Test
             this.ManaulParameterSetting = ParameterSettings.Load(dir + "\\Settings\\ManualParameters.json");
 
             this._graphInfos = GraphInfo.Load(dir + "\\Settings\\Graphs.json");
+
+            foreach(var g in _graphInfos.Values)
+            {
+                g.SetDataSource(_states);
+            }
             
         }
 
@@ -200,6 +228,8 @@ namespace Ados.TestBench.Test
         public ControllerModel Controller { get { return _controller; } }
 
         public ParameterSettings ManaulParameterSetting { get; private set; }
+
+        public FrameworkElement FrameElement { get; set; } 
 
         public int ReadDuration { get; set; }
 

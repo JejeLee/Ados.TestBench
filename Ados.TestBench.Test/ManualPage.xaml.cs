@@ -24,6 +24,8 @@ namespace Ados.TestBench.Test
         {
             this.DataContext = aModel;
 
+            (aModel as ManualModel).FrameElement = this;
+
             InitializeComponent();
 
             this.Loaded += ManualPage_Loaded;
@@ -62,7 +64,7 @@ namespace Ados.TestBench.Test
                 if (p.Use)
                     list.Add(p);
             }
-            Model.Controller.LinMgr.ReadParameters(list);
+            Model.Controller.LinMgr.ReadParametersAsync(list);
         }
 
         private void _btnWriteSel_Click(object sender, RoutedEventArgs e)
@@ -73,7 +75,7 @@ namespace Ados.TestBench.Test
                 if (p.Use)
                     list.Add(p);
             }
-            Model.Controller.LinMgr.WriteParameters(list);
+            Model.Controller.LinMgr.WriteParametersAsync(list);
         }
 
         private void ReadValue_Click(object sender, RoutedEventArgs e)

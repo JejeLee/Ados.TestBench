@@ -9,8 +9,15 @@
       Title="ManualListPage">
 
     <Grid>
-        <DataGrid x:Name="_datas">
-            
+        <DataGrid x:Name ="_datas" Style="{StaticResource AzureDataGrid}" SelectionUnit="Cell" SelectionMode="Extended"
+            AlternatingRowBackground="#FF8B8787" ItemsSource="{Binding Path=StatesData}" 
+        AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalContentAlignment="Center" BorderThickness="1"
+                              PreviewKeyDown="_gridParams_PreviewKeyDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="시간" Binding="{Binding Path=Info.Name}" IsReadOnly="True" FontWeight="Bold"  Width="100" />
+                <DataGridTextColumn Header="시간" Binding="{Binding Path=Info.Name}" IsReadOnly="True" Width="100"/>
+                
+            </DataGrid.Columns>
         </DataGrid>
     </Grid>
 </Page>

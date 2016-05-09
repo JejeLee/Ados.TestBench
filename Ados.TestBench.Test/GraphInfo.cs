@@ -56,14 +56,14 @@ namespace Ados.TestBench.Test
         public void SetDataSource(System.Collections.ObjectModel.ObservableCollection<StateShot> aSource)
         {
             _ds = new EnumerableDataSource<StateShot>(aSource);
-            _ds.SetXMapping(x => x.Time.Ticks);
+            _ds.SetXMapping(x => x.Time.Ticks / 100000);
 
             switch(this.Name)
             {
                 case "a1":
                     _ds.SetYMapping(y => y.SpeedM);
                     _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks);
+                    _ds2.SetXMapping(x => x.Time.Ticks / 100000);
                     _ds.SetYMapping(y => y.SpeedR);
                     break;
                 case "a2":
@@ -72,13 +72,13 @@ namespace Ados.TestBench.Test
                 case "a3":
                     _ds.SetYMapping(y => y.MotorV);
                     _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks);
+                    _ds2.SetXMapping(x => x.Time.Ticks / 100000);
                     _ds.SetYMapping(y => y.MotorA);
                     break;
                 case "a4":
                     _ds.SetYMapping(y => y.DistanceF);
                     _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks);
+                    _ds2.SetXMapping(x => x.Time.Ticks / 100000);
                     _ds.SetYMapping(y => y.DistanceR);
                     break;
                 case "d1":
@@ -108,7 +108,7 @@ namespace Ados.TestBench.Test
         }
 
         public System.Windows.Visibility Visibility { get {
-                return Visible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+                return Visible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
             } }
 
         public static double TimeRange { get; set; }
@@ -128,7 +128,7 @@ namespace Ados.TestBench.Test
                 {
                     Name = ja["Name"].ToString(),
                     Title = ja["Title"].ToString(),
-                    VeticalTitle = ja.Value<string>("VeticalTitle"),
+                    VeticalTitle = ja.Value<string>("VerticalTitle"),
                     Min = ja.Value<int>("Min"),
                     Max = ja.Value<int>("Max"),
                     Visible = ja.Value<bool>("Visible"),
