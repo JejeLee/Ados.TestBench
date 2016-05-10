@@ -31,7 +31,7 @@ namespace Ados.TestBench.Test
 
             this.SpeedM = (aValue[2] << 8) & aValue[3];
             this.SpeedR = (aValue[4] << 8) & aValue[5];
-            this.Position = (aValue[6] << 8) & aValue[7];
+            this.DoorAngle = (aValue[6] << 8) & aValue[7];
         }
 
         public void SetState2(byte[] aValue)
@@ -65,7 +65,6 @@ namespace Ados.TestBench.Test
         public int MotorA { get; set; }
         public int DistanceF { get; set; }
         public int DistanceR { get; set; }
-        public int Position { get; set; }
 
     }
 }

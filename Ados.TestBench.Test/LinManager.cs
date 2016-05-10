@@ -65,6 +65,7 @@ namespace Ados.TestBench.Test
 
         public bool ReadStateLoop(int aPeriodMS)
         {
+            var wbox = MainWindow.ManualWaitBox("파라미터 읽는 중...");
             UnderLoopJob = true;
             
             try
@@ -84,11 +85,13 @@ namespace Ados.TestBench.Test
                         //return false;
                     }
                     //System.Threading.Thread.Sleep(30);
+                    wbox.SetProgress(100.0 * watch.ElapsedMilliseconds / aPeriodMS);
                 } 
                 watch.Stop();
             }
             finally
             {
+                wbox.CloseAsync();
                 UnderLoopJob = false;
             }
             return true;
@@ -116,6 +119,9 @@ namespace Ados.TestBench.Test
 
         public void WriteParameters(IEnumerable<ParameterSetting> aSettings)
         {
+            var wbox = MainWindow.ManualWaitBox("파라미터 읽는 중...");
+            int total = aSettings.Count();
+            int count = 1;
             UnderLoopJob = true;
 
             try
@@ -133,10 +139,12 @@ namespace Ados.TestBench.Test
                         return;
                     }
                     //System.Threading.Thread.Sleep(30);
+                    wbox.SetProgress(100.0 * count++ / total);
                 }
             }
             finally
             {
+                wbox.CloseAsync();
                 UnderLoopJob = false;
             }
         }
@@ -168,6 +176,9 @@ namespace Ados.TestBench.Test
 
         public void ReadParameters(IEnumerable<ParameterSetting> aSettings)
         {
+            var wbox = MainWindow.ManualWaitBox("파라미터 읽는 중...");
+            int total = aSettings.Count();
+            int count = 1;
             UnderLoopJob = true;
 
             try
@@ -185,10 +196,12 @@ namespace Ados.TestBench.Test
                         return;
                     }
                     //System.Threading.Thread.Sleep(30);
+                    wbox.SetProgress(100.0 * count++ / total);
                 }
             }
             finally
             {
+                wbox.CloseAsync();
                 UnderLoopJob = false;
             }
         }

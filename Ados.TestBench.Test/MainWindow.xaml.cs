@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Threading;
 
 namespace Ados.TestBench.Test
@@ -24,6 +16,8 @@ namespace Ados.TestBench.Test
     {
         public MainWindow()
         {
+            _mainWin = this;
+
             InitializeComponent();
 
             this.Loaded += MainWindow_Loaded;
@@ -102,6 +96,7 @@ namespace Ados.TestBench.Test
                 Model.Manual.IsActive = false;
                 Model.Auto.IsActive = true;
             }
+
         }
 
         private void LogScroll_Click(object sender, RoutedEventArgs e)
@@ -111,5 +106,39 @@ namespace Ados.TestBench.Test
         }
 
         internal ControllerModel Model { get { return (ControllerModel)this.DataContext; } }
+
+        private static MainWindow _mainWin = null;
+        public static void MessageBox(string aMessage, string aTitle = "ADOS 메세지 창")
+        {
+            if (_mainWin != null && !string.IsNullOrEmpty(aMessage))
+            {
+                var dlg = _mainWin.ShowMessageAsync(aTitle, aMessage, MessageDialogStyle.Affirmative);
+                var d = _mainWin.ShowProgressAsync(aTitle, aMessage, true);
+                var c = d.AsyncState as ProgressDialogController;
+            }
+        }
+
+        public static ProgressDialogController ProgressBox(string aMessage, string aTitle = "ADOS 진행 상태 창")
+        {
+            if (_mainWin != null && !string.IsNullOrEmpty(aMessage))
+            {
+                var d = _mainWin.ShowProgressAsync(aTitle, aMessage, true);
+                var c = d.AsyncState as ProgressDialogController;
+                return c;
+            }
+            return null;
+        }
+
+        public static ProgressDialogController ManualWaitBox(string aMessage, string aTitle = "ADOS 통신 대기 창")
+        {
+            if (_mainWin != null && !string.IsNullOrEmpty(aMessage) && _mainWin.Model.Manual.IsActive)
+            {
+                var d = _mainWin.ShowProgressAsync(aTitle, aMessage, true);
+                var c = d.AsyncState as ProgressDialogController;
+                return c;
+            }
+            return null;
+        }
     }
+
 }

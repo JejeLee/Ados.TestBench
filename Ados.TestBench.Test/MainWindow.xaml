@@ -63,6 +63,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="46"/>
             <RowDefinition Height="600"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" x:Name="_toolbarsPanel">
@@ -94,38 +95,35 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" x:Name="_contentsPanel">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Frame Grid.Row="0" x:Name="_modePages"  NavigationUIVisibility="Hidden"/>            
+            <Frame x:Name="_modePages"  NavigationUIVisibility="Hidden"/>
         </Grid>
-        <DataGrid Grid.Row="2" x:Name ="_outMsg" Style="{StaticResource AzureDataGrid}" 
+        <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ResizeDirection="Rows"/>
+        <DataGrid Grid.Row="3" x:Name ="_outMsg" Style="{StaticResource AzureDataGrid}" 
             AlternatingRowBackground="#FF8B8787" ItemsSource="{Binding LogsData}" BorderThickness="1"
         AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" CanUserSortColumns="False">
-            <DataGrid.Resources>
-                <Style TargetType="DataGridCell" x:Key="ValueColumn">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsError}" Value="True">
-                            <Setter Property="Foreground" Value="Red" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="모두 지우기" CommandParameter="clearLog" Command="{Binding Command, Mode=OneWay}"/>
-                    <MenuItem Header="맨 아래로 스크롤" Click="LogScroll_Click"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.Columns>
-                <DataGridTextColumn  CanUserSort="False" 
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridCell" x:Key="ValueColumn">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsError}" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="모두 지우기" CommandParameter="clearLog" Command="{Binding Command, Mode=OneWay}"/>
+                        <MenuItem Header="맨 아래로 스크롤" Click="LogScroll_Click"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.Columns>
+                    <DataGridTextColumn  CanUserSort="False" 
         Binding="{Binding Path=Time}" Header="시간" HeaderStringFormat="HH:mm:ss'FF" />
-                <DataGridTextColumn x:Name="_gcMsg"  CanUserSort="False" CanUserReorder="False" 
+                    <DataGridTextColumn x:Name="_gcMsg"  CanUserSort="False" CanUserReorder="False" 
         Binding="{Binding Path=Message}" Header="메세지"  Width="*"  CellStyle="{StaticResource ValueColumn}" />
 
-                <DataGridTextColumn Header="IsError" Binding="{Binding Path=IsError}" Visibility="Hidden" />
-            </DataGrid.Columns>
-        </DataGrid>
-    </Grid>
+                    <DataGridTextColumn Header="IsError" Binding="{Binding Path=IsError}" Visibility="Hidden" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
 </metro:MetroWindow>

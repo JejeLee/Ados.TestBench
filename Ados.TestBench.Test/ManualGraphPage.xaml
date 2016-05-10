@@ -8,10 +8,10 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="ManualGraphPage" Loaded="Page_Loaded">
-    <ScrollViewer>
-    <StackPanel Orientation="Vertical">
-            <Expander DataContext="{Binding Path=A1}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="150">
-                <d3:ChartPlotter x:Name="a1">
+    <ScrollViewer VerticalScrollBarVisibility="Visible" >
+    <StackPanel Orientation="Vertical" ScrollViewer.CanContentScroll="True">
+            <Expander DataContext="{Binding Path=A1}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="a1" Height="200">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -20,8 +20,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=A2}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="150">
-                <d3:ChartPlotter x:Name="a2">
+            <Expander DataContext="{Binding Path=A2}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="a2" Height="200">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -30,8 +30,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=A3}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="150">
-                <d3:ChartPlotter x:Name="a3">
+            <Expander DataContext="{Binding Path=A3}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="a3" Height="200">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -40,8 +40,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=A4}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="150">
-                <d3:ChartPlotter x:Name="a4">
+            <Expander DataContext="{Binding Path=A4}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="a4" Height="200">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -50,8 +50,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=D1}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="70">
-                <d3:ChartPlotter x:Name="d1">
+            <Expander DataContext="{Binding Path=D1}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="d1" Height="130">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -60,8 +60,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=D2}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="70">
-                <d3:ChartPlotter x:Name="d2">
+            <Expander DataContext="{Binding Path=D2}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="d2" Height="130">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -70,8 +70,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=D3}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="70">
-                <d3:ChartPlotter x:Name="d3">
+            <Expander DataContext="{Binding Path=D3}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="d3" Height="130">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -80,8 +80,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=D4}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="70">
-                <d3:ChartPlotter x:Name="d4">
+            <Expander DataContext="{Binding Path=D4}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="d4" Height="130">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -90,8 +90,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=D5}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="70">
-                <d3:ChartPlotter x:Name="d5">
+            <Expander DataContext="{Binding Path=D5}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="d5" Height="130">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -100,8 +100,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=D6}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Path=Visibility}" Height="70">
-                <d3:ChartPlotter x:Name="d6">
+            <Expander DataContext="{Binding Path=D6}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Path=Visibility}">
+                <d3:ChartPlotter x:Name="d6" Height="130">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
@@ -110,8 +110,8 @@
                     </d3:VerticalAxis>
                 </d3:ChartPlotter>
             </Expander>
-            <Expander DataContext="{Binding Path=D7}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}" Height="70">
-                <d3:ChartPlotter x:Name="d7">
+            <Expander DataContext="{Binding Path=D7}" Header="{Binding Path=Title}" IsExpanded="True" Visibility="{Binding Visibility}">
+                <d3:ChartPlotter x:Name="d7" Height="130">
                     <d3:ChartPlotter.VerticalAxis>
                         <d3:VerticalAxis Placement="Right"/>
                     </d3:ChartPlotter.VerticalAxis>
