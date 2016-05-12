@@ -51,6 +51,9 @@ namespace Ados.TestBench.Test
                 case "clearLog":
                     LogSave();
                     break;
+                case "updateGraph":
+                    Manual.ExecuteCommand(input);
+                    break;
             }
         }
 
@@ -76,22 +79,24 @@ namespace Ados.TestBench.Test
 
         private void LoadSettings()
         {
-            var fi = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
-            var dir = fi.DirectoryName;
+            var dir = Helper.AppDir;
             if (Extension.IsDesignMode)
                 dir = @"f:\prj\mediaever\Ados.TestBench\Ados.TestBench.Test\bin\Debug";
             ParameterInfo.Load(dir + "\\Settings\\Parameters.json");
 
-            _graphs = GraphInfo.Load(dir + "\\Settings\\Graphs.json");
         }
 
-        private const int MAX_LOGS = 1000;
-        private const int SAVE_LOGS = 500;
+        public void SaveSettings()
+        {
+            LogSave();
+        }
+
+        private const int MAX_LOGS = 10000;
+        private const int SAVE_LOGS = 3000;
 
         public void LogSave()
         {
-            var fi = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
-            var dir = fi.DirectoryName + "\\Log";
+            var dir = Helper.AppDir+ "\\Log";
 
             var filename = string.Format(dir + "\\{0}.log", DateTime.Now.ToString("yyyy_MM_dd"));
             if (!Directory.Exists(dir))
@@ -108,17 +113,9 @@ namespace Ados.TestBench.Test
             }
         }
 
-        public void GraphSave()
-        {
-            var fi = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
-            var dir = fi.DirectoryName;
-
-            GraphInfo.Save(_graphs);
-        }
-
         private void LogReceived(LogData aData)
         {
-            //  1000개 이상일 경우 500개 저장 후 제거.
+            //  N 이상일 경우 N/2 개 저장 후 제거.
             if (_logs.Count >= MAX_LOGS)
             {
                 var fi = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
@@ -159,6 +156,14 @@ namespace Ados.TestBench.Test
         {
             _linmgr.RefreshHardware();
             OnPropertyChanged("Devices");
+            if (Devices.Count() > 0)
+                CurrentDevice = Devices.First();
+        }
+
+        public LinDevice CurrentDevice
+        {
+            get { return _linmgr.Device; }
+            set { _linmgr.Device = value; OnPropertyChanged("CurrentDevice"); }
         }
 
         public IEnumerable<LinDevice> Devices { get { return _linmgr.Devices; } }
@@ -173,7 +178,7 @@ namespace Ados.TestBench.Test
 
         public IEnumerable<ParameterInfo> Parameters { get { return ParameterInfo.Parameters; } }
 
-        public Dictionary<string, GraphInfo> Graphs { get { return _graphs; } }
+        public IEnumerable<GraphInfo> Graphs { get { return Manual.GraphInfos; } }
 
         public DelegateCommand Command { get { return _cmd; } }
 
@@ -182,7 +187,6 @@ namespace Ados.TestBench.Test
         ManualModel _mmodel;
         AutoModel _amodel;
         LinManager _linmgr;
-        Dictionary<string, GraphInfo> _graphs = new Dictionary<string, GraphInfo>();
         DelegateCommand _cmd = new DelegateCommand();
     }
 }

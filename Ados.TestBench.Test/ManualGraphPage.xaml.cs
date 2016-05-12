@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Research.DynamicDataDisplay;
+using Microsoft.Research.DynamicDataDisplay.PointMarkers;
 
 namespace Ados.TestBench.Test
 {
@@ -29,43 +30,86 @@ namespace Ados.TestBench.Test
 
         }
 
+        public void UpdateGraphInfo()
+        {
+            Rect r;
+            r = a1.Visible;
+            r.Y = Model.A1.Min - (Model.A1.Max - Model.A1.Min) / 10;
+            r.Height = (Model.A1.Max - Model.A1.Min) + (Model.A1.Max - Model.A1.Min) / 10;
+            a1.Visible = r;
+
+            r = a2.Visible;
+            r.Y = Model.A2.Min - (Model.A2.Max - Model.A2.Min) / 10;
+            r.Height = (Model.A2.Max - Model.A2.Min) + (Model.A2.Max - Model.A2.Min) / 10;
+            a2.Visible = r;
+
+            r = a3.Visible;
+            r.Y = Model.A3.Min - (Model.A3.Max - Model.A3.Min) / 10;
+            r.Height = (Model.A3.Max - Model.A3.Min) + (Model.A3.Max - Model.A3.Min) / 10;
+            a3.Visible = r;
+
+            r = a4.Visible;
+            r.Y = Model.A4.Min - (Model.A4.Max - Model.A4.Min) / 10;
+            r.Height = (Model.A4.Max - Model.A4.Min) + (Model.A4.Max - Model.A4.Min) / 10;
+            a4.Visible = r;
+
+            int min = int.MaxValue, max = int.MinValue;
+            foreach(var dd in new GraphInfo[] { Model.D1, Model.D2, Model.D3, Model.D4, Model.D5, Model.D6, Model.D7})
+            {
+                min = Math.Min(min, dd.Min);
+                max = Math.Max(max, dd.Max);
+            }
+
+            r = d1.Visible;
+            r.Y = min - 1;
+            r.Height = max - min + 2;
+            d1.Visible = r;
+            
+        }
+
         void SetLineGraph()
         {
-            a1.AddLineGraph(Model.A1.DataSource, Colors.BlueViolet, 1, Model.A1.Description1);
-            a1.AddLineGraph(Model.A1.DataSource2, Colors.OrangeRed, 1, Model.A1.Description2);
-            a1.Visible = new Rect(0, Model.A1.Min - (Model.A1.Max - Model.A1.Min)/10, 500, Model.A1.Max + (Model.A1.Max - Model.A1.Min) / 10);
+            double maxh = GraphInfo.TimeRange / 1000.0;
 
-            a2.AddLineGraph(Model.A2.DataSource, Colors.OrangeRed, 1, Model.A2.Description1);
-            a2.Visible = new Rect(0, Model.A2.Min - (Model.A2.Max - Model.A2.Min) / 10, 500, Model.A2.Max + (Model.A2.Max - Model.A2.Min) / 10);
+            a1.AddLineGraph(Model.A1.DataSource, new Pen(Brushes.BlueViolet, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A1.Description1));
+            a1.AddLineGraph(Model.A1.DataSource2, new Pen(Brushes.OrangeRed, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A1.Description2));
+            a1.Visible = new Rect(0, 1, maxh, 1);
 
-            a3.AddLineGraph(Model.A3.DataSource, Colors.BlueViolet, 1, Model.A3.Description1);
-            a3.AddLineGraph(Model.A3.DataSource2, Colors.OrangeRed, 1, Model.A3.Description2);
-            a3.Visible = new Rect(0, Model.A3.Min - (Model.A3.Max - Model.A3.Min) / 10, 500, Model.A3.Max + (Model.A3.Max - Model.A3.Min) / 10);
+            a2.AddLineGraph(Model.A2.DataSource, new Pen(Brushes.OrangeRed, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A2.Description1));
+            a2.Visible = new Rect(0, 1, maxh, 1);
 
-            a4.AddLineGraph(Model.A4.DataSource, Colors.BlueViolet, 1, Model.A4.Description1);
-            a4.AddLineGraph(Model.A4.DataSource2, Colors.OrangeRed, 1, Model.A4.Description2);
-            a4.Visible = new Rect(0, Model.A4.Min - (Model.A4.Max - Model.A4.Min) / 10, 500, Model.A4.Max + (Model.A4.Max - Model.A4.Min) / 10);
+            a3.AddLineGraph(Model.A3.DataSource, new Pen(Brushes.BlueViolet, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A3.Description1));
+            a3.AddLineGraph(Model.A3.DataSource2, new Pen(Brushes.OrangeRed, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A3.Description2));
+            a3.Visible = new Rect(0, 1, maxh, 1);
 
-            d1.AddLineGraph(Model.D1.DataSource, Colors.OrangeRed, 1);
-            d1.Visible = new Rect(0, Model.D1.Min - (Model.D1.Max - Model.D1.Min) / 10, 500, Model.D1.Max + (Model.D1.Max - Model.D1.Min) / 10);
+            a4.AddLineGraph(Model.A4.DataSource, new Pen(Brushes.BlueViolet, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A4.Description1));
+            a4.AddLineGraph(Model.A4.DataSource2, new Pen(Brushes.OrangeRed, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A4.Description2));
+            a4.Visible = new Rect(0, 1, maxh, 1);
 
-            d2.AddLineGraph(Model.D2.DataSource, Colors.OrangeRed, 1);
-            d2.Visible = new Rect(0, Model.D2.Min - (Model.D2.Max - Model.D2.Min) / 10, 500, Model.D2.Max + (Model.D2.Max - Model.D2.Min) / 10);
+            d1.AddLineGraph(Model.D1.DataSource, new Pen(Brushes.OrangeRed, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D1.Description1));
+            d1.AddLineGraph(Model.D2.DataSource, new Pen(Brushes.DarkGray, 1),
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D2.Description1));
+            d1.AddLineGraph(Model.D3.DataSource, new Pen(Brushes.CadetBlue, 1), 
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D3.Description1));
+            d1.AddLineGraph(Model.D4.DataSource, new Pen(Brushes.DarkBlue, 1), 
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D4.Description1));
+            d1.AddLineGraph(Model.D5.DataSource, new Pen(Brushes.IndianRed, 1), 
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D5.Description1));
+            d1.AddLineGraph(Model.D6.DataSource, new Pen(Brushes.GreenYellow, 1), 
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D6.Description1));
+            d1.AddLineGraph(Model.D7.DataSource, new Pen(Brushes.Green, 1), 
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D7.Title));
+            d1.Visible  = new Rect(0, 1, maxh, 1);
 
-            d3.AddLineGraph(Model.D3.DataSource, Colors.OrangeRed, 1);
-            d3.Visible = new Rect(0, Model.D3.Min - (Model.D3.Max - Model.D3.Min) / 10, 500, Model.D3.Max + (Model.D3.Max - Model.D3.Min) / 10);
-
-            d4.AddLineGraph(Model.D4.DataSource, Colors.OrangeRed, 1);
-            d4.Visible = new Rect(0, Model.D4.Min - (Model.D4.Max - Model.D4.Min) / 10, 500, Model.D4.Max + (Model.D4.Max - Model.D4.Min) / 10);
-
-            d5.AddLineGraph(Model.D5.DataSource, Colors.OrangeRed, 1);
-            d5.Visible = new Rect(0, Model.D5.Min - (Model.D5.Max - Model.D5.Min) / 10, 500, Model.D5.Max + (Model.D5.Max - Model.D5.Min) / 10);
-
-            d6.AddLineGraph(Model.D6.DataSource, Colors.OrangeRed, 1);
-            d6.Visible = new Rect(0, Model.D6.Min - (Model.D6.Max - Model.D6.Min) / 10, 500, Model.D6.Max + (Model.D6.Max - Model.D6.Min) / 10);
-
-            d7.AddLineGraph(Model.D7.DataSource, Colors.OrangeRed, 1);
-            d7.Visible = new Rect(0, Model.D7.Min - (Model.D7.Max - Model.D7.Min) / 10, 500, Model.D7.Max + (Model.D7.Max - Model.D7.Min) / 10);
+            UpdateGraphInfo();
 
             Microsoft.Research.DynamicDataDisplay.Navigation.MouseNavigation.zoomY = false;
 
@@ -74,7 +118,7 @@ namespace Ados.TestBench.Test
 
         private void ViewportElement2D_ViewAxisXChangedEvent(double X, double Width)
         {
-            foreach (var c in new ChartPlotter[] { a1, a2, a3, a4, d1, d2, d3, d4, d5, d6, d7})
+            foreach (var c in new ChartPlotter[] { a1, a2, a3, a4, d1})
             {
                 var vr = c.Visible;
                 vr.X = X;

@@ -20,14 +20,18 @@ namespace Ados.TestBench.Test
 
         public ParameterInfo Info { get; private set; }
         public bool Use { get; set; }
-        public int ReadValue { get { return _readValue; }
+        public int ReadValue
+        {
+            get { return _readValue; }
             set {
                 if (_readValue != value)
                 {
                     _readValue = value;
                     OnPropertyChanged("ReadValue");
                 }
-            } }
+            }
+        }
+        
         public int WriteValue { get; set; }
 
         int _readValue = 0;

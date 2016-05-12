@@ -32,7 +32,7 @@ namespace Ados.TestBench.Test
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             _manualPage = new ManualPage(Model.Manual);
-            _autoPage = new AutoPage(Model.Auto);
+            //_autoPage = new AutoPage(Model.Auto);
 
             DispatcherTimer timer = new DispatcherTimer()
             {
@@ -43,6 +43,18 @@ namespace Ados.TestBench.Test
 
             timer.Tick += Transfer_Tick;
             timer.Start();
+
+            if (Model.LogsData.Count > 0)
+                _outMsg.ScrollIntoView(Model.LogsData.Last());
+            Log.LogEvent += Log_LogEvent;
+        }
+
+        private void Log_LogEvent(LogData aData)
+        {
+            if (!_outMsg.IsFocused)
+            {
+                _outMsg.ScrollIntoView(Model.LogsData.Last());
+            }
         }
 
         private void Transfer_Tick(object sender, EventArgs e)
@@ -68,16 +80,11 @@ namespace Ados.TestBench.Test
                     (Brush)this.Resources["rampActive"] : (Brush)this.Resources["rampIdle"];
             }
         }
-       
-        private void cbDevices_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            model.LinMgr.Device = (LinDevice)_devList.SelectedItem;
-        }
-
+              
         ControllerModel model { get { return (ControllerModel)this.DataContext; } }
 
         ManualPage _manualPage;
-        AutoPage _autoPage;
+        //AutoPage _autoPage = null;
 
         private void testMode_changed(object sender, SelectionChangedEventArgs e)
         {
@@ -87,14 +94,14 @@ namespace Ados.TestBench.Test
             if (_modeNavigation.SelectedIndex == 0)
             {
                 _modePages.Navigate(_manualPage);
-                Model.Auto.IsActive = false;
+                //Model.Auto.IsActive = false;
                 Model.Manual.IsActive = true;
             }
             else
             {
-                _modePages.Navigate(_autoPage);
-                Model.Manual.IsActive = false;
-                Model.Auto.IsActive = true;
+                //_modePages.Navigate(_autoPage);
+                //Model.Manual.IsActive = false;
+                //Model.Auto.IsActive = true;
             }
 
         }
@@ -118,26 +125,20 @@ namespace Ados.TestBench.Test
             }
         }
 
-        public static ProgressDialogController ProgressBox(string aMessage, string aTitle = "ADOS 진행 상태 창")
+        public static async void ProgressBox(string aMessage, string aTitle = "ADOS 진행 상태 창")
         {
             if (_mainWin != null && !string.IsNullOrEmpty(aMessage))
             {
-                var d = _mainWin.ShowProgressAsync(aTitle, aMessage, true);
-                var c = d.AsyncState as ProgressDialogController;
-                return c;
+                var ctrl = _mainWin.ShowProgressAsync(aTitle, aMessage, true);
+                var d = await ctrl;
+                LinManager.WaitController = d;
             }
-            return null;
         }
 
-        public static ProgressDialogController ManualWaitBox(string aMessage, string aTitle = "ADOS 통신 대기 창")
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (_mainWin != null && !string.IsNullOrEmpty(aMessage) && _mainWin.Model.Manual.IsActive)
-            {
-                var d = _mainWin.ShowProgressAsync(aTitle, aMessage, true);
-                var c = d.AsyncState as ProgressDialogController;
-                return c;
-            }
-            return null;
+            Model.SaveSettings();
+            Model.Manual.SaveSettings();
         }
 
     }

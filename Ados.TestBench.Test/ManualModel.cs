@@ -38,12 +38,12 @@ namespace Ados.TestBench.Test
 
         private void LinManager_JobStateChangedEvent(bool aUnderLoopJob)
         {
-            if (FrameElement == null)
+            if (GraphPage == null)
                 return;
 
-            if (!FrameElement.CheckAccess())
+            if (!GraphPage.CheckAccess())
             {
-                FrameElement.Dispatcher.Invoke(() => {
+                GraphPage.Dispatcher.Invoke(() => {
                     LinManager_JobStateChangedEvent(aUnderLoopJob);
                 });
                 return;
@@ -55,11 +55,19 @@ namespace Ados.TestBench.Test
                     _states.Add(s);
 
                 this.Angle = _states.LastOrDefault().DoorAngle;
+                _statesTmp.Clear();
             }
-            _statesTmp.Clear();
+            if (aUnderLoopJob == false)
+            {
+                this._graphInfos.ForEach(x => x.CursorVisible = Visibility.Visible);
+            }
+            else
+            {
+                this._graphInfos.ForEach(x => x.CursorVisible = Visibility.Collapsed); 
+            }            
         }
 
-        void ExecuteCommand(object aInput)
+        public void ExecuteCommand(object aInput)
         {
             if (aInput == null)
                 return;
@@ -87,7 +95,9 @@ namespace Ados.TestBench.Test
                 case "doorclose":
                     Controller.LinMgr.WriteCommand(2);
                     LinManager.StopLoopJob();
-                    
+                    break;
+                case "updateGraph":
+                    UpdateGraph();
                     break;
             }
         }
@@ -119,12 +129,12 @@ namespace Ados.TestBench.Test
 
         private void LMgr_ParameterReceived(int aAddr, int aValue)
         {
-            if (FrameElement == null)
+            if (GraphPage == null)
                 return;
 
-            if (!FrameElement.CheckAccess())
+            if (!GraphPage.CheckAccess())
             {
-                FrameElement.Dispatcher.Invoke(() => {
+                GraphPage.Dispatcher.Invoke(() => {
                     LMgr_ParameterReceived( aAddr,  aValue);
                     return;
                 });
@@ -137,10 +147,25 @@ namespace Ados.TestBench.Test
 
         private void LMgr_StateReceived(StateShot aShot)
         {
+            if (GraphPage == null)
+                return;
+
+            if (!GraphPage.CheckAccess())
+            {
+                GraphPage.Dispatcher.Invoke(() => {
+                    LMgr_StateReceived(aShot);
+                    return;
+                });
+            }
+
             if (UpdateData)
             {
                 Angle = aShot.DoorAngle;
                 _states.Add(aShot);
+
+                var nv = this.GraphPage.a1.Visible;
+                nv.X = aShot.Time.Ticks - nv.Width;
+                this.GraphPage.a1.Visible = nv;
             }
             else
             {
@@ -150,8 +175,7 @@ namespace Ados.TestBench.Test
 
         private void LoadSettings()
         {
-            var fi = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
-            var dir = fi.DirectoryName;
+            var dir = Helper.AppDir;
             if (Extension.IsDesignMode)
                 dir = @"f:\prj\mediaever\Ados.TestBench\Ados.TestBench.Test\bin\Debug";
 
@@ -159,12 +183,28 @@ namespace Ados.TestBench.Test
 
             this._graphInfos = GraphInfo.Load(dir + "\\Settings\\Graphs.json");
 
-            foreach(var g in _graphInfos.Values)
+            foreach(var g in _graphInfos)
             {
                 g.SetDataSource(_states);
             }
             
         }
+
+        public void SaveSettings()
+        {
+            GraphInfo.Save(_graphInfos);
+            this.ManaulParameterSetting.Save();
+        }
+
+
+        void UpdateGraph()
+        {
+            this.GraphPage.UpdateGraphInfo();
+
+            GraphInfo.Save(_graphInfos);
+        }
+
+        public List<GraphInfo> GraphInfos { get { return _graphInfos; } }
 
         public ObservableCollection<StateShot> StatesData { get { return _states; } }
 
@@ -221,6 +261,11 @@ namespace Ados.TestBench.Test
            
         }
 
+        public GraphInfo GetGraph(string aName)
+        {
+            return _graphInfos.First(x => x.Name == aName);
+        }
+
         public bool UpdateData { get; set; }
 
         public DelegateCommand Command { get { return _cmd; } }
@@ -229,29 +274,29 @@ namespace Ados.TestBench.Test
 
         public ParameterSettings ManaulParameterSetting { get; private set; }
 
-        public FrameworkElement FrameElement { get; set; } 
+        public ManualGraphPage GraphPage { get; set; } 
 
         public int ReadDuration { get; set; }
 
         private bool _active = false;
 
-        public GraphInfo A1 { get { return _graphInfos["a1"]; } }
-        public GraphInfo A2 { get { return _graphInfos["a2"]; } }
-        public GraphInfo A3 { get { return _graphInfos["a3"]; } }
-        public GraphInfo A4 { get { return _graphInfos["a4"]; } }
-        public GraphInfo D1 { get { return _graphInfos["d1"]; } }
-        public GraphInfo D2 { get { return _graphInfos["d2"]; } }
-        public GraphInfo D3 { get { return _graphInfos["d3"]; } }
-        public GraphInfo D4 { get { return _graphInfos["d4"]; } }
-        public GraphInfo D5 { get { return _graphInfos["d5"]; } }
-        public GraphInfo D6 { get { return _graphInfos["d6"]; } }
-        public GraphInfo D7 { get { return _graphInfos["d7"]; } }
+        public GraphInfo A1 { get { return GetGraph("a1"); } }
+        public GraphInfo A2 { get { return GetGraph("a2"); } }
+        public GraphInfo A3 { get { return GetGraph("a3"); } }
+        public GraphInfo A4 { get { return GetGraph("a4"); } }
+        public GraphInfo D1 { get { return GetGraph("d1"); } }
+        public GraphInfo D2 { get { return GetGraph("d2"); } }
+        public GraphInfo D3 { get { return GetGraph("d3"); } }
+        public GraphInfo D4 { get { return GetGraph("d4"); } }
+        public GraphInfo D5 { get { return GetGraph("d5"); } }
+        public GraphInfo D6 { get { return GetGraph("d6"); } }
+        public GraphInfo D7 { get { return GetGraph("d7"); } }
 
         ObservableCollection<StateShot> _states = new ObservableCollection<StateShot>();
         List<StateShot> _statesTmp = new List<StateShot>();
         ControllerModel _controller;
         DelegateCommand _cmd = new DelegateCommand();
-        Dictionary<string, GraphInfo> _graphInfos;
+        List<GraphInfo> _graphInfos;
         double _angle = 0;
     }
 }

@@ -24,8 +24,6 @@ namespace Ados.TestBench.Test
         {
             this.DataContext = aModel;
 
-            (aModel as ManualModel).FrameElement = this;
-
             InitializeComponent();
 
             this.Loaded += ManualPage_Loaded;
@@ -34,8 +32,11 @@ namespace Ados.TestBench.Test
 
         private void ManualPage_Loaded(object sender, RoutedEventArgs e)
         {
-            _graphPage = new ManualGraphPage(this.DataContext);
+            Model.IsActive = true;
+
             _listPage = new ManualListPage(this.DataContext);
+            _graphPage = new ManualGraphPage(this.DataContext);
+            Model.GraphPage = _graphPage;
 
             _dataPages.Navigate(_graphPage);
         }
@@ -47,7 +48,7 @@ namespace Ados.TestBench.Test
 
         private void _dataNaviation_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_graphPage == null)
+            if (_dataPages == null || _graphPage == null)
                 return;
 
             if (_dataNaviation.SelectedIndex == 0)

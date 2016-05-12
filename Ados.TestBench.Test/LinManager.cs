@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,78 +29,125 @@ namespace Ados.TestBench.Test
             UnderLoopJob = false;
         }
 
+        public static MahApps.Metro.Controls.Dialogs.ProgressDialogController WaitController
+        {
+            get { return _waitCtrl; }
+            set
+            {
+                if (value != null)
+                {
+                    if (_waitCtrl != null)
+                        _waitCtrl.CloseAsync();
+
+                    _waitCtrl = value;
+                    _waitCtrl.SetCancelable(true);
+                }
+                else
+                {
+                    if(_waitCtrl != null)
+                    {
+                        _waitCtrl.CloseAsync();
+                        _waitCtrl = null;
+                    }
+                }
+            }
+        }
+        public static void SetProgress(int aPrgress)
+        {
+            if (_waitCtrl != null)
+            {
+                SetProgress(aPrgress);
+            }
+        }
+        public static MahApps.Metro.Controls.Dialogs.ProgressDialogController _waitCtrl = null;
+        
         public bool WriteCommand(params byte[] aData)
         {
-            Log.i("Lin/Command>> {0}", (aData != null && aData.Length > 0) ? aData[0] : 0 );
+            Log.i("LIN/Command>> PID{1}, {0}", (aData != null && aData.Length > 0) ? aData[0] : 0, PID.COMMAND);
 
             return WriteMessage(PID.COMMAND, aData);
         }
 
-        public bool ReadState(out StateShot aShot)
+        public bool ReadState()
         {
-            aShot = null;
             Peak.Lin.TLINRcvMsg rmsg1;
 
-            WriteMessage(PID.STATE1);
+            Log.i("LIN/ReadState-1>> PID{1}, {0}", 0, PID.STATE1);
+            WriteMessage(PID.STATE1, 0);
             
             if (!ReadMessages(out rmsg1, 50))
             {
                 return false;
             }
-#if TYPE_B
+#if !TYPE_A
             Peak.Lin.TLINRcvMsg rmsg2;
-            WriteMessage(PID.STATE2);
+            Log.i("LIN/ReadState-2>> PID{1}, {0}", 0, PID.STATE1);
+            WriteMessage(PID.STATE2, 0);
             if (!ReadMessages(out rmsg2, 50))
             {
                 return false;
             }
             aShot.SetState1(rmsg.Data);
 #endif
-            aShot = new StateShot();
-            aShot.SetState1(rmsg1.Data);
-#if TYPE_B
+            var shot = new StateShot();
+            shot.SetState1(rmsg1.Data);
+#if !TYPE_A
             aShot.SetState1(rmsg2.Data);
 #endif
+            InvokeStateReceived(shot);
+
             return true;
         }
 
         public bool ReadStateLoop(int aPeriodMS)
         {
-            var wbox = MainWindow.ManualWaitBox("파라미터 읽는 중...");
-            UnderLoopJob = true;
-            
             try
             {
+                if (_waitCtrl == null)
+                    MainWindow.ProgressBox("상태 정보 데이터 읽는 중...<<<");
+                UnderLoopJob = true;
+
                 var watch = new System.Diagnostics.Stopwatch();
                 watch.Start();
 
                 while (watch.ElapsedMilliseconds < aPeriodMS && !_stopLoopJob)
                 {
-                    StateShot shot;
-                    if (ReadState(out shot))
-                    {
-                        InvokeStateReceived(shot);
-                    }
-                    else
+                    if (!ReadState())
                     {
                         //return false;
                     }
                     //System.Threading.Thread.Sleep(30);
-                    wbox.SetProgress(100.0 * watch.ElapsedMilliseconds / aPeriodMS);
+                    SetProgress((int)(100 * watch.ElapsedMilliseconds / aPeriodMS));
                 } 
                 watch.Stop();
             }
+            catch (Exception e)
+            {
+                Log.e("상태 정보 읽는 중 예외 발생:" + e.ToString());
+            }
             finally
             {
-                wbox.CloseAsync();
-                UnderLoopJob = false;
+                WaitController = null;
             }
             return true;
         }
 
         public void ReadStateLoopAsync(int aPeriodMS)
         {
-            Task.Run( () => { ReadStateLoop(aPeriodMS); } );
+            try
+            {
+                MainWindow.ProgressBox("상태 정보 데이터 읽는 중...<<<");
+                Task.Run(() => { ReadStateLoop(aPeriodMS); });
+                //ReadStateLoop(aPeriodMS);
+            }
+            catch (Exception e)
+            {
+                Log.e("상태 정보 읽는 중 예외 발생:" + e.ToString());
+            }
+            finally
+            {
+                WaitController = null;
+            }
         }
 
         public bool WriteParameter(ParameterSetting aSetting)
@@ -107,7 +155,7 @@ namespace Ados.TestBench.Test
             byte high = (byte)((aSetting.WriteValue >> 8) & 0xFF);
             byte low = (byte)(aSetting.WriteValue & 0xFF);
 
-            Log.i("Lin/Parameter>> {0}={1}", aSetting.Info.Address, aSetting.WriteValue);
+            Log.i("LIN/Parameter >> PID:{2} Addr:{0} Value:{1}", aSetting.Info.Address, aSetting.WriteValue, PID.WR_ADDR);
 
             if (!WriteMessage(PID.WR_ADDR, high, low))
             {
@@ -119,13 +167,14 @@ namespace Ados.TestBench.Test
 
         public void WriteParameters(IEnumerable<ParameterSetting> aSettings)
         {
-            var wbox = MainWindow.ManualWaitBox("파라미터 읽는 중...");
-            int total = aSettings.Count();
-            int count = 1;
-            UnderLoopJob = true;
-
             try
             {
+                if (_waitCtrl == null)
+                    MainWindow.ProgressBox("파라미터 값들을 쓰는 중..>>>");
+                int total = aSettings.Count();
+                int count = 1;
+                UnderLoopJob = true;
+
                 foreach (var item in aSettings)
                 {
                     if (_stopLoopJob)
@@ -139,25 +188,40 @@ namespace Ados.TestBench.Test
                         return;
                     }
                     //System.Threading.Thread.Sleep(30);
-                    wbox.SetProgress(100.0 * count++ / total);
+                    SetProgress((int)(100.0 * count++ / total));
                 }
+            }
+            catch (Exception e)
+            {
+                Log.e("파라미터 쓰는 중 예외 발생:" + e.ToString());
             }
             finally
             {
-                wbox.CloseAsync();
-                UnderLoopJob = false;
+                WaitController = null;
             }
         }
 
         public void WriteParametersAsync(IEnumerable<ParameterSetting> aSettings)
         {
-            Task.Run(() => { WriteParameters(aSettings); });
+            try
+            {
+                MainWindow.ProgressBox("파라미터 값들을 쓰는 중..>>>");
+                Task.Run(() => { WriteParameters(aSettings); });
+            }
+            catch (Exception e)
+            {
+                Log.e("파라미터 쓰는 중 예외 발생:" + e.ToString());
+            }
+            finally
+            {
+                WaitController = null;
+            }
         }
 
         public bool ReadParameter(int aAddr)
         {
-            Log.i("Lin/Parameter<< {0}", aAddr);
-            if (!WriteMessage(PID.RD_ADDR))
+            Log.i("LIN/Parameter READ >> PID:{2} Addr:{0}", aAddr, PID.WR_ADDR);
+            if (!WriteMessage(PID.RD_ADDR, 0))
             {
                 return false;
             }
@@ -176,13 +240,14 @@ namespace Ados.TestBench.Test
 
         public void ReadParameters(IEnumerable<ParameterSetting> aSettings)
         {
-            var wbox = MainWindow.ManualWaitBox("파라미터 읽는 중...");
-            int total = aSettings.Count();
-            int count = 1;
-            UnderLoopJob = true;
-
             try
             {
+                if (_waitCtrl != null)
+                    MainWindow.ProgressBox("파라미터 값 읽는 중...<<<");
+                int total = aSettings.Count();
+                int count = 1;
+                UnderLoopJob = true;
+
                 foreach (var item in aSettings)
                 {
                     if (_stopLoopJob)
@@ -196,19 +261,34 @@ namespace Ados.TestBench.Test
                         return;
                     }
                     //System.Threading.Thread.Sleep(30);
-                    wbox.SetProgress(100.0 * count++ / total);
+                    SetProgress((int)(100.0 * count++ / total));
                 }
+            }
+            catch (Exception e)
+            {
+                Log.e("파라미터 값 읽는 중 예외 발생:" + e.ToString());
             }
             finally
             {
-                wbox.CloseAsync();
-                UnderLoopJob = false;
+                WaitController = null;
             }
         }
 
         public void ReadParametersAsync(IEnumerable<ParameterSetting> aSettings)
         {
-            Task.Run(() => { ReadParameters(aSettings); });
+            try
+            {
+                MainWindow.ProgressBox("상태 정보 데이터 읽는 중...<<<");
+                Task.Run(() => { ReadParameters(aSettings); });
+            }
+            catch (Exception e)
+            {
+                Log.e("파라미터 읽는 중 예외 발생:" + e.ToString());
+            }
+            finally
+            {
+                WaitController = null;
+            }
         }
 
         //
@@ -217,7 +297,7 @@ namespace Ados.TestBench.Test
 
         public int RefreshHardware()
         {
-            _devices.Clear();
+            _devices = new List<LinDevice>();
             this._dev = null;
 
             // Get the buffer length needed...
@@ -225,7 +305,7 @@ namespace Ados.TestBench.Test
             _err = Peak.Lin.PLinApi.GetAvailableHardware(new ushort[0], 0, out lwCount);
             if (_err != Peak.Lin.TLINError.errOK || lwCount == 0)
             {
-                Log.e("검색된 LIN 통신 장치가 없습니다.");
+                LinError("검색된 LIN 통신 장치가 없습니다.", _err);
                 return 0;
             }
 
@@ -236,6 +316,7 @@ namespace Ados.TestBench.Test
             _err = Peak.Lin.PLinApi.GetAvailableHardware(lwHwHandles, lwBuffSize, out lwCount);
             if (_err != Peak.Lin.TLINError.errOK || lwCount == 0)
             {
+                LinError("LIN 장치를 읽는 중 에러,", _err);
                 return 0;
             }
 
@@ -309,7 +390,7 @@ namespace Ados.TestBench.Test
 
             }
 
-            Log.e("Connection Error({0}) - {1}", this.Device, GetFormatedError(_err));
+            LinError( string.Format("Connection Error(Dev:{0}), ", this.Device), _err);
             return false;
         }
 
@@ -373,12 +454,12 @@ namespace Ados.TestBench.Test
                         return false;
                     }
                     Device.Connected = false;
-                    Log.i("Disconnected - {0}", this.Device);
+                    LinError(string.Format("Disconnected Corrupt- Dev:{0}", this.Device), _err);
                 }               
             }
 
             if (Device.Connected)
-                Log.e("Disconnection Error({0}) - {1}", this.Device, GetFormatedError(_err));
+                LinError(string.Format("Disconnected Corrupt- Dev:{0}", this.Device), _err);
 
             return !Device.Connected;
         }
@@ -391,19 +472,6 @@ namespace Ados.TestBench.Test
                 // makes the corresponding PCAN-USB-Pro's LED blink
                 Peak.Lin.PLinApi.IdentifyHardware(aDevice.HwHandle);
             }
-        }
-
-        static private string GetFormatedError(Peak.Lin.TLINError error)
-        {
-            StringBuilder sErrText = new StringBuilder(255);
-            // If any error are occured
-            // display the error text in a message box.
-            // 0x00 = Neutral
-            // 0x07 = Language German
-            // 0x09 = Language English
-            if (Peak.Lin.PLinApi.GetErrorText(error, 0x09, sErrText, 255) != Peak.Lin.TLINError.errOK)
-                return string.Format("An error occurred. Error-code's text ({0}) couldn't be retrieved", error);
-            return sErrText.ToString();
         }
 
         public string GetDeviceStatus(LinDevice aDevice)
@@ -427,7 +495,7 @@ namespace Ados.TestBench.Test
                     case Peak.Lin.TLINHardwareState.hwsSleep:
                         return "5Bus: Sleep";
                 }
-            return string.Format("0(Check Error - {0})", GetFormatedError(_err));
+            return string.Format("0(Check Error - {0})", _err);
         }
 
         public bool IsConnected { get { return this.Device != null && this.Device.Connected; } }
@@ -490,7 +558,7 @@ namespace Ados.TestBench.Test
 
         static private void InvokeStateReceived(StateShot aShot)
         {
-            Log.i("Lin/State<<" + aShot.ToString());
+            Log.i("LIN/State <<" + aShot.ToString());
             if (StateReceivedEvent != null)
             {
                 StateReceivedEvent(aShot);
@@ -501,7 +569,7 @@ namespace Ados.TestBench.Test
 
         static private void InvokeParameterReceived(int aAddr,int aValue)
         {
-            Log.i("Lin/Parameter<<{0}={1}", aAddr, aValue);
+            Log.i("LIN/Parameter << {0}={1}", aAddr, aValue);
             if (ParameterReceivedEvent != null)
             {
                 ParameterReceivedEvent(aAddr, aValue);
@@ -527,8 +595,7 @@ namespace Ados.TestBench.Test
             IsRxError = err != Peak.Lin.TLINError.errOK;
             if (IsRxError)
             {
-                string emsg = GetFormatedError(err);
-                Log.e("Lin Read:" + emsg);
+                LinError("Read", err);
             }
             
             return err;
@@ -543,8 +610,7 @@ namespace Ados.TestBench.Test
             IsTxError = err != Peak.Lin.TLINError.errOK;
             if (IsTxError)
             {
-                string emsg = GetFormatedError(err); 
-                Log.e("Lin Write:" + emsg);
+                LinError("Write", err);
             }
 
             return err;
@@ -552,6 +618,14 @@ namespace Ados.TestBench.Test
 
         private bool ReadMessages(out Peak.Lin.TLINRcvMsg aMsg, int aTimeout = 50 /* msec */)
         {
+#if SIMULATION
+            aMsg = new Peak.Lin.TLINRcvMsg();
+            aMsg.Length = 8;
+            aMsg.Data = new byte[aMsg.Length];
+            Random r = new Random(Environment.TickCount);
+            r.NextBytes(aMsg.Data);            
+            return true;
+#endif
             int timeout = aTimeout;
             aMsg = new Peak.Lin.TLINRcvMsg();
             // We read at least one time the queue looking for messages.
@@ -577,6 +651,10 @@ namespace Ados.TestBench.Test
                         return true;
                     }
                 }
+                else
+                {
+                    Log.i("표준 이외의 메세지 타입 수신 - {0}", aMsg.Type.ToString());
+                }
 
                 System.Threading.Thread.Sleep(sleep);
 
@@ -590,12 +668,15 @@ namespace Ados.TestBench.Test
 
         private bool WriteMessage(PID aPID, params byte[] aData)
         {
-            //byte frameid = (byte)((byte)aPID & Peak.Lin.PLinApi.LIN_MAX_FRAME_ID);
-            //Peak.Lin.PLinApi.GetPID(ref frameid);
+#if SIMULATION
+            return true;
+#endif
+            byte frameid = (byte)((byte)aPID & Peak.Lin.PLinApi.LIN_MAX_FRAME_ID);
+            Peak.Lin.PLinApi.GetPID(ref frameid);
 
             Peak.Lin.TLINMsg pMsg = new Peak.Lin.TLINMsg();
             pMsg.Data = new byte[8];
-            //pMsg.FrameId = frameid;
+            pMsg.FrameId = frameid;
             pMsg.FrameId = (byte)aPID;
             pMsg.Direction = Peak.Lin.TLINDirection.dirPublisher;
             pMsg.ChecksumType = Peak.Lin.TLINChecksumType.cstClassic;
@@ -624,6 +705,20 @@ namespace Ados.TestBench.Test
             }
 
             return !IsLastError;
+        }
+
+        static private void LinError(string aMsg, Peak.Lin.TLINError aError)
+        {
+            StringBuilder sErrText = new StringBuilder(255);
+            // If any error are occured
+            // display the error text in a message box.
+            // 0x00 = Neutral
+            // 0x07 = Language German
+            // 0x09 = Language English
+            if (Peak.Lin.PLinApi.GetErrorText(aError, 0x09, sErrText, sErrText.Capacity) != Peak.Lin.TLINError.errOK)
+                sErrText.AppendFormat("An error occurred. Error-code's text ({0}) couldn't be retrieved", aError);
+
+            Log.e("LIN/Error: {0}, err:{1}={2}", aMsg, aError, sErrText.ToString());
         }
 
         /// <summary>

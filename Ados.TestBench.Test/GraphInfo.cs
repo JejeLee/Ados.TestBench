@@ -14,7 +14,7 @@ namespace Ados.TestBench.Test
         static public string Path { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
-        public string VeticalTitle { get; set; }
+        public string VerticalTitle { get; set; }
         public int Max { get { return _max; }
             set
             {
@@ -46,10 +46,27 @@ namespace Ados.TestBench.Test
                 {
                     _visible = value;
                     OnPropertyChanged("Visible");
-                    OnPropertyChanged("Visibility");
+                    OnPropertyChanged("Vity");
                 }
             }
         }
+
+        public System.Windows.Visibility CursorVisible
+        {
+            get
+            {
+                return _cursorVisible;
+            }
+            set
+            {
+                if (_cursorVisible != value)
+                {
+                    _cursorVisible = value;
+                    OnPropertyChanged("CursorVisible");
+                }
+            }
+        }
+        System.Windows.Visibility _cursorVisible = System.Windows.Visibility.Visible;
 
         public string Description1 { get; private set; }
 
@@ -58,14 +75,14 @@ namespace Ados.TestBench.Test
         public void SetDataSource(System.Collections.ObjectModel.ObservableCollection<StateShot> aSource)
         {
             _ds = new EnumerableDataSource<StateShot>(aSource);
-            _ds.SetXMapping(x => x.Time.Ticks / 100000);
+            _ds.SetXMapping(x => x.Time.Ticks / 100000 / 100.0);
 
             switch(this.Name)
             {
                 case "a1":
                     _ds.SetYMapping(y => y.SpeedM);
                     _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks / 100000);
+                    _ds2.SetXMapping(x => x.Time.Ticks / 100000 / 100.0);
                     _ds.SetYMapping(y => y.SpeedR);
                     break;
                 case "a2":
@@ -74,53 +91,49 @@ namespace Ados.TestBench.Test
                 case "a3":
                     _ds.SetYMapping(y => y.MotorV);
                     _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks / 100000);
+                    _ds2.SetXMapping(x => x.Time.Ticks / 100000 / 100.0);
                     _ds.SetYMapping(y => y.MotorA);
                     break;
                 case "a4":
                     _ds.SetYMapping(y => y.DistanceF);
                     _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks / 100000);
+                    _ds2.SetXMapping(x => x.Time.Ticks / 100000 / 100.0);
                     _ds.SetYMapping(y => y.DistanceR);
                     break;
                 case "d1":
-                    _ds.SetYMapping(y => y.DoorRun ? 1 : 0);
+                    _ds.SetYMapping(y => y.DoorRun);
                     break;
                 case "d2":
-                    _ds.SetYMapping(y => y.DirectionOpen ? 1 : 0);
+                    _ds.SetYMapping(y => y.DirectionOpen);
                     break;
                 case "d3":
-                    _ds.SetYMapping(y => y.DirectionClose ? 1 : 0);
+                    _ds.SetYMapping(y => y.DirectionClose);
                     break;
                 case "d4":
-                    _ds.SetYMapping(y => y.LatchOn ? 1 : 0);
+                    _ds.SetYMapping(y => y.LatchOn);
                     break;
                 case "d5":
-                    _ds.SetYMapping(y => y.ReleaseOn ? 1 : 0);
+                    _ds.SetYMapping(y => y.ReleaseOn);
                     break;
                 case "d6":
-                    _ds.SetYMapping(y => y.Clutch ? 1 : 0);
+                    _ds.SetYMapping(y => y.Clutch);
                     break;
                 case "d7":
-                    _ds.SetYMapping(y => y.Test ? 1 : 0);
+                    _ds.SetYMapping(y => y.Test);
                     break;
             }
 
            
         }
 
-        public System.Windows.Visibility Visibility { get {
-                return Visible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-            } }
-
         public static double TimeRange { get; set; }
 
-        public static Dictionary<string, GraphInfo> Load(string aPath)
+        public static List<GraphInfo> Load(string aPath)
         {
             var str = File.ReadAllText(aPath);
             var root = Newtonsoft.Json.Linq.JObject.Parse(str);
 
-            var gs = new Dictionary<string, GraphInfo>();
+            var gs = new List<GraphInfo>();
             GraphInfo.Path = aPath;
 
             GraphInfo.TimeRange = root["Graphs"]["Common"].Value<double>("TimeRange");
@@ -129,16 +142,16 @@ namespace Ados.TestBench.Test
             {
                 var p = new GraphInfo()
                 {
-                    Name = ja["Name"].ToString(),
+                    Name = ja["ID"].ToString(),
                     Title = ja["Title"].ToString(),
-                    VeticalTitle = ja.Value<string>("VerticalTitle"),
+                    VerticalTitle = ja.Value<string>("VerticalTitle"),
                     Min = ja.Value<int>("Min"),
                     Max = ja.Value<int>("Max"),
                     Visible = ja.Value<bool>("Visible"),
                     Description1 = ja["Description1"].ToString(),
                     Description2 = ja["Description2"].ToString(),
                 };
-                gs[p.Name] = p;
+                gs.Add(p);
             }
 
             Log.i("Graph 설정 정보를 로드했습니다.");
@@ -146,22 +159,23 @@ namespace Ados.TestBench.Test
             return gs;
         }
 
-        public static void Save(Dictionary<string, GraphInfo> aInfos)
+        public static void Save(List<GraphInfo> aInfos, bool aUpdateTime = false)
         {
             var contents = File.ReadAllText(GraphInfo.Path);
             var root = Newtonsoft.Json.Linq.JObject.Parse(contents);
 
-            root["Header"]["UpdateDate"] = DateTime.Now.ToString("s");
+            if (aUpdateTime)
+                root["Header"]["UpdateDate"] = DateTime.Now.ToString("s");
 
-            var gs = root["Graphs"];
+            var gs = root["Graphs"]["Details"];
 
             int i = 0;
-            foreach(var info in aInfos.Values)
+            foreach(var info in aInfos)
             {
                 var g = gs[i++];
-                g["Name"] = info.Name;
+                g["ID"] = info.Name;
                 g["Title"] = info.Title;
-                g["VeticalTitle"] = info.VeticalTitle;
+                g["VeticalTitle"] = info.VerticalTitle;
                 g["Min"] = info.Min;
                 g["Max"] = info.Max;
                 g["Visible"] = info.Visible;

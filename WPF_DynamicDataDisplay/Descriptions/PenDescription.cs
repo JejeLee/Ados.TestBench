@@ -16,7 +16,12 @@ namespace Microsoft.Research.DynamicDataDisplay
 		/// <param name="description">Custom description.</param>
 		public PenDescription(string description) : base(description) { }
 
-		protected override LegendItem CreateLegendItemCore() {
+        public PenDescription(string description, Color aPenColor) : base(description)
+        {
+            pen = new Pen(new SolidColorBrush(aPenColor), 1);
+        }
+
+        protected override LegendItem CreateLegendItemCore() {
 			return new LineLegendItem(this);
 		}
 
@@ -26,7 +31,8 @@ namespace Microsoft.Research.DynamicDataDisplay
 			if (g == null) {
 				throw new ArgumentException("Pen description can only be attached to PointsGraph", "graph");
 			}
-			pen = g.LinePen;
+            if (pen == null)
+			    pen = g.LinePen;
 		}
 
 		private Pen pen;

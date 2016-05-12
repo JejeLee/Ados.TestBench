@@ -1,93 +1,203 @@
 ﻿<Page x:Class="Ados.TestBench.Test.ManualPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Ados.TestBench.Test"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-      mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="800"
-      Title="ManualPage" Height="Auto">
+      Title="ManualPage"
+      Height="Auto"
+      d:DesignHeight="600"
+      d:DesignWidth="800"
+      mc:Ignorable="d">
 
-    <Grid x:Name="_baseGrid" >
+    <Grid x:Name="_baseGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" x:Name="_propPanel">
-            <!-- 속성 목록 및 버튼들 -->
+        <Grid x:Name="_propPanel" Grid.Column="0">
+            <!--  속성 목록 및 버튼들  -->
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="170" />
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <Button x:Name="_btnReadAll" Content="전체 읽기 (F2)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,116,0,0" Width="150" Command="{Binding Path=Command}" CommandParameter="readall"/>
-                    <Button x:Name="_btnReadSel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="165,116,0,0" Width="128" Click="_btnReadSel_Click">선택 항목들 읽기</Button>
-                    <Button x:Name="_btnWriteAll" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,141,0,0" Width="150" Command="{Binding Path=Command}" CommandParameter="writeall">전체 쓰기 (F3)</Button>
-                    <Button x:Name="_btnWriteSel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="165,141,0,0" Width="128" Click="_btnWriteSel_Click">선택 항목들 쓰기</Button>
-                    <TextBox x:Name="_inputDuration" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Margin="161,42,0,0" Height="26" Text="{Binding Path=ReadDuration, Mode=TwoWay}"/>
-                    <Button x:Name="_btnOpen" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,86,0,0" Width="150" Command="{Binding Path=Command}" CommandParameter="dooropen">Door Open</Button>
-                    <Button x:Name="_btnClose" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="164,86,0,0" Width="128" Command="{Binding Path=Command}" CommandParameter="doorclose">Door Close</Button>
-                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="163,10,0,0" Width="96" Height="27" Content="수신시간 (msec)"/>
-                    <Image Source="Resources/car.png" Stretch="Fill" Margin="0,0,220,89"/>
-                    <Rectangle Stroke="Black" Margin="79,32,214,89" RenderTransformOrigin="0.5,0">
+                    <Button x:Name="_btnReadAll"
+                            Width="150"
+                            Margin="3,116,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding Path=Command}"
+                            CommandParameter="readall"
+                            Content="전체 읽기 (F2)" />
+                    <Button x:Name="_btnReadSel"
+                            Width="128"
+                            Margin="165,116,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="_btnReadSel_Click">
+                        선택 항목들 읽기
+                    </Button>
+                    <Button x:Name="_btnWriteAll"
+                            Width="150"
+                            Margin="3,141,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding Path=Command}"
+                            CommandParameter="writeall">
+                        전체 쓰기 (F3)
+                    </Button>
+                    <Button x:Name="_btnWriteSel"
+                            Width="128"
+                            Margin="165,141,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Click="_btnWriteSel_Click">
+                        선택 항목들 쓰기
+                    </Button>
+                    <TextBox x:Name="_inputDuration"
+                             Width="79"
+                             Height="26"
+                             Margin="161,42,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             Text="{Binding Path=ReadDuration,
+                                            Mode=TwoWay}" />
+                    <Button x:Name="_btnOpen"
+                            Width="150"
+                            Margin="3,86,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding Path=Command}"
+                            CommandParameter="dooropen">
+                        Door Open
+                    </Button>
+                    <Button x:Name="_btnClose"
+                            Width="128"
+                            Margin="164,86,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding Path=Command}"
+                            CommandParameter="doorclose">
+                        Door Close
+                    </Button>
+                    <Label Width="96"
+                           Height="27"
+                           Margin="163,10,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="수신시간 (msec)" />
+                    <Image Margin="0,0,220,89"
+                           Source="Resources/car.png"
+                           Stretch="Fill" />
+                    <Rectangle Margin="79,32,214,89"
+                               RenderTransformOrigin="0.5,0"
+                               Stroke="Black">
                         <Rectangle.RenderTransform>
                             <TransformGroup>
-                                <ScaleTransform ScaleX="-1"/>
-                                <SkewTransform/>
-                                <RotateTransform Angle="{Binding Path=Angle}"/>
-                                <TranslateTransform/>
+                                <ScaleTransform ScaleX="-1" />
+                                <SkewTransform />
+                                <RotateTransform Angle="{Binding Path=Angle}" />
+                                <TranslateTransform />
                             </TransformGroup>
                         </Rectangle.RenderTransform>
                         <Rectangle.Fill>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#FF19198D" Offset="0"/>
-                                <GradientStop Color="#FFEE2C2C" Offset="1"/>
-                                <GradientStop Color="#FF3CF0C7" Offset="0.46"/>
+                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                <GradientStop Offset="0" Color="#FF19198D" />
+                                <GradientStop Offset="1" Color="#FFEE2C2C" />
+                                <GradientStop Offset="0.46" Color="#FF3CF0C7" />
                             </LinearGradientBrush>
                         </Rectangle.Fill>
                     </Rectangle>
-                    <Label HorizontalAlignment="Left" Content="{Binding Path=AngleText}" VerticalAlignment="Top" Margin="80,10,0,0" Width="40"/>
+                    <Label Width="40"
+                           Margin="80,10,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Content="{Binding Path=AngleText}" />
                 </Grid>
                 <Grid Grid.Row="1">
-                    <DataGrid x:Name ="_gridParams" Style="{StaticResource AzureDataGrid}" SelectionUnit="Cell" SelectionMode="Extended"
-            AlternatingRowBackground="#FF8B8787" ItemsSource="{Binding Path=ManaulParameterSetting.Settings}" 
-        AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalContentAlignment="Center" BorderThickness="1"
-                              PreviewKeyDown="_gridParams_PreviewKeyDown" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" >
+                    <DataGrid x:Name="_gridParams"
+                              HorizontalContentAlignment="Center"
+                              AlternatingRowBackground="#FF8B8787"
+                              AutoGenerateColumns="False"
+                              BorderThickness="1"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserReorderColumns="False"
+                              CanUserResizeColumns="True"
+                              ItemsSource="{Binding Path=ManaulParameterSetting.Settings}"
+                              PreviewKeyDown="_gridParams_PreviewKeyDown"
+                              SelectionMode="Extended"
+                              SelectionUnit="Cell"
+                              Style="{StaticResource AzureDataGrid}">
                         <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{Binding Path=Use}" Header="선택" Width="45" IsReadOnly="False"/>
-                            <DataGridTextColumn Binding="{Binding Path=Info.Name}" Header="명칭" Width="100" IsReadOnly="True"/>
-                            <DataGridHyperlinkColumn Binding="{Binding Path=ReadValue}" Header="읽은값" Width="70" IsReadOnly="True">
+                            <DataGridCheckBoxColumn Width="45"
+                                                    Binding="{Binding Path=Use}"
+                                                    Header="선택"
+                                                    IsReadOnly="False" />
+                            <DataGridTextColumn Width="100"
+                                                Binding="{Binding Path=Info.Name}"
+                                                Header="명칭"
+                                                IsReadOnly="True" />
+                            <DataGridHyperlinkColumn Width="70"
+                                                     ContentBinding="{Binding ReadValue}"
+                                                     Header="읽은값"
+                                                     IsReadOnly="True">
                                 <DataGridHyperlinkColumn.ElementStyle>
                                     <Style>
-                                        <EventSetter Event="Hyperlink.Click" Handler="ReadValue_Click"/>
+                                        <EventSetter Event="Hyperlink.Click" Handler="ReadValue_Click" />
                                     </Style>
                                 </DataGridHyperlinkColumn.ElementStyle>
                             </DataGridHyperlinkColumn>
-                            <DataGridTextColumn Binding="{Binding Path=WriteValue, Mode=TwoWay}" Header="쓴 값" IsReadOnly="False" FontWeight="Bold" Width="80"/>
+                            <DataGridTextColumn Width="80"
+                                                Binding="{Binding Path=WriteValue,
+                                                                  Mode=TwoWay}"
+                                                FontWeight="Bold"
+                                                Header="쓴 값"
+                                                IsReadOnly="False" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </Grid>
         </Grid>
 
-        <Grid Grid.Column="1" x:Name="_dataPanel">
+        <Grid x:Name="_dataPanel" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="46"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="46" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" x:Name="_dataNaviPanel">
-                <metro:MetroAnimatedTabControl x:Name="_dataNaviation" HorizontalAlignment="Left" Margin="10,0,0,2" VerticalAlignment="Bottom" metro:TabControlHelper.IsUnderlined="True" SelectedIndex="0" SelectionChanged="_dataNaviation_SelectionChanged">
-                    <TabItem Header="그래프" FontWeight="Bold"/>
-                    <TabItem Header="목록" FontWeight="Bold" />
+            <Label Width="57"
+                   Margin="219,13,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Content="Update"
+                   FontSize="14" />
+            <metro:ToggleSwitchButton x:Name="_liveUpdate"
+                                      Width="67"
+                                      Height="31"
+                                      Margin="278,10,0,0"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      IsChecked="{Binding Path=UpdateData,
+                                                          Mode=TwoWay}" />
+            <Grid x:Name="_dataNaviPanel" Grid.Row="0">
+                <metro:MetroAnimatedTabControl x:Name="_dataNaviation"
+                                               Margin="10,0,0,2"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Bottom"
+                                               metro:TabControlHelper.IsUnderlined="True"
+                                               SelectedIndex="0"
+                                               SelectionChanged="_dataNaviation_SelectionChanged">
+                    <TabItem FontWeight="Bold" Header="그래프" />
+                    <TabItem FontWeight="Bold" Header="목록" />
                 </metro:MetroAnimatedTabControl>
             </Grid>
-            <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="219,13,0,0" Content="Update" Width="57" FontSize="14"/>
-            <metro:ToggleSwitchButton   x:Name="_liveUpdate" Margin="278,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="67" Height="31"
-                                      IsChecked="{Binding Path=UpdateData, Mode=TwoWay}" />
-            <Frame Grid.Row="1" x:Name="_dataPages" NavigationUIVisibility="Hidden"/>
+            <Frame x:Name="_dataPages"
+                   Grid.Row="1"
+                   NavigationUIVisibility="Hidden" />
         </Grid>
     </Grid>
 </Page>

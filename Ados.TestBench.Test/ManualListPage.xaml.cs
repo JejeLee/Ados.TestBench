@@ -26,5 +26,7 @@ namespace Ados.TestBench.Test
 
             InitializeComponent();
         }
+
+        internal ManualModel Model { get { return (ManualModel)this.DataContext; } }
     }
 }

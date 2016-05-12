@@ -8,11 +8,12 @@
   },
   "Graphs": {
     "Common": {
-      "TimeRange": 1000
+      "TimeRange": 5000
     },
     "Details": [
       {
-        "Name": "a1",
+        "_comment_": "ID는 절대 변경하면 안 됨. (코드에서 구분용으로 사용)",
+        "ID": "a1",
         "Title": "Door Velocity",
         "VerticalTitle": "Speed [cm/sec]",
         "Description1": "Measured",
@@ -22,7 +23,7 @@
         "Visible": true
       },
       {
-        "Name": "a2",
+        "ID": "a2",
         "Title": "Door Angle",
         "VerticalTitle": "Angle [G]",
         "Description1": "Measured",
@@ -32,17 +33,17 @@
         "Visible": true
       },
       {
-        "Name": "a3",
+        "ID": "a3",
         "Title": "Motor Electrical Value",
         "VerticalTitle": "Electrical [V/mA]",
         "Description1": "Volt",
         "Description2": "Amp",
         "Min": 0,
         "Max": 100,
-        "Visible": false
+        "Visible": true
       },
       {
-        "Name": "a4",
+        "ID": "a4",
         "Title": "거리 측정값",
         "VerticalTitle": "Distance [cm]",
         "Description1": "Filtered",
@@ -52,73 +53,73 @@
         "Visible": true
       },
       {
-        "Name": "d1",
+        "ID": "d1",
         "Title": "Door Run",
-        "VerticalTitle": "On / Off",
-        "Description1": "",
+        "VerticalTitle": "Door Run",
+        "Description1": "Door Run",
         "Description2": "",
         "Min": 0,
         "Max": 1,
         "Visible": true
       },
       {
-        "Name": "d2",
+        "ID": "d2",
         "Title": "Door Direction Open",
-        "VerticalTitle": "On / Off",
+        "VerticalTitle": "Direction Open",
         "Description1": "On,Off",
         "Description2": "",
-        "Min": 0,
-        "Max": 1,
+        "Min": 2,
+        "Max": 3,
         "Visible": true
       },
       {
-        "Name": "d3",
+        "ID": "d3",
         "Title": "Door Direction Close",
-        "VerticalTitle": "On / Off",
+        "VerticalTitle": "Direction Close",
         "Description1": "On,Off",
         "Description2": "",
-        "Min": 0,
-        "Max": 1,
+        "Min": 4,
+        "Max": 5,
         "Visible": true
       },
       {
-        "Name": "d4",
+        "ID": "d4",
         "Title": "Door Latch On",
-        "VerticalTitle": "On / Off",
+        "VerticalTitle": "Latch On",
         "Description1": "On,Off",
         "Description2": "",
-        "Min": 0,
-        "Max": 1,
+        "Min": 6,
+        "Max": 7,
         "Visible": true
       },
       {
-        "Name": "d5",
+        "ID": "d5",
         "Title": "Release",
-        "VerticalTitle": "On / Off",
+        "VerticalTitle": "Release",
         "Description1": "On,Off",
         "Description2": "",
-        "Min": 0,
-        "Max": 1,
+        "Min": 8,
+        "Max": 9,
         "Visible": false
       },
       {
-        "Name": "d6",
+        "ID": "d6",
         "Title": "Door Clutch On",
-        "VerticalTitle": "On / Off",
+        "VerticalTitle": "Clutch On",
         "Description1": "On,Off",
         "Description2": "",
-        "Min": 0,
-        "Max": 1,
+        "Min": 10,
+        "Max": 11,
         "Visible": false
       },
       {
-        "Name": "d7",
+        "ID": "d7",
         "Title": "Test",
-        "VerticalTitle": "On / Off",
+        "VerticalTitle": "Test",
         "Description1": "On,Off",
         "Description2": "",
-        "Min": 0,
-        "Max": 1,
+        "Min": 12,
+        "Max": 13,
         "Visible": false
       }
     ]

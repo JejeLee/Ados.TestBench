@@ -1,35 +1,94 @@
 ﻿<Page x:Class="Ados.TestBench.Test.ManualListPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Ados.TestBench.Test"
-      mc:Ignorable="d" 
-      Title="ManualListPage"  >
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Title="ManualListPage"
+      mc:Ignorable="d">
 
     <Grid>
-        <DataGrid x:Name ="_datas" Style="{StaticResource AzureDataGrid}" SelectionUnit="Cell" SelectionMode="Extended"
-            AlternatingRowBackground="#FF8B8787" ItemsSource="{Binding Path=StatesData}" 
-        AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalContentAlignment="Center" BorderThickness="1"
-                               CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" HorizontalScrollBarVisibility="Visible" >
+        <DataGrid x:Name="_datas"
+                  HorizontalContentAlignment="Center"
+                  AlternatingRowBackground="#FF8B8787"
+                  AutoGenerateColumns="False"
+                  BorderThickness="1"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  CanUserResizeColumns="True"
+                  HorizontalScrollBarVisibility="Visible"
+                  ItemsSource="{Binding Path=StatesData}"
+                  SelectionMode="Extended"
+                  SelectionUnit="Cell"
+                  Style="{StaticResource AzureDataGrid}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="시간" Binding="{Binding Path=Time, StringFormat=\{0:HH:mm:ss\'ff\}}" IsReadOnly="True" FontWeight="Bold"  Width="100" />
-                <DataGridTextColumn Header="Parameter" Binding="{Binding Path=Info.Name}" IsReadOnly="True" FontWeight="Bold"  Width="100"/>
-                <DataGridTextColumn Header="Error" Binding="{Binding Path=DoorError}" IsReadOnly="True" Width="100" Visibility="{Binding Visibility}"/>
-                <DataGridTextColumn Header="Run" Binding="{Binding Path=DoorRun}" IsReadOnly="True" Width="100" Visibility="{Binding D1.Visibility}"/>
-                <DataGridTextColumn Header="Open" Binding="{Binding Path=DirectionOpen}" IsReadOnly="True" Width="100" Visibility="{Binding D2.Visibility}"/>
-                <DataGridTextColumn Header="Close" Binding="{Binding Path=DirectionClose}" IsReadOnly="True" Width="100" Visibility="{Binding D3.Visibility}"/>
-                <DataGridTextColumn Header="Latch" Binding="{Binding Path=LatchOn}" IsReadOnly="True" Width="100" Visibility="{Binding D4.Visibility}"/>
-                <DataGridTextColumn Header="Release" Binding="{Binding Path=ReleaseOn}" IsReadOnly="True" Width="100" Visibility="{Binding D5.Visibility}"/>
-                <DataGridTextColumn Header="Clutch" Binding="{Binding Path=Clutch}" IsReadOnly="True" Width="100" Visibility="{Binding D6.Visibility}"/>
-                <DataGridTextColumn Header="Test" Binding="{Binding Path=Test}" IsReadOnly="True" Width="100" Visibility="{Binding D7.Visibility}"/>
-                <DataGridTextColumn Header="SpeedM" Binding="{Binding Path=SpeedM}" IsReadOnly="True" Width="100" Visibility="{Binding A1.Visibility}"/>
-                <DataGridTextColumn Header="SpeedR" Binding="{Binding Path=SpeedR}" IsReadOnly="True" Width="100" Visibility="{Binding A1.Visibility}"/>
-                <DataGridTextColumn Header="Angle" Binding="{Binding Path=DoorAngle}" IsReadOnly="True" Width="100" Visibility="{Binding A2.Visibility}"/>
-                <DataGridTextColumn Header="MotorV" Binding="{Binding Path=MotorV}" IsReadOnly="True" Width="100" Visibility="{Binding A3.Visibility}"/>
-                <DataGridTextColumn Header="MotroM" Binding="{Binding Path=MotorA}" IsReadOnly="True" Width="100" Visibility="{Binding A3.Visibility}"/>
-                <DataGridTextColumn Header="DistF" Binding="{Binding Path=DistanceF}" IsReadOnly="True" Width="100" Visibility="{Binding A4.Visibility}"/>
-                <DataGridTextColumn Header="DistR" Binding="{Binding Path=DistanceR}" IsReadOnly="True" Width="100" Visibility="{Binding A4.Visibility}"/>
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=Time,
+                                                      StringFormat=\{0:HH:mm:ss\'ff\}}"
+                                    FontWeight="Bold"
+                                    Header="시간"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=DoorError}"
+                                    Header="Error"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=DoorRun}"
+                                    Header="Run"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=DirectionOpen}"
+                                    Header="Open"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=DirectionClose}"
+                                    Header="Close"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=LatchOn}"
+                                    Header="Latch"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=ReleaseOn}"
+                                    Header="Release"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=Clutch}"
+                                    Header="Clutch"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=Test}"
+                                    Header="Test"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=SpeedM}"
+                                    Header="SpeedM"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=SpeedR}"
+                                    Header="SpeedR"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=DoorAngle}"
+                                    Header="Angle"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=MotorV}"
+                                    Header="MotorV"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=MotorA}"
+                                    Header="MotroM"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=DistanceF}"
+                                    Header="DistF"
+                                    IsReadOnly="True" />
+                <DataGridTextColumn Width="100"
+                                    Binding="{Binding Path=DistanceR}"
+                                    Header="DistR"
+                                    IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
