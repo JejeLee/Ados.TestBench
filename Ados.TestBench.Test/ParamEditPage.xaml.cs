@@ -20,10 +20,13 @@ namespace Ados.TestBench.Test
     /// </summary>
     public partial class ParamEditPage : Page
     {
-        public ParamEditPage()
+        internal ParamEditPage(ManualModel aModel)
         {
+            this.DataContext = aModel;
             InitializeComponent();
         }
+
+        internal ManualModel Model { get { return (ManualModel)this.DataContext; } }
 
         private void 시트편집_클릭(object sender, RoutedEventArgs e)
         {

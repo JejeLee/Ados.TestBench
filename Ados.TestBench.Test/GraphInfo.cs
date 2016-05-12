@@ -11,6 +11,7 @@ namespace Ados.TestBench.Test
 {
     public class GraphInfo : INotifyPropertyChanged
     {
+        static public string Path { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
         public string VeticalTitle { get; set; }
@@ -44,6 +45,7 @@ namespace Ados.TestBench.Test
                 if (_visible != value)
                 {
                     _visible = value;
+                    OnPropertyChanged("Visible");
                     OnPropertyChanged("Visibility");
                 }
             }
@@ -119,6 +121,7 @@ namespace Ados.TestBench.Test
             var root = Newtonsoft.Json.Linq.JObject.Parse(str);
 
             var gs = new Dictionary<string, GraphInfo>();
+            GraphInfo.Path = aPath;
 
             GraphInfo.TimeRange = root["Graphs"]["Common"].Value<double>("TimeRange");
 
@@ -143,9 +146,9 @@ namespace Ados.TestBench.Test
             return gs;
         }
 
-        public static void Save(string aPath, Dictionary<string, GraphInfo> aInfos)
+        public static void Save(Dictionary<string, GraphInfo> aInfos)
         {
-            var contents = File.ReadAllText(aPath);
+            var contents = File.ReadAllText(GraphInfo.Path);
             var root = Newtonsoft.Json.Linq.JObject.Parse(contents);
 
             root["Header"]["UpdateDate"] = DateTime.Now.ToString("s");
@@ -164,7 +167,7 @@ namespace Ados.TestBench.Test
                 g["Visible"] = info.Visible;
             }
 
-            File.WriteAllText(aPath, root.ToString());
+            File.WriteAllText(GraphInfo.Path, root.ToString());
 
             Log.i("Graph 설정 정보를 저장했습니다.");
 

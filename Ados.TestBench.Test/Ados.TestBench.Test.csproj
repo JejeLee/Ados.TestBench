@@ -74,9 +74,11 @@
     <Compile Include="Extension.cs" />
     <Compile Include="GraphInfo.cs" />
     <Compile Include="AutoModel.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="ParameterInfo.cs" />
     <Compile Include="ParameterSetting.cs" />
     <Compile Include="StateShot.cs" />
+    <Compile Include="TestSheet.cs" />
     <Page Include="AutoGraphPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -176,6 +178,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Settings\TestSheetTemplate.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Settings\ManualParameters.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

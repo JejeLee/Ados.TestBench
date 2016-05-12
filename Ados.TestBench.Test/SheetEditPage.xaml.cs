@@ -20,18 +20,22 @@ namespace Ados.TestBench.Test
     /// </summary>
     public partial class SheetEditPage : Page
     {
-        public SheetEditPage()
+        internal SheetEditPage(ManualModel aModel)
         {
+            this.DataContext = aModel;
             InitializeComponent();
 
-            _paramPage = new ParamEditPage();
+            _paramPage = new ParamEditPage(aModel);
         }
 
-        ParamEditPage _paramPage;
+        internal ManualModel Model { get { return (ManualModel)this.DataContext; } }
+
+        private ParamEditPage _paramPage;
 
         private void 파라미터편집_클릭(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(_paramPage);
+
         }
     }
 }

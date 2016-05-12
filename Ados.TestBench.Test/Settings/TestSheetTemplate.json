@@ -1,0 +1,30 @@
+﻿{
+  "Header": {
+    "CreateDate": "2016-05-11T10:20:10",
+    "UpdateDate": "2016-05-11T10:20:10",
+    "DataType": "TestSheet",
+    "Version": "1.0",
+    "Description": "Door speed test",
+    "Name": "doorSpeed_Test (01)"
+  },
+  "TestSheet": [
+      {
+        "Index": 1,
+        "Parameter": "speedDefault",
+        "Duration": 3000,
+        "Repeat": 5
+      },
+      {
+        "Index": 2,
+        "Parameter": "speedMax",
+        "Duration": 3000,
+        "Repeat": 5
+      },
+      {
+        "Index": 3,
+        "Parameter":"speedMin",
+        "Duration": 3000,
+        "Repeat": 5
+      }
+    ]
+}

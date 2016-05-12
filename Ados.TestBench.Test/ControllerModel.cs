@@ -113,7 +113,7 @@ namespace Ados.TestBench.Test
             var fi = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
             var dir = fi.DirectoryName;
 
-            GraphInfo.Save(dir + "\\Settings\\Graphs.json", _graphs);
+            GraphInfo.Save(_graphs);
         }
 
         private void LogReceived(LogData aData)

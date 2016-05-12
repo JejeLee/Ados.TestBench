@@ -33,7 +33,17 @@
     <metro:MetroWindow.Flyouts>
         <metro:FlyoutsControl>
             <metro:Flyout x:Name="_flyGraphSetting" Header="그래프 설정" Position="Right" Width="200" Theme="Accent">
-                <Border BorderThickness="1" CornerRadius="2" Width="150" Height="147" Background="#FFC3B586"></Border>
+                <DataGrid x:Name ="_datas" Style="{StaticResource AzureDataGrid}" SelectionUnit="Cell" SelectionMode="Extended"
+            AlternatingRowBackground="#FF8B8787" ItemsSource="{Binding Path=Graphs}" 
+        AutoGenerateColumns="False" CanUserResizeColumns="True" HorizontalContentAlignment="Center" BorderThickness="1"
+                               CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" HorizontalScrollBarVisibility="Visible" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="명 칭" Binding="{Binding Path=Name}" IsReadOnly="True" FontWeight="Bold"  Width="200" />
+                        <DataGridTextColumn Header="최소" Binding="{Binding Path=Min}" IsReadOnly="False" FontWeight="Bold"  Width="100"/>
+                        <DataGridTextColumn Header="최대" Binding="{Binding Path=Max}" IsReadOnly="False" Width="100"/>
+                        <DataGridCheckBoxColumn Header="표시" Binding="{Binding Path=Visible}" IsReadOnly="False" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </metro:Flyout>
             <metro:Flyout x:Name="_flyAppInfo" Header="정보" Position="Right" Width="350" Theme="Adapt" >
                 <Border BorderThickness="1" CornerRadius="2" Margin="10,10,10,10" Background="#FF77DC7C" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -97,7 +107,8 @@
         <Grid Grid.Row="1" x:Name="_contentsPanel">
             <Frame x:Name="_modePages"  NavigationUIVisibility="Hidden"/>
         </Grid>
-        <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ResizeDirection="Rows"/>
+        <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Black" 
+                      ShowsPreview="true" ResizeDirection="Rows" Height="3"/>
         <DataGrid Grid.Row="3" x:Name ="_outMsg" Style="{StaticResource AzureDataGrid}" 
             AlternatingRowBackground="#FF8B8787" ItemsSource="{Binding LogsData}" BorderThickness="1"
         AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" CanUserSortColumns="False">

@@ -60,10 +60,12 @@ namespace Ados.TestBench.Test
         private ParameterSettings()
         { }
 
+        public string Path { get; set; }
         public DateTime CreateDate{ get; private set; }
         public DateTime UpdateDate { get; set; }
         public string Version { get; set; }
         public string Description { get; set; }
+        public string Name { get; set; }
 
         public IEnumerable<ParameterSetting> Settings { get { return _settings; } }
 
@@ -77,10 +79,12 @@ namespace Ados.TestBench.Test
             var header = root["Header"];
 
             var ps = new ParameterSettings();
+            ps.Path = aPath;
             ps.CreateDate = DateTime.Parse(header["CreateDate"].ToString());
             ps.UpdateDate = DateTime.Parse(header["UpdateDate"].ToString());
             ps.Version = header["Version"].ToString();
             ps.Description = header["Description"].ToString();
+            ps.Name = header["Name"].ToString();
 
             foreach (var ja in root["ParametersSetting"])
             {
@@ -98,7 +102,7 @@ namespace Ados.TestBench.Test
             return ps;
         }
 
-        public void Save(string aPath)
+        public void Save()
         {
             var root = new Newtonsoft.Json.Linq.JObject();
             var header = new Newtonsoft.Json.Linq.JObject(); 
@@ -107,6 +111,7 @@ namespace Ados.TestBench.Test
             header["Version"] = this.Version;
             header["Description"] = this.Description;
             header["DataType"] = "ParametersSetting";
+            header["Name"] = this.Name;
             root["Header"] = header;
 
             var ar = new Newtonsoft.Json.Linq.JArray();
@@ -123,9 +128,9 @@ namespace Ados.TestBench.Test
 
             root["ParametersSetting"] = ar;
 
-            File.WriteAllText(aPath, root.ToString());
+            File.WriteAllText(Path, root.ToString());
 
-            Log.i("Parameter 설정을 {0}에 저장했습니다.", aPath);
+            Log.i("Parameter 설정을 {0}에 저장했습니다.", Path);
         }
 
         public object Clone()

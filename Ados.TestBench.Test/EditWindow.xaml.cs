@@ -20,11 +20,19 @@ namespace Ados.TestBench.Test
     /// </summary>
     public partial class EditWindow : NavigationWindow
     {
-        public EditWindow()
+        internal EditWindow(ManualModel aModel)
         {
+            this.DataContext = aModel;
             InitializeComponent();
 
-            Navigate(new SheetEditPage());
+            _sheetPage = new SheetEditPage(aModel);
+
+            Navigate(_sheetPage);
         }
+
+        internal ManualModel Model{ get { return (ManualModel)this.DataContext; } }
+
+        private SheetEditPage _sheetPage;
+       
     }
 }
