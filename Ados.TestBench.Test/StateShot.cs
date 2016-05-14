@@ -12,38 +12,38 @@ namespace Ados.TestBench.Test
         {
             Time = DateTime.Now;
             for (int i = 0; i < _states.Length; i++)
-                _states.SetValue(0, i);
+                _states.SetValue((byte)0, i);
         }
 
         public void SetBits(byte aValue)
         {
-            DoorError = (aValue & 0x01) > 0 ? 1 :0;
-            Test = (aValue & 0x02) > 0 ? 1 : 0;
-            DoorRun = (aValue & 0x04) > 0 ? 1 : 0;
-            DirectionOpen = (aValue & 0x08) > 0 ? 1 : 0;
-            DirectionClose = DirectionOpen == 0 ? 1 :0;
-            LatchOn = (aValue & 0x10) > 0 ? 1 : 0;
-            ReleaseOn = (aValue & 0x20) > 0 ? 1 : 0;
-            Clutch = (aValue & 0x40) > 0 ? 1 : 0;
+            DoorError       = (aValue & 0x01) > 0 ? 1 :0;
+            Test            = (aValue & 0x02) > 0 ? 1 : 0;
+            DoorRun         = (aValue & 0x04) > 0 ? 1 : 0;
+            DirectionOpen   = (aValue & 0x08) > 0 ? 1 : 0;
+            DirectionClose  = DirectionOpen == 0 ? 1 :0;
+            LatchOn         = (aValue & 0x10) > 0 ? 1 : 0;
+            ReleaseOn       = (aValue & 0x20) > 0 ? 1 : 0;
+            Clutch          = (aValue & 0x40) > 0 ? 1 : 0;
         }
 
         public void SetState1(byte[] aValue)
         {
             SetBits(aValue[1]);
 
-            this.SpeedM = (aValue[2] << 8) & aValue[3];
-            this.SpeedR = (aValue[4] << 8) & aValue[5];
-            this.DoorAngle = (aValue[6] << 8) & aValue[7];
+            this.SpeedM     = (aValue[2] << 8) | aValue[3];
+            this.SpeedR     = (aValue[4] << 8) | aValue[5];
+            this.DoorAngle  = (aValue[6] << 8) | aValue[7];
 
             aValue.CopyTo(_states, 0);
         }
 
         public void SetState2(byte[] aValue)
         {
-            this.MotorV = (aValue[0] << 8) & aValue[1];
-            this.MotorA = (aValue[2] << 8) & aValue[3];
-            this.DistanceF = aValue[4];
-            this.DistanceR = (aValue[5] << 8) & aValue[6];
+            this.MotorV     = (aValue[0] << 8) | aValue[1];
+            this.MotorA     = (aValue[2] << 8) | aValue[3];
+            this.DistanceF  = aValue[4];
+            this.DistanceR  = (aValue[5] << 8) | aValue[6];
 
             aValue.CopyTo(_states, 8);
         }
@@ -57,6 +57,13 @@ namespace Ados.TestBench.Test
 
             return sb.ToString();
         }
+
+        public static double TimeBase
+        {
+            get { return _timeBase; }
+            set { _timeBase = value; }
+        }
+        private static double _timeBase = GraphInfo.TimeUnit(DateTime.Now);
 
         public DateTime Time { get; private set; }
         public int DoorError { get; set; }

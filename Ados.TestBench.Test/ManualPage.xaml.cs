@@ -26,6 +26,10 @@ namespace Ados.TestBench.Test
 
             InitializeComponent();
 
+            _listPage = new ManualListPage(this.DataContext);
+            _graphPage = new ManualGraphPage(this.DataContext);
+            Model.GraphPage = _graphPage;
+
             this.Loaded += ManualPage_Loaded;
            
         }
@@ -33,10 +37,6 @@ namespace Ados.TestBench.Test
         private void ManualPage_Loaded(object sender, RoutedEventArgs e)
         {
             Model.IsActive = true;
-
-            _listPage = new ManualListPage(this.DataContext);
-            _graphPage = new ManualGraphPage(this.DataContext);
-            Model.GraphPage = _graphPage;
 
             _dataPages.Navigate(_graphPage);
         }

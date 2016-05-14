@@ -14,7 +14,11 @@ namespace Ados.TestBench.Test
         static public string Path { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
-        public string VerticalTitle { get; set; }
+        public string VerticalTitle
+        {
+            get;
+            set;
+        }
         public int Max { get { return _max; }
             set
             {
@@ -51,75 +55,65 @@ namespace Ados.TestBench.Test
             }
         }
 
-        public System.Windows.Visibility CursorVisible
-        {
-            get
-            {
-                return _cursorVisible;
-            }
-            set
-            {
-                if (_cursorVisible != value)
-                {
-                    _cursorVisible = value;
-                    OnPropertyChanged("CursorVisible");
-                }
-            }
-        }
-        System.Windows.Visibility _cursorVisible = System.Windows.Visibility.Visible;
-
         public string Description1 { get; private set; }
 
         public string Description2 { get; private set; }
 
+        public static double TimeUnit(DateTime aTime)
+        {
+                return (aTime.Ticks / 10000) / 1000.0; // seconds to one unit.
+        }
+
+        private double Mapping(StateShot aShot)
+        {
+            var x = TimeUnit(aShot.Time) - StateShot.TimeBase;
+            return x;
+        }
+
         public void SetDataSource(System.Collections.ObjectModel.ObservableCollection<StateShot> aSource)
         {
             _ds = new EnumerableDataSource<StateShot>(aSource);
-            _ds.SetXMapping(x => x.Time.Ticks / 100000 / 100.0);
+            _ds.SetXMapping(Mapping);
+            _ds2 = new EnumerableDataSource<StateShot>(aSource);
+            _ds2.SetXMapping(Mapping);
 
-            switch(this.Name)
+            switch (this.Name)
             {
                 case "a1":
                     _ds.SetYMapping(y => y.SpeedM);
-                    _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks / 100000 / 100.0);
-                    _ds.SetYMapping(y => y.SpeedR);
+                    _ds.SetYMapping(yy => yy.SpeedR);
                     break;
                 case "a2":
                     _ds.SetYMapping(y => y.DoorAngle);
                     break;
                 case "a3":
                     _ds.SetYMapping(y => y.MotorV);
-                    _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks / 100000 / 100.0);
-                    _ds.SetYMapping(y => y.MotorA);
+                    _ds.SetYMapping(yy => yy.MotorA);
                     break;
                 case "a4":
                     _ds.SetYMapping(y => y.DistanceF);
-                    _ds2 = new EnumerableDataSource<StateShot>(aSource);
-                    _ds2.SetXMapping(x => x.Time.Ticks / 100000 / 100.0);
-                    _ds.SetYMapping(y => y.DistanceR);
+                    _ds.SetYMapping(yy => yy.DistanceR);
                     break;
                 case "d1":
-                    _ds.SetYMapping(y => y.DoorRun);
+                    _ds.SetYMapping(y => y.DoorRun > 0 ? this.Min : this.Max);
                     break;
                 case "d2":
-                    _ds.SetYMapping(y => y.DirectionOpen);
+                    _ds.SetYMapping(y => y.DirectionOpen > 0 ? this.Min : this.Max);
                     break;
                 case "d3":
-                    _ds.SetYMapping(y => y.DirectionClose);
+                    _ds.SetYMapping(y => y.DirectionClose > 0 ? this.Min : this.Max);
                     break;
                 case "d4":
-                    _ds.SetYMapping(y => y.LatchOn);
+                    _ds.SetYMapping(y => y.LatchOn > 0 ? this.Min : this.Max);
                     break;
                 case "d5":
-                    _ds.SetYMapping(y => y.ReleaseOn);
+                    _ds.SetYMapping(y => y.ReleaseOn > 0 ? this.Min : this.Max);
                     break;
                 case "d6":
-                    _ds.SetYMapping(y => y.Clutch);
+                    _ds.SetYMapping(y => y.Clutch > 0 ? this.Min : this.Max);
                     break;
                 case "d7":
-                    _ds.SetYMapping(y => y.Test);
+                    _ds.SetYMapping(y => y.Test > 0 ? this.Min : this.Max);
                     break;
             }
 

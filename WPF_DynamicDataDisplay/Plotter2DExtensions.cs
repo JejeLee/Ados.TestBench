@@ -145,8 +145,8 @@ namespace Microsoft.Research.DynamicDataDisplay
 
 			if (marker != null) // We are requested to draw marker graphs
 			{
-				MarkerPointsGraph markerGraph = new MarkerPointsGraph
-				{
+                MarkerPointsGraph markerGraph = new MarkerPointsGraph
+                {
 					DataSource = pointSource,
 					Marker = marker
 				};

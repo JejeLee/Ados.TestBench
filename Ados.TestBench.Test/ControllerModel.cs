@@ -115,6 +115,17 @@ namespace Ados.TestBench.Test
 
         private void LogReceived(LogData aData)
         {
+            if (this.Manual == null || this.Manual.GraphPage == null)
+            {
+                _logs.Add(aData);
+                return;
+            }
+
+            if (!this.Manual.GraphPage.CheckAccess())
+            {
+                this.Manual.GraphPage.Dispatcher.Invoke(() => _logs.Add(aData));
+                return;
+            }
             //  N 이상일 경우 N/2 개 저장 후 제거.
             if (_logs.Count >= MAX_LOGS)
             {
@@ -139,7 +150,7 @@ namespace Ados.TestBench.Test
                 }
 
             }
-            _logs.Add(aData);
+           
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

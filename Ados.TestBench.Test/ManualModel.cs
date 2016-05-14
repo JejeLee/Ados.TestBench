@@ -43,28 +43,43 @@ namespace Ados.TestBench.Test
 
             if (!GraphPage.CheckAccess())
             {
-                GraphPage.Dispatcher.Invoke(() => {
-                    LinManager_JobStateChangedEvent(aUnderLoopJob);
-                });
+                GraphPage.Dispatcher.BeginInvoke(new Action(
+                    () => LinManager_JobStateChangedEvent(aUnderLoopJob)));
                 return;
             }
 
-            if (aUnderLoopJob == false && UpdateData == false)
-            {
-                foreach (var s in _statesTmp)
-                    _states.Add(s);
-
-                this.Angle = _states.LastOrDefault().DoorAngle;
-                _statesTmp.Clear();
-            }
             if (aUnderLoopJob == false)
             {
-                this._graphInfos.ForEach(x => x.CursorVisible = Visibility.Visible);
+                this.CursorVisible = Visibility.Visible;
             }
             else
             {
-                this._graphInfos.ForEach(x => x.CursorVisible = Visibility.Collapsed); 
-            }            
+                this.CursorVisible = Visibility.Collapsed;
+            }
+            OnPropertyChanged("CursorVisible");
+        }
+
+        public void UpdateStates()
+        {
+            if (_qstates.Count > 0 && (UpdateData || LinManager.UnderLoopJob == false))
+            {
+                var state = _qstates.Dequeue();
+                _states.Add(state);
+                while (_qstates.Count > 0)
+                {
+                    state = _qstates.Dequeue();
+                    _states.Add(state);
+                }
+
+                this.Angle = _states.LastOrDefault().DoorAngle;
+                this.GraphPage.UpdateTimeScroll(_states.LastOrDefault());
+            }
+        }
+
+        public Visibility CursorVisible
+        {
+            get;
+            set;
         }
 
         public void ExecuteCommand(object aInput)
@@ -89,6 +104,7 @@ namespace Ados.TestBench.Test
                 case "dooropen":
                     if (Controller.LinMgr.WriteCommand(1))
                     {
+                        ClearStates();
                         Controller.LinMgr.ReadStateLoopAsync(this.ReadDuration);
                     }
                     break;
@@ -147,30 +163,12 @@ namespace Ados.TestBench.Test
 
         private void LMgr_StateReceived(StateShot aShot)
         {
-            if (GraphPage == null)
-                return;
 
-            if (!GraphPage.CheckAccess())
-            {
-                GraphPage.Dispatcher.Invoke(() => {
-                    LMgr_StateReceived(aShot);
-                    return;
-                });
-            }
+            if (_qstates.Count == 0 && _states.Count == 0)
+                StateShot.TimeBase = GraphInfo.TimeUnit(aShot.Time);
 
-            if (UpdateData)
-            {
-                Angle = aShot.DoorAngle;
-                _states.Add(aShot);
-
-                var nv = this.GraphPage.a1.Visible;
-                nv.X = aShot.Time.Ticks - nv.Width;
-                this.GraphPage.a1.Visible = nv;
-            }
-            else
-            {
-                _statesTmp.Add(aShot);
-            }
+            Angle = aShot.DoorAngle;
+            _qstates.Enqueue(aShot);
         }
 
         private void LoadSettings()
@@ -294,6 +292,7 @@ namespace Ados.TestBench.Test
 
         ObservableCollection<StateShot> _states = new ObservableCollection<StateShot>();
         List<StateShot> _statesTmp = new List<StateShot>();
+        Queue<StateShot> _qstates = new Queue<StateShot>();
         ControllerModel _controller;
         DelegateCommand _cmd = new DelegateCommand();
         List<GraphInfo> _graphInfos;

@@ -6,6 +6,7 @@ using System.Windows.Media;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Threading;
+using System.Threading.Tasks;
 
 namespace Ados.TestBench.Test
 {
@@ -29,29 +30,37 @@ namespace Ados.TestBench.Test
 
         }
 
+        DispatcherTimer _timer;
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             _manualPage = new ManualPage(Model.Manual);
             //_autoPage = new AutoPage(Model.Auto);
 
-            DispatcherTimer timer = new DispatcherTimer()
+            _timer = new DispatcherTimer()
             {
                 Interval = new TimeSpan(100 * 10000),
             };
 
             _modePages.Navigate(_manualPage);
 
-            timer.Tick += Transfer_Tick;
-            timer.Start();
-
             if (Model.LogsData.Count > 0)
                 _outMsg.ScrollIntoView(Model.LogsData.Last());
             Log.LogEvent += Log_LogEvent;
+
+            _timer.Tick += Transfer_Tick;
+            _timer.Start();
         }
 
         private void Log_LogEvent(LogData aData)
         {
-            if (!_outMsg.IsFocused)
+            if (!this.CheckAccess())
+            {
+                Dispatcher.Invoke(() => Log_LogEvent(null));
+                return;
+            }
+
+            if (!_outMsg.IsFocused && Model.LogsData.Count > 0)
             {
                 _outMsg.ScrollIntoView(Model.LogsData.Last());
             }
@@ -79,6 +88,7 @@ namespace Ados.TestBench.Test
                 _txLamp.Fill = LinManager.TxTics > now ?
                     (Brush)this.Resources["rampActive"] : (Brush)this.Resources["rampIdle"];
             }
+            Model.Manual.UpdateStates();
         }
               
         ControllerModel model { get { return (ControllerModel)this.DataContext; } }
@@ -120,19 +130,17 @@ namespace Ados.TestBench.Test
             if (_mainWin != null && !string.IsNullOrEmpty(aMessage))
             {
                 var dlg = _mainWin.ShowMessageAsync(aTitle, aMessage, MessageDialogStyle.Affirmative);
-                var d = _mainWin.ShowProgressAsync(aTitle, aMessage, true);
-                var c = d.AsyncState as ProgressDialogController;
             }
         }
 
-        public static async void ProgressBox(string aMessage, string aTitle = "ADOS 진행 상태 창")
+        public static async Task<ProgressDialogController> ProgressBox(string aMessage, string aTitle = "ADOS 진행 상태 창")
         {
             if (_mainWin != null && !string.IsNullOrEmpty(aMessage))
             {
-                var ctrl = _mainWin.ShowProgressAsync(aTitle, aMessage, true);
-                var d = await ctrl;
-                LinManager.WaitController = d;
+                var ctrl = await _mainWin.ShowProgressAsync(aTitle, aMessage, true);
+                return ctrl;
             }
+            return null;
         }
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)

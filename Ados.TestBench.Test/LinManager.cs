@@ -29,41 +29,9 @@ namespace Ados.TestBench.Test
             UnderLoopJob = false;
         }
 
-        public static MahApps.Metro.Controls.Dialogs.ProgressDialogController WaitController
-        {
-            get { return _waitCtrl; }
-            set
-            {
-                if (value != null)
-                {
-                    if (_waitCtrl != null)
-                        _waitCtrl.CloseAsync();
-
-                    _waitCtrl = value;
-                    _waitCtrl.SetCancelable(true);
-                }
-                else
-                {
-                    if(_waitCtrl != null)
-                    {
-                        _waitCtrl.CloseAsync();
-                        _waitCtrl = null;
-                    }
-                }
-            }
-        }
-        public static void SetProgress(int aPrgress)
-        {
-            if (_waitCtrl != null)
-            {
-                SetProgress(aPrgress);
-            }
-        }
-        public static MahApps.Metro.Controls.Dialogs.ProgressDialogController _waitCtrl = null;
-        
         public bool WriteCommand(params byte[] aData)
         {
-            Log.i("LIN/Command>> PID{1}, {0}", (aData != null && aData.Length > 0) ? aData[0] : 0, PID.COMMAND);
+            Log.i("LIN/Command>> Pid:{1}, {0}", (aData != null && aData.Length > 0) ? aData[0] : 0, (int)PID.COMMAND);
 
             return WriteMessage(PID.COMMAND, aData);
         }
@@ -72,7 +40,7 @@ namespace Ados.TestBench.Test
         {
             Peak.Lin.TLINRcvMsg rmsg1;
 
-            Log.i("LIN/ReadState-1>> PID{1}, {0}", 0, PID.STATE1);
+            Log.i("LIN/ReadState-1>> Pid:{1}, {0}", 0, (int)PID.STATE1);
             WriteMessage(PID.STATE1, 0);
             
             if (!ReadMessages(out rmsg1, 50))
@@ -81,30 +49,28 @@ namespace Ados.TestBench.Test
             }
 #if !TYPE_A
             Peak.Lin.TLINRcvMsg rmsg2;
-            Log.i("LIN/ReadState-2>> PID{1}, {0}", 0, PID.STATE1);
+            Log.i("LIN/ReadState-2>> PId:{1}, {0}", 0,  (int)PID.STATE1);
             WriteMessage(PID.STATE2, 0);
             if (!ReadMessages(out rmsg2, 50))
             {
                 return false;
             }
-            aShot.SetState1(rmsg.Data);
 #endif
             var shot = new StateShot();
             shot.SetState1(rmsg1.Data);
 #if !TYPE_A
-            aShot.SetState1(rmsg2.Data);
+            shot.SetState2(rmsg2.Data);
 #endif
             InvokeStateReceived(shot);
 
             return true;
         }
 
-        public bool ReadStateLoop(int aPeriodMS)
+        public void ReadStateLoop(int aPeriodMS)
         {
             try
             {
-                if (_waitCtrl == null)
-                    MainWindow.ProgressBox("상태 정보 데이터 읽는 중...<<<");
+                Log.i("상태 데이터 읽는 중...");
                 UnderLoopJob = true;
 
                 var watch = new System.Diagnostics.Stopwatch();
@@ -117,7 +83,6 @@ namespace Ados.TestBench.Test
                         //return false;
                     }
                     //System.Threading.Thread.Sleep(30);
-                    SetProgress((int)(100 * watch.ElapsedMilliseconds / aPeriodMS));
                 } 
                 watch.Stop();
             }
@@ -127,26 +92,20 @@ namespace Ados.TestBench.Test
             }
             finally
             {
-                WaitController = null;
+                UnderLoopJob = false;
             }
-            return true;
         }
 
         public void ReadStateLoopAsync(int aPeriodMS)
         {
             try
             {
-                MainWindow.ProgressBox("상태 정보 데이터 읽는 중...<<<");
                 Task.Run(() => { ReadStateLoop(aPeriodMS); });
                 //ReadStateLoop(aPeriodMS);
             }
             catch (Exception e)
             {
                 Log.e("상태 정보 읽는 중 예외 발생:" + e.ToString());
-            }
-            finally
-            {
-                WaitController = null;
             }
         }
 
@@ -155,7 +114,7 @@ namespace Ados.TestBench.Test
             byte high = (byte)((aSetting.WriteValue >> 8) & 0xFF);
             byte low = (byte)(aSetting.WriteValue & 0xFF);
 
-            Log.i("LIN/Parameter >> PID:{2} Addr:{0} Value:{1}", aSetting.Info.Address, aSetting.WriteValue, PID.WR_ADDR);
+            Log.i("LIN/Parameter >> Pid:{2} Addr:{0} Value:{1}", aSetting.Info.Address, aSetting.WriteValue, (int)PID.WR_ADDR);
 
             if (!WriteMessage(PID.WR_ADDR, high, low))
             {
@@ -169,10 +128,7 @@ namespace Ados.TestBench.Test
         {
             try
             {
-                if (_waitCtrl == null)
-                    MainWindow.ProgressBox("파라미터 값들을 쓰는 중..>>>");
-                int total = aSettings.Count();
-                int count = 1;
+                Log.i("파라미터들 쓰는 중...");
                 UnderLoopJob = true;
 
                 foreach (var item in aSettings)
@@ -188,7 +144,6 @@ namespace Ados.TestBench.Test
                         return;
                     }
                     //System.Threading.Thread.Sleep(30);
-                    SetProgress((int)(100.0 * count++ / total));
                 }
             }
             catch (Exception e)
@@ -197,7 +152,7 @@ namespace Ados.TestBench.Test
             }
             finally
             {
-                WaitController = null;
+                UnderLoopJob = false;
             }
         }
 
@@ -205,22 +160,17 @@ namespace Ados.TestBench.Test
         {
             try
             {
-                MainWindow.ProgressBox("파라미터 값들을 쓰는 중..>>>");
                 Task.Run(() => { WriteParameters(aSettings); });
             }
             catch (Exception e)
             {
                 Log.e("파라미터 쓰는 중 예외 발생:" + e.ToString());
             }
-            finally
-            {
-                WaitController = null;
-            }
         }
 
         public bool ReadParameter(int aAddr)
         {
-            Log.i("LIN/Parameter READ >> PID:{2} Addr:{0}", aAddr, PID.WR_ADDR);
+            Log.i("LIN/Parameter READ >> Pid:{2} Addr:{0}", aAddr, (int)PID.WR_ADDR);
             if (!WriteMessage(PID.RD_ADDR, 0))
             {
                 return false;
@@ -242,10 +192,7 @@ namespace Ados.TestBench.Test
         {
             try
             {
-                if (_waitCtrl != null)
-                    MainWindow.ProgressBox("파라미터 값 읽는 중...<<<");
-                int total = aSettings.Count();
-                int count = 1;
+                Log.i("파라미터들 읽는 중...<<<");
                 UnderLoopJob = true;
 
                 foreach (var item in aSettings)
@@ -261,7 +208,6 @@ namespace Ados.TestBench.Test
                         return;
                     }
                     //System.Threading.Thread.Sleep(30);
-                    SetProgress((int)(100.0 * count++ / total));
                 }
             }
             catch (Exception e)
@@ -270,7 +216,7 @@ namespace Ados.TestBench.Test
             }
             finally
             {
-                WaitController = null;
+                UnderLoopJob = false;
             }
         }
 
@@ -278,16 +224,11 @@ namespace Ados.TestBench.Test
         {
             try
             {
-                MainWindow.ProgressBox("상태 정보 데이터 읽는 중...<<<");
                 Task.Run(() => { ReadParameters(aSettings); });
             }
             catch (Exception e)
             {
                 Log.e("파라미터 읽는 중 예외 발생:" + e.ToString());
-            }
-            finally
-            {
-                WaitController = null;
             }
         }
 
@@ -619,6 +560,7 @@ namespace Ados.TestBench.Test
         private bool ReadMessages(out Peak.Lin.TLINRcvMsg aMsg, int aTimeout = 50 /* msec */)
         {
 #if SIMULATION
+            System.Threading.Thread.Sleep(8);
             aMsg = new Peak.Lin.TLINRcvMsg();
             aMsg.Length = 8;
             aMsg.Data = new byte[aMsg.Length];
@@ -627,13 +569,12 @@ namespace Ados.TestBench.Test
             return true;
 #endif
             int timeout = aTimeout;
-            aMsg = new Peak.Lin.TLINRcvMsg();
             // We read at least one time the queue looking for messages.
             // If a message is found, we look again trying to find more.
             // If the queue is empty or an error occurs, we get out from
             // the dowhile statement.
             //	
-            const int sleep = 20;
+            const int sleep = 5;
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 

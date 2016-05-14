@@ -152,9 +152,9 @@
                           SelectedItem="{Binding CurrentDevice,
                                                  Mode=TwoWay}" />
                 <Button x:Name="_btnRefresh"
-                        Width="36"
-                        Height="36"
-                        BorderThickness="0"
+                        Width="40"
+                        Height="38"
+                        BorderThickness="1"
                         Command="{Binding Command,
                                           Mode=OneWay}"
                         CommandParameter="refreshDevices">
@@ -162,15 +162,19 @@
                 </Button>
                 <metro:ToggleSwitchButton x:Name="_connect"
                                           Height="42"
-                                          Margin="0,0,0,3"
-                                          Content="Connect" />
+                                          Margin="5,0,20,3"
+                                          Content="Connect"
+                                          IsChecked="{Binding LinMgr.IsConnected,
+                                                              Mode=OneWay}"
+                                          IsEnabled="False" />
                 <Border x:Name="_comTx"
                         Margin="0"
                         Background="{x:Null}"
                         BorderThickness="0">
                     <StackPanel Margin="0" Orientation="Horizontal">
-                        <Label Width="40"
-                               Height="36"
+                        <Label Width="30"
+                               Height="40"
+                               HorizontalContentAlignment="Right"
                                Content="Tx"
                                FontSize="{StaticResource toolFontSize}" />
                         <Ellipse x:Name="_txLamp"
@@ -183,8 +187,9 @@
                         Background="{x:Null}"
                         BorderThickness="0">
                     <StackPanel Margin="0" Orientation="Horizontal">
-                        <Label Width="36"
+                        <Label Width="30"
                                Height="40"
+                               HorizontalContentAlignment="Right"
                                Content="Rx"
                                FontSize="{StaticResource toolFontSize}" />
                         <Ellipse x:Name="_rxLamp"

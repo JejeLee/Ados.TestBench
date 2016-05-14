@@ -33,6 +33,7 @@ namespace Ados.TestBench.Test
         public void UpdateGraphInfo()
         {
             Rect r;
+
             r = a1.Visible;
             r.Y = Model.A1.Min - (Model.A1.Max - Model.A1.Min) / 10;
             r.Height = (Model.A1.Max - Model.A1.Min) + (Model.A1.Max - Model.A1.Min) / 10;
@@ -54,44 +55,51 @@ namespace Ados.TestBench.Test
             a4.Visible = r;
 
             int min = int.MaxValue, max = int.MinValue;
-            foreach(var dd in new GraphInfo[] { Model.D1, Model.D2, Model.D3, Model.D4, Model.D5, Model.D6, Model.D7})
+            foreach (var dd in new GraphInfo[] { Model.D1, Model.D2, Model.D3, Model.D4, Model.D5, Model.D6, Model.D7 })
             {
                 min = Math.Min(min, dd.Min);
                 max = Math.Max(max, dd.Max);
             }
-
             r = d1.Visible;
             r.Y = min - 1;
             r.Height = max - min + 2;
             d1.Visible = r;
-            
+        }
+
+        public void UpdateTimeScroll(StateShot aShot)
+        {
+            Rect r;
+            r = a1.Visible;
+
+            double base10ms = GraphInfo.TimeUnit(aShot.Time) - StateShot.TimeBase - r.Width;
+            if (base10ms <= 0)
+                return;
+
+            r.X = base10ms;
+            a1.Visible = r;
         }
 
         void SetLineGraph()
         {
             double maxh = GraphInfo.TimeRange / 1000.0;
-
+            
             a1.AddLineGraph(Model.A1.DataSource, new Pen(Brushes.BlueViolet, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A1.Description1));
             a1.AddLineGraph(Model.A1.DataSource2, new Pen(Brushes.OrangeRed, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A1.Description2));
-            a1.Visible = new Rect(0, 1, maxh, 1);
 
             a2.AddLineGraph(Model.A2.DataSource, new Pen(Brushes.OrangeRed, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A2.Description1));
-            a2.Visible = new Rect(0, 1, maxh, 1);
 
             a3.AddLineGraph(Model.A3.DataSource, new Pen(Brushes.BlueViolet, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A3.Description1));
             a3.AddLineGraph(Model.A3.DataSource2, new Pen(Brushes.OrangeRed, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A3.Description2));
-            a3.Visible = new Rect(0, 1, maxh, 1);
 
             a4.AddLineGraph(Model.A4.DataSource, new Pen(Brushes.BlueViolet, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A4.Description1));
             a4.AddLineGraph(Model.A4.DataSource2, new Pen(Brushes.OrangeRed, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A4.Description2));
-            a4.Visible = new Rect(0, 1, maxh, 1);
 
             d1.AddLineGraph(Model.D1.DataSource, new Pen(Brushes.OrangeRed, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D1.Description1));
@@ -106,8 +114,16 @@ namespace Ados.TestBench.Test
             d1.AddLineGraph(Model.D6.DataSource, new Pen(Brushes.GreenYellow, 1), 
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D6.Description1));
             d1.AddLineGraph(Model.D7.DataSource, new Pen(Brushes.Green, 1), 
-                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D7.Title));
-            d1.Visible  = new Rect(0, 1, maxh, 1);
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D7.Description1));
+
+            Rect r = new Rect();
+            r.X = 0; r.Width = maxh;
+
+            a1.Visible = r;
+            a2.Visible = r;
+            a3.Visible = r;
+            a4.Visible = r;
+            d1.Visible = r;
 
             UpdateGraphInfo();
 
