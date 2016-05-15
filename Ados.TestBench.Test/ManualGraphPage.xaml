@@ -18,7 +18,9 @@
     <ScrollViewer VerticalScrollBarVisibility="Visible">
         <StackPanel Orientation="Vertical" ScrollViewer.CanContentScroll="True">
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
-            <d3:ChartPlotter x:Name="a1" Height="200">
+            <d3:ChartPlotter x:Name="a1"
+                             Height="{Binding A1.Height}"
+                             Visibility="{Binding A1.Vity}">
                 <d3:ChartPlotter.VerticalAxis>
                     <d3:VerticalAxis Width="40" Placement="Right" />
                 </d3:ChartPlotter.VerticalAxis>
@@ -30,7 +32,9 @@
                 <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
-            <d3:ChartPlotter x:Name="a2" Height="150">
+            <d3:ChartPlotter x:Name="a2"
+                             Height="{Binding A2.Height}"
+                             Visibility="{Binding A2.Vity}">
                 <d3:ChartPlotter.VerticalAxis>
                     <d3:VerticalAxis Width="40" Placement="Right" />
                 </d3:ChartPlotter.VerticalAxis>
@@ -42,7 +46,9 @@
                 <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
-            <d3:ChartPlotter x:Name="a3" Height="200">
+            <d3:ChartPlotter x:Name="a3"
+                             Height="{Binding A3.Height}"
+                             Visibility="{Binding A3.Vity}">
                 <d3:ChartPlotter.VerticalAxis>
                     <d3:VerticalAxis Width="40" Placement="Right" />
                 </d3:ChartPlotter.VerticalAxis>
@@ -54,7 +60,9 @@
                 <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
-            <d3:ChartPlotter x:Name="a4" Height="200">
+            <d3:ChartPlotter x:Name="a4"
+                             Height="{Binding A4.Height}"
+                             Visibility="{Binding A4.Vity}">
                 <d3:ChartPlotter.VerticalAxis>
                     <d3:VerticalAxis Width="40" Placement="Right" />
                 </d3:ChartPlotter.VerticalAxis>
@@ -66,7 +74,9 @@
                 <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
-            <d3:ChartPlotter x:Name="d1" Height="700">
+            <d3:ChartPlotter x:Name="d1"
+                             Height="{Binding D1.Height}"
+                             Visibility="{Binding D1.Vity}">
                 <d3:ChartPlotter.VerticalAxis>
                     <d3:VerticalAxis Width="40" Placement="Right" />
                 </d3:ChartPlotter.VerticalAxis>
@@ -77,7 +87,6 @@
                 </d3:VerticalAxis>
                 <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
-
             <!-->
                 <Expander Header="{Binding Path=A1.Title}"
                       IsExpanded="True"

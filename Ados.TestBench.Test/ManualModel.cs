@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Threading;
 
 namespace Ados.TestBench.Test
 {
@@ -63,12 +64,10 @@ namespace Ados.TestBench.Test
         {
             if (_qstates.Count > 0 && (UpdateData || LinManager.UnderLoopJob == false))
             {
-                var state = _qstates.Dequeue();
-                _states.Add(state);
-                while (_qstates.Count > 0)
+                lock (_osync)
                 {
-                    state = _qstates.Dequeue();
-                    _states.Add(state);
+                    _states.AddItems(_qstates);
+                    _qstates.Clear();
                 }
 
                 this.Angle = _states.LastOrDefault().DoorAngle;
@@ -115,6 +114,9 @@ namespace Ados.TestBench.Test
                 case "updateGraph":
                     UpdateGraph();
                     break;
+                case "autorun":
+                    AutoRunAsync();
+                    break;
             }
         }
 
@@ -139,8 +141,46 @@ namespace Ados.TestBench.Test
                     break;
                 case "doorclose":
                     break;
+                case "autorun":
+                    break;
             }
             return cando;
+        }
+
+        void AutoRunAsync()
+        {
+            Task.Run(() => AutoRun());
+        }
+
+        void AutoRun()
+        {
+            int duration = 100;
+            int repeat = 100;
+
+            try
+            {
+                LinManager.UnderLoopJob = true;
+
+                while (repeat-- > 0 )
+                {
+                    Controller.LinMgr.WriteCommand(2); // door close
+                    Thread.Sleep(100);
+
+                    Controller.LinMgr.WriteCommand(1); // door open
+                    Thread.Sleep(100);
+
+                    Controller.LinMgr.ReadStateLoop(duration, false); 
+                }
+            }
+            catch(Exception e)
+            {
+                Log.e("AutoRun 에외 발생: " + e.ToString());
+            }
+            finally
+            {
+                Controller.LinMgr.WriteCommand(2); // door close
+                LinManager.UnderLoopJob = false;
+            }
         }
 
         private void LMgr_ParameterReceived(int aAddr, int aValue)
@@ -168,7 +208,10 @@ namespace Ados.TestBench.Test
                 StateShot.TimeBase = GraphInfo.TimeUnit(aShot.Time);
 
             Angle = aShot.DoorAngle;
-            _qstates.Enqueue(aShot);
+            lock (_osync)
+            {
+                _qstates.Add(aShot);
+            }
         }
 
         private void LoadSettings()
@@ -191,6 +234,8 @@ namespace Ados.TestBench.Test
         public void SaveSettings()
         {
             GraphInfo.Save(_graphInfos);
+            this.ManaulParameterSetting.Save();
+
             this.ManaulParameterSetting.Save();
         }
 
@@ -290,12 +335,12 @@ namespace Ados.TestBench.Test
         public GraphInfo D6 { get { return GetGraph("d6"); } }
         public GraphInfo D7 { get { return GetGraph("d7"); } }
 
-        ObservableCollection<StateShot> _states = new ObservableCollection<StateShot>();
-        List<StateShot> _statesTmp = new List<StateShot>();
-        Queue<StateShot> _qstates = new Queue<StateShot>();
+        FastObservableCollection<StateShot> _states = new FastObservableCollection<StateShot>();
+        List<StateShot> _qstates = new List<StateShot>();
         ControllerModel _controller;
         DelegateCommand _cmd = new DelegateCommand();
         List<GraphInfo> _graphInfos;
+        object _osync = new object();
         double _angle = 0;
     }
 }

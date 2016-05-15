@@ -54,11 +54,16 @@
                               SelectionUnit="Cell"
                               Style="{StaticResource AzureDataGrid}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="200"
+                            <DataGridTextColumn Width="100"
                                                 Binding="{Binding Path=Name}"
                                                 FontWeight="Bold"
                                                 Header="명 칭"
                                                 IsReadOnly="True" />
+                            <DataGridTextColumn Width="70"
+                                                Binding="{Binding Path=Height}"
+                                                FontWeight="Bold"
+                                                Header="높이"
+                                                IsReadOnly="False" />
                             <DataGridTextColumn Width="50"
                                                 Binding="{Binding Path=Min}"
                                                 FontWeight="Bold"

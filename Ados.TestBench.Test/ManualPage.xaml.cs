@@ -86,11 +86,20 @@ namespace Ados.TestBench.Test
             
         }
 
-        private void _gridParams_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void ParamCell_EditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            if (_gridParams.CurrentCell != null && _gridParams.CurrentCell.Column.DisplayIndex == 3 && e.Key == Key.Enter)
+            if (e.Column.DisplayIndex == 3)
             {
-                Model.Controller.LinMgr.WriteParameter(_gridParams.CurrentCell.Item as ParameterSetting);
+                var tbox = e.EditingElement as TextBox;
+                var input = tbox.Text.Int();
+                if (input == int.MinValue)
+                    e.Cancel = true;
+                else
+                {
+                    var pset = (ParameterSetting)e.Row.DataContext;
+                    pset.WriteValue = input;
+                    Model.Controller.LinMgr.WriteParameter(pset);
+                }
             }
         }
     }

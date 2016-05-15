@@ -66,12 +66,13 @@ namespace Ados.TestBench.Test
             return true;
         }
 
-        public void ReadStateLoop(int aPeriodMS)
+        public void ReadStateLoop(int aPeriodMS, bool aUpdateJob = true)
         {
             try
             {
                 Log.i("상태 데이터 읽는 중...");
-                UnderLoopJob = true;
+                if (aUpdateJob)
+                    UnderLoopJob = true;
 
                 var watch = new System.Diagnostics.Stopwatch();
                 watch.Start();
@@ -92,7 +93,8 @@ namespace Ados.TestBench.Test
             }
             finally
             {
-                UnderLoopJob = false;
+                if (aUpdateJob)
+                    UnderLoopJob = false;
             }
         }
 
@@ -170,7 +172,7 @@ namespace Ados.TestBench.Test
 
         public bool ReadParameter(int aAddr)
         {
-            Log.i("LIN/Parameter READ >> Pid:{2} Addr:{0}", aAddr, (int)PID.WR_ADDR);
+            Log.i("LIN/Parameter READ >> Pid:{1} Addr:{0}", aAddr, (int)PID.WR_ADDR);
             if (!WriteMessage(PID.RD_ADDR, 0))
             {
                 return false;
@@ -480,7 +482,7 @@ namespace Ados.TestBench.Test
         static public bool UnderLoopJob {
             get { return _underLoopJob;
             }
-            private set {
+            set {
                 if (_underLoopJob != value)
                 {
                     _underLoopJob = value;
@@ -564,7 +566,8 @@ namespace Ados.TestBench.Test
             aMsg = new Peak.Lin.TLINRcvMsg();
             aMsg.Length = 8;
             aMsg.Data = new byte[aMsg.Length];
-            Random r = new Random(Environment.TickCount);
+            Random r = new Random(Environment.TickCount/10);
+            r.Next();
             r.NextBytes(aMsg.Data);            
             return true;
 #endif

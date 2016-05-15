@@ -5,12 +5,63 @@
       xmlns:local="clr-namespace:Ados.TestBench.Test"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
       Title="ManualPage"
       Height="Auto"
-      d:DesignHeight="600"
+      d:DesignHeight="800"
       d:DesignWidth="800"
       mc:Ignorable="d">
-
+    <Page.Resources>
+        <local:MultiplyConverter x:Key="MultiplyConverter" />
+        <Style x:Key="VerticalSlidingEmptyExpander" TargetType="Expander">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Expander}">
+                        <ScrollViewer x:Name="ExpanderContentScrollView"
+                                      HorizontalContentAlignment="Stretch"
+                                      VerticalContentAlignment="Top"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden">
+                            <ScrollViewer.Tag>
+                                <system:Double>0.0</system:Double>
+                            </ScrollViewer.Tag>
+                            <ScrollViewer.Height>
+                                <MultiBinding Converter="{StaticResource MultiplyConverter}">
+                                    <Binding ElementName="ExpanderContent" Path="ActualHeight" />
+                                    <Binding Path="Tag" RelativeSource="{RelativeSource Self}" />
+                                </MultiBinding>
+                            </ScrollViewer.Height>
+                            <ContentPresenter x:Name="ExpanderContent" ContentSource="Content" />
+                        </ScrollViewer>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0:0:0.2"
+                                                             Storyboard.TargetName="ExpanderContentScrollView"
+                                                             Storyboard.TargetProperty="Tag"
+                                                             To="1" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="0:0:0.2"
+                                                             Storyboard.TargetName="ExpanderContentScrollView"
+                                                             Storyboard.TargetProperty="Tag"
+                                                             To="0" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <Grid x:Name="_baseGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" />
@@ -19,104 +70,128 @@
 
         <Grid x:Name="_propPanel" Grid.Column="0">
             <!--  속성 목록 및 버튼들  -->
+
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="170" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
-                    <Button x:Name="_btnReadAll"
-                            Width="150"
-                            Margin="3,116,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding Path=Command}"
-                            CommandParameter="readall"
-                            Content="전체 읽기 (F2)" />
-                    <Button x:Name="_btnReadSel"
-                            Width="128"
-                            Margin="165,116,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Click="_btnReadSel_Click">
-                        선택 항목들 읽기
-                    </Button>
-                    <Button x:Name="_btnWriteAll"
-                            Width="150"
-                            Margin="3,141,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding Path=Command}"
-                            CommandParameter="writeall">
-                        전체 쓰기 (F3)
-                    </Button>
-                    <Button x:Name="_btnWriteSel"
-                            Width="128"
-                            Margin="165,141,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Click="_btnWriteSel_Click">
-                        선택 항목들 쓰기
-                    </Button>
-                    <TextBox x:Name="_inputDuration"
-                             Width="79"
-                             Height="26"
-                             Margin="161,42,0,0"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             Text="{Binding Path=ReadDuration,
-                                            Mode=TwoWay}" />
-                    <Button x:Name="_btnOpen"
-                            Width="150"
-                            Margin="3,86,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding Path=Command}"
-                            CommandParameter="dooropen">
-                        Door Open
-                    </Button>
-                    <Button x:Name="_btnClose"
-                            Width="128"
-                            Margin="164,86,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding Path=Command}"
-                            CommandParameter="doorclose">
-                        Door Close
-                    </Button>
-                    <Label Width="96"
-                           Height="27"
-                           Margin="163,10,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="수신시간 (msec)" />
-                    <Image Margin="0,0,220,89"
-                           Source="Resources/car.png"
-                           Stretch="Fill" />
-                    <Rectangle Margin="79,32,214,89"
-                               RenderTransformOrigin="0.5,0"
-                               Stroke="Black">
-                        <Rectangle.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform ScaleX="-1" />
-                                <SkewTransform />
-                                <RotateTransform Angle="{Binding Path=Angle}" />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Rectangle.RenderTransform>
-                        <Rectangle.Fill>
-                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                <GradientStop Offset="0" Color="#FF19198D" />
-                                <GradientStop Offset="1" Color="#FFEE2C2C" />
-                                <GradientStop Offset="0.46" Color="#FF3CF0C7" />
-                            </LinearGradientBrush>
-                        </Rectangle.Fill>
-                    </Rectangle>
-                    <Label Width="40"
-                           Margin="80,10,0,0"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Content="{Binding Path=AngleText}" />
+                    <StackPanel>
+                        <Grid>
+                            <Button x:Name="_btnReadAll"
+                                    Width="150"
+                                    Margin="3,116,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding Path=Command}"
+                                    CommandParameter="readall"
+                                    Content="전체 읽기 (F2)" />
+                            <Button x:Name="_btnReadSel"
+                                    Width="128"
+                                    Margin="165,116,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Click="_btnReadSel_Click">
+                                선택 항목들 읽기
+                            </Button>
+                            <Button x:Name="_btnWriteAll"
+                                    Width="150"
+                                    Margin="3,141,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding Path=Command}"
+                                    CommandParameter="writeall">
+                                전체 쓰기 (F3)
+                            </Button>
+                            <Button x:Name="_btnWriteSel"
+                                    Width="128"
+                                    Margin="165,141,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Click="_btnWriteSel_Click">
+                                선택 항목들 쓰기
+                            </Button>
+                            <TextBox x:Name="_inputDuration"
+                                     Width="79"
+                                     Height="26"
+                                     Margin="161,42,0,0"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     Text="{Binding Path=ReadDuration,
+                                                    Mode=TwoWay}" />
+                            <Button x:Name="_btnOpen"
+                                    Width="150"
+                                    Margin="3,86,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding Command}"
+                                    CommandParameter="dooropen"
+                                    Content="Door Open (F2)" />
+                            <Button x:Name="_btnClose"
+                                    Width="128"
+                                    Margin="164,86,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding Command}"
+                                    CommandParameter="doorclose"
+                                    Content="Door Close (F3)" />
+                            <Label Width="44"
+                                   Height="25"
+                                   Margin="250,43,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Content="msec" />
+                            <Image Margin="0,0,220,89"
+                                   Source="Resources/car.png"
+                                   Stretch="Fill" />
+                            <Rectangle Margin="79,32,214,89"
+                                       RenderTransformOrigin="0.5,0"
+                                       Stroke="Black">
+                                <Rectangle.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform ScaleX="-1" />
+                                        <SkewTransform />
+                                        <RotateTransform Angle="{Binding Path=Angle}" />
+                                        <TranslateTransform />
+                                    </TransformGroup>
+                                </Rectangle.RenderTransform>
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                        <GradientStop Offset="0" Color="#FF19198D" />
+                                        <GradientStop Offset="1" Color="#FFEE2C2C" />
+                                        <GradientStop Offset="0.46" Color="#FF3CF0C7" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Label Width="40"
+                                   Margin="80,10,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Content="{Binding Path=AngleText}" />
+                            <Button x:Name="_btnOpen_Copy"
+                                    Width="134"
+                                    Margin="160,6,0,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding Command}"
+                                    CommandParameter="dooropen"
+                                    Content="상태 값 읽기 (F4)" />
+                        </Grid>
+                        <Expander Grid.Row="1"
+                                  Margin="0"
+                                  IsExpanded="True">
+                            <Grid>
+                                <Label Content="수신시간" />
+                                <TextBox x:Name="autoDuration" Width="70" />
+                                <Label Content="반복 횟수" />
+                                <TextBox x:Name="autoRepeat" Width="50" />
+                                <Button x:Name="autoStart" Content="시작" />
+                                <Button x:Name="autoSave" Content="저장" />
+                                <Button x:Name="autoExcel" Content="Excel로 보기" />
+                            </Grid>
+                        </Expander>
+                    </StackPanel>
                 </Grid>
                 <Grid Grid.Row="1">
                     <DataGrid x:Name="_gridParams"
@@ -128,8 +203,8 @@
                               CanUserDeleteRows="False"
                               CanUserReorderColumns="False"
                               CanUserResizeColumns="True"
+                              CellEditEnding="ParamCell_EditEnding"
                               ItemsSource="{Binding Path=ManaulParameterSetting.Settings}"
-                              PreviewKeyDown="_gridParams_PreviewKeyDown"
                               SelectionMode="Extended"
                               SelectionUnit="Cell"
                               Style="{StaticResource AzureDataGrid}">
@@ -162,6 +237,7 @@
                     </DataGrid>
                 </Grid>
             </Grid>
+
         </Grid>
 
         <Grid x:Name="_dataPanel" Grid.Column="1">

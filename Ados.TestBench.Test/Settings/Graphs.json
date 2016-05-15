@@ -20,6 +20,7 @@
         "Description2": "Reference",
         "Min": 0,
         "Max": 100,
+        "Height": 200,
         "Visible": true
       },
       {
@@ -30,6 +31,7 @@
         "Description2": "",
         "Min": 0,
         "Max": 100,
+        "Height": 200,
         "Visible": true
       },
       {
@@ -40,6 +42,7 @@
         "Description2": "Amp",
         "Min": 0,
         "Max": 100,
+        "Height": 200,
         "Visible": true
       },
       {
@@ -50,6 +53,7 @@
         "Description2": "Raw1",
         "Min": 0,
         "Max": 100,
+        "Height": 200,
         "Visible": true
       },
       {
@@ -60,6 +64,7 @@
         "Description2": "",
         "Min": 0,
         "Max": 1,
+        "Height": 700,
         "Visible": true
       },
       {
@@ -70,6 +75,7 @@
         "Description2": "",
         "Min": 2,
         "Max": 3,
+        "Height": 0,
         "Visible": true
       },
       {
@@ -80,6 +86,7 @@
         "Description2": "",
         "Min": 4,
         "Max": 5,
+        "Height": 0,
         "Visible": true
       },
       {
@@ -90,6 +97,7 @@
         "Description2": "",
         "Min": 6,
         "Max": 7,
+        "Height": 0,
         "Visible": true
       },
       {
@@ -100,6 +108,7 @@
         "Description2": "",
         "Min": 8,
         "Max": 9,
+        "Height": 0,
         "Visible": false
       },
       {
@@ -110,6 +119,7 @@
         "Description2": "",
         "Min": 10,
         "Max": 11,
+        "Height": 0,
         "Visible": false
       },
       {
@@ -120,6 +130,7 @@
         "Description2": "",
         "Min": 12,
         "Max": 13,
+        "Height": 0,
         "Visible": false
       }
     ]

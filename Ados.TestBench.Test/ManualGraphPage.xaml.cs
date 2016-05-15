@@ -82,37 +82,37 @@ namespace Ados.TestBench.Test
         void SetLineGraph()
         {
             double maxh = GraphInfo.TimeRange / 1000.0;
-            
+         
             a1.AddLineGraph(Model.A1.DataSource, new Pen(Brushes.BlueViolet, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A1.Description1));
             a1.AddLineGraph(Model.A1.DataSource2, new Pen(Brushes.OrangeRed, 1),
-                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A1.Description2));
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Red }, new PenDescription(Model.A1.Description2));
 
             a2.AddLineGraph(Model.A2.DataSource, new Pen(Brushes.OrangeRed, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A2.Description1));
-
+          
             a3.AddLineGraph(Model.A3.DataSource, new Pen(Brushes.BlueViolet, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A3.Description1));
             a3.AddLineGraph(Model.A3.DataSource2, new Pen(Brushes.OrangeRed, 1),
-                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A3.Description2));
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Red }, new PenDescription(Model.A3.Description2));
 
             a4.AddLineGraph(Model.A4.DataSource, new Pen(Brushes.BlueViolet, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A4.Description1));
             a4.AddLineGraph(Model.A4.DataSource2, new Pen(Brushes.OrangeRed, 1),
-                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.A4.Description2));
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Red }, new PenDescription(Model.A4.Description2));
 
             d1.AddLineGraph(Model.D1.DataSource, new Pen(Brushes.OrangeRed, 1),
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D1.Description1));
             d1.AddLineGraph(Model.D2.DataSource, new Pen(Brushes.DarkGray, 1),
-                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D2.Description1));
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Red }, new PenDescription(Model.D2.Description1));
             d1.AddLineGraph(Model.D3.DataSource, new Pen(Brushes.CadetBlue, 1), 
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D3.Description1));
             d1.AddLineGraph(Model.D4.DataSource, new Pen(Brushes.DarkBlue, 1), 
-                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D4.Description1));
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Red }, new PenDescription(Model.D4.Description1));
             d1.AddLineGraph(Model.D5.DataSource, new Pen(Brushes.IndianRed, 1), 
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D5.Description1));
             d1.AddLineGraph(Model.D6.DataSource, new Pen(Brushes.GreenYellow, 1), 
-                new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D6.Description1));
+                new CirclePointMarker { Size = 3.5, Fill = Brushes.Red }, new PenDescription(Model.D6.Description1));
             d1.AddLineGraph(Model.D7.DataSource, new Pen(Brushes.Green, 1), 
                 new CirclePointMarker { Size = 3.5, Fill = Brushes.Blue }, new PenDescription(Model.D7.Description1));
 

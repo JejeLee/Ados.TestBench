@@ -41,6 +41,18 @@ namespace Ados.TestBench.Test
                 }
             }
         }
+        public int Height
+        {
+            get { return _height; }
+            set
+            {
+                if (_height != value)
+                {
+                    _height = value;
+                    OnPropertyChanged("Height");
+                }
+            }
+        }
         public bool Visible
         {
             get { return _visible; }
@@ -55,13 +67,21 @@ namespace Ados.TestBench.Test
             }
         }
 
+        public System.Windows.Visibility Vity
+        {
+            get
+            {
+                return this.Visible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            }
+        }
+
         public string Description1 { get; private set; }
 
         public string Description2 { get; private set; }
 
         public static double TimeUnit(DateTime aTime)
         {
-                return (aTime.Ticks / 10000) / 1000.0; // seconds to one unit.
+            return (aTime.Ticks / 10000) / 1000.0; // seconds to one unit.
         }
 
         private double Mapping(StateShot aShot)
@@ -81,18 +101,18 @@ namespace Ados.TestBench.Test
             {
                 case "a1":
                     _ds.SetYMapping(y => y.SpeedM);
-                    _ds.SetYMapping(yy => yy.SpeedR);
+                    _ds2.SetYMapping(yy => yy.SpeedR);
                     break;
                 case "a2":
                     _ds.SetYMapping(y => y.DoorAngle);
                     break;
                 case "a3":
                     _ds.SetYMapping(y => y.MotorV);
-                    _ds.SetYMapping(yy => yy.MotorA);
+                    _ds2.SetYMapping(yy => yy.MotorA);
                     break;
                 case "a4":
                     _ds.SetYMapping(y => y.DistanceF);
-                    _ds.SetYMapping(yy => yy.DistanceR);
+                    _ds2.SetYMapping(yy => yy.DistanceR);
                     break;
                 case "d1":
                     _ds.SetYMapping(y => y.DoorRun > 0 ? this.Min : this.Max);
@@ -117,7 +137,6 @@ namespace Ados.TestBench.Test
                     break;
             }
 
-           
         }
 
         public static double TimeRange { get; set; }
@@ -141,6 +160,7 @@ namespace Ados.TestBench.Test
                     VerticalTitle = ja.Value<string>("VerticalTitle"),
                     Min = ja.Value<int>("Min"),
                     Max = ja.Value<int>("Max"),
+                    Height = ja.Value<int>("Height"),
                     Visible = ja.Value<bool>("Visible"),
                     Description1 = ja["Description1"].ToString(),
                     Description2 = ja["Description2"].ToString(),
@@ -172,6 +192,7 @@ namespace Ados.TestBench.Test
                 g["VeticalTitle"] = info.VerticalTitle;
                 g["Min"] = info.Min;
                 g["Max"] = info.Max;
+                g["Height"] = info.Height;
                 g["Visible"] = info.Visible;
             }
 
@@ -186,6 +207,7 @@ namespace Ados.TestBench.Test
 
         private int _max;
         private int _min;
+        private int _height;
         private bool _visible;
         private EnumerableDataSource<StateShot> _ds;
         private EnumerableDataSource<StateShot> _ds2;

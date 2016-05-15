@@ -72,6 +72,7 @@
     </ApplicationDefinition>
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Extension.cs" />
+    <Compile Include="FastObservableCollection.cs" />
     <Compile Include="GraphInfo.cs" />
     <Compile Include="AutoModel.cs" />
     <Compile Include="Helper.cs" />

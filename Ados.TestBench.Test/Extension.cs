@@ -11,7 +11,7 @@ namespace Ados.TestBench.Test
     {
         public static int Int (this string s)
         {
-            int result = 0;
+            int result = int.MinValue;
             if (s.StartsWith("0x"))
             {
                 Int32.TryParse(s.Substring(2), System.Globalization.NumberStyles.HexNumber, System.Globalization.CultureInfo.InvariantCulture, out result);
