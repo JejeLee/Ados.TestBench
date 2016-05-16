@@ -214,66 +214,115 @@
                       Background="Black"
                       ResizeDirection="Rows"
                       ShowsPreview="true" />
-        <DataGrid x:Name="_outMsg"
-                  Grid.Row="3"
-                  AlternatingRowBackground="#FF07193E"
-                  AreRowDetailsFrozen="True"
-                  AutoGenerateColumns="False"
-                  BorderThickness="1"
-                  CanUserResizeColumns="True"
-                  CanUserSortColumns="False"
-                  IsReadOnly="True"
-                  ItemsSource="{Binding LogsData}"
-                  Style="{StaticResource AzureDataGrid}">
-            <DataGrid.Resources>
-                <Style x:Key="ValueColumn" TargetType="DataGridCell">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsError}" Value="True">
-                            <Setter Property="Foreground" Value="Red" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="{Binding Command,
-                                                Mode=OneWay}"
-                              CommandParameter="clearLog"
-                              Header="모두 지우기">
-                        <MenuItem.Style>
-                            <Style TargetType="MenuItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                            </Style>
-                        </MenuItem.Style>
-                    </MenuItem>
-                    <MenuItem Click="LogScroll_Click" Header="맨 아래로 스크롤">
-                        <MenuItem.Style>
-                            <Style TargetType="MenuItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                            </Style>
-                        </MenuItem.Style>
-                    </MenuItem>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-            <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Time}"
-                                    CanUserSort="False"
-                                    Header="시간"
-                                    HeaderStringFormat="HH:mm:ss'FF" />
-                <DataGridTextColumn x:Name="_gcMsg"
-                                    Width="*"
-                                    Binding="{Binding Path=Message}"
-                                    CanUserReorder="False"
-                                    CanUserSort="False"
-                                    CellStyle="{StaticResource ValueColumn}"
-                                    Header="메세지" />
+        <Grid Grid.Row="3">
+            <DataGrid x:Name="_outMsg"
+                      Panel.ZIndex="6"
+                      AlternatingRowBackground="#FF07193E"
+                      AreRowDetailsFrozen="True"
+                      AutoGenerateColumns="False"
+                      BorderThickness="1"
+                      CanUserResizeColumns="True"
+                      CanUserSortColumns="False"
+                      GotFocus="OutLog_FocusChanged"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding LogsData}"
+                      LostFocus="_outMsg_LostFocus"
+                      Style="{StaticResource AzureDataGrid}">
+                <DataGrid.Resources>
+                    <Style x:Key="ValueColumn" TargetType="DataGridCell">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsError}" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding Command,
+                                                    Mode=OneWay}"
+                                  CommandParameter="clearLog"
+                                  Header="모두 지우기">
+                            <MenuItem.Style>
+                                <Style TargetType="MenuItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                </Style>
+                            </MenuItem.Style>
+                        </MenuItem>
+                        <MenuItem Click="LogScroll_Click" Header="맨 아래로 스크롤">
+                            <MenuItem.Style>
+                                <Style TargetType="MenuItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                </Style>
+                            </MenuItem.Style>
+                        </MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Path=Time}"
+                                        CanUserSort="False"
+                                        Header="시간"
+                                        HeaderStringFormat="HH:mm:ss'FF" />
+                    <DataGridTextColumn x:Name="_gcMsg"
+                                        Width="*"
+                                        Binding="{Binding Path=Message}"
+                                        CanUserReorder="False"
+                                        CanUserSort="False"
+                                        CellStyle="{StaticResource ValueColumn}"
+                                        Header="메세지" />
 
-                <DataGridTextColumn Binding="{Binding Path=IsError}"
-                                    Header="IsError"
-                                    Visibility="Hidden" />
-            </DataGrid.Columns>
-        </DataGrid>
+                    <DataGridTextColumn Binding="{Binding Path=IsError}"
+                                        Header="IsError"
+                                        Visibility="Hidden" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Grid Name="_angleImage"
+                  Width="181"
+                  Height="118"
+                  Margin="0,0,17,0"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Panel.ZIndex="10"
+                  Visibility="{Binding VisibleAngle}">
+                <Image Width="70"
+                       Margin="0,0,2,0"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Top"
+                       Source="Resources/car.png"
+                       Stretch="Fill" />
+                <Rectangle Width="8"
+                           Height="63"
+                           Margin="0,47,67,0"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           RenderTransformOrigin="0.5,0"
+                           Stroke="Black">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="-1" />
+                            <SkewTransform />
+                            <RotateTransform Angle="{Binding Manual.Angle}" />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Offset="0" Color="#FF19198D" />
+                            <GradientStop Offset="1" Color="#FFEE2C2C" />
+                            <GradientStop Offset="0.46" Color="#FF3CF0C7" />
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Label Width="55"
+                       Height="18"
+                       Margin="39,7,0,0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Content="{Binding Model.AngleText}"
+                       FontWeight="Bold" />
+            </Grid>
+        </Grid>
     </Grid>
 </metro:MetroWindow>

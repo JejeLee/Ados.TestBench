@@ -102,5 +102,10 @@ namespace Ados.TestBench.Test
                 }
             }
         }
+
+        private void _autoPanel_Expanded(object sender, RoutedEventArgs e)
+        {
+            (Application.Current.MainWindow as MainWindow)._modeNavigation.SelectedIndex = _autoPanel.IsExpanded ? 1 : 0;
+        }
     }
 }

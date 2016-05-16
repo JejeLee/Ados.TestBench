@@ -78,122 +78,122 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <StackPanel>
+                        <Expander Name="_autoPanel"
+                                  Grid.Row="1"
+                                  Margin="0"
+                                  Collapsed="_autoPanel_Expanded"
+                                  Expanded="_autoPanel_Expanded"
+                                  IsExpanded="False">
+                            <Grid>
+                                <Label Margin="-5,3,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Content="수신시간(msec)" />
+                                <TextBox x:Name="autoDuration"
+                                         Width="70"
+                                         Margin="90,3,0,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top" />
+                                <Label Margin="171,3,0,0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Content="반복 횟수" />
+                                <TextBox x:Name="autoRepeat"
+                                         Width="50"
+                                         Margin="234,3,0,0"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top" />
+                                <Button x:Name="autoStart"
+                                        Width="281"
+                                        Margin="4,35,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Command="{Binding Command}"
+                                        CommandParameter="autostart"
+                                        Content="자동 테스트 시작" />
+                                <Button x:Name="autoSave"
+                                        Width="140"
+                                        Margin="3,67,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Command="{Binding Command}"
+                                        CommandParameter="autosave"
+                                        Content="저장 (F11)" />
+                                <Button x:Name="autoExcel"
+                                        Width="140"
+                                        Margin="146,67,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Command="{Binding Command}"
+                                        CommandParameter="autoexcel"
+                                        Content="Excel로 보기 (F12)" />
+                                <Button x:Name="_btnOpen"
+                                        Width="140"
+                                        Margin="4,129,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Command="{Binding Command}"
+                                        CommandParameter="dooropen"
+                                        Content="Door Open (F3)" />
+                                <Button x:Name="_btnStates"
+                                        Width="282"
+                                        Margin="4,97,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Command="{Binding Command}"
+                                        CommandParameter="doorstates"
+                                        Content="상태 값 읽기 (F2)" />
+                                <Button x:Name="_btnClose"
+                                        Width="140"
+                                        Margin="146,129,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Command="{Binding Command}"
+                                        CommandParameter="doorclose"
+                                        Content="Door Close (F4)" />
+                            </Grid>
+                        </Expander>
                         <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="38*" />
+                                <RowDefinition Height="123*" />
+                            </Grid.RowDefinitions>
                             <Button x:Name="_btnReadAll"
-                                    Width="150"
-                                    Margin="3,116,0,0"
+                                    Width="140"
+                                    Margin="7,9,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Command="{Binding Path=Command}"
+                                    Command="{Binding Command}"
                                     CommandParameter="readall"
                                     Content="전체 읽기 (F2)" />
                             <Button x:Name="_btnReadSel"
-                                    Width="128"
-                                    Margin="165,116,0,0"
+                                    Width="140"
+                                    Margin="153,9,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Click="_btnReadSel_Click">
-                                선택 항목들 읽기
-                            </Button>
+                                    Click="_btnReadSel_Click"
+                                    Content="선택 항목들 읽기" />
                             <Button x:Name="_btnWriteAll"
-                                    Width="150"
-                                    Margin="3,141,0,0"
+                                    Grid.Row="1"
+                                    Width="140"
+                                    Margin="7,5,0,-1"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Command="{Binding Path=Command}"
-                                    CommandParameter="writeall">
-                                전체 쓰기 (F3)
-                            </Button>
+                                    Command="{Binding Command}"
+                                    CommandParameter="writeall"
+                                    Content="전체 쓰기 (F3)" />
                             <Button x:Name="_btnWriteSel"
-                                    Width="128"
-                                    Margin="165,141,0,0"
+                                    Grid.Row="1"
+                                    Width="140"
+                                    Margin="153,4,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Click="_btnWriteSel_Click">
-                                선택 항목들 쓰기
-                            </Button>
-                            <TextBox x:Name="_inputDuration"
-                                     Width="79"
-                                     Height="26"
-                                     Margin="161,42,0,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     Text="{Binding Path=ReadDuration,
-                                                    Mode=TwoWay}" />
-                            <Button x:Name="_btnOpen"
-                                    Width="150"
-                                    Margin="3,86,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding Command}"
-                                    CommandParameter="dooropen"
-                                    Content="Door Open (F2)" />
-                            <Button x:Name="_btnClose"
-                                    Width="128"
-                                    Margin="164,86,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding Command}"
-                                    CommandParameter="doorclose"
-                                    Content="Door Close (F3)" />
-                            <Label Width="44"
-                                   Height="25"
-                                   Margin="250,43,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   Content="msec" />
-                            <Image Margin="0,0,220,89"
-                                   Source="Resources/car.png"
-                                   Stretch="Fill" />
-                            <Rectangle Margin="79,32,214,89"
-                                       RenderTransformOrigin="0.5,0"
-                                       Stroke="Black">
-                                <Rectangle.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform ScaleX="-1" />
-                                        <SkewTransform />
-                                        <RotateTransform Angle="{Binding Path=Angle}" />
-                                        <TranslateTransform />
-                                    </TransformGroup>
-                                </Rectangle.RenderTransform>
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="0" Color="#FF19198D" />
-                                        <GradientStop Offset="1" Color="#FFEE2C2C" />
-                                        <GradientStop Offset="0.46" Color="#FF3CF0C7" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Label Width="40"
-                                   Margin="80,10,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   Content="{Binding Path=AngleText}" />
-                            <Button x:Name="_btnOpen_Copy"
-                                    Width="134"
-                                    Margin="160,6,0,0"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Top"
-                                    Command="{Binding Command}"
-                                    CommandParameter="dooropen"
-                                    Content="상태 값 읽기 (F4)" />
+                                    Click="_btnWriteSel_Click"
+                                    Content="선택 항목들 쓰기" />
                         </Grid>
-                        <Expander Grid.Row="1"
-                                  Margin="0"
-                                  IsExpanded="True">
-                            <Grid>
-                                <Label Content="수신시간" />
-                                <TextBox x:Name="autoDuration" Width="70" />
-                                <Label Content="반복 횟수" />
-                                <TextBox x:Name="autoRepeat" Width="50" />
-                                <Button x:Name="autoStart" Content="시작" />
-                                <Button x:Name="autoSave" Content="저장" />
-                                <Button x:Name="autoExcel" Content="Excel로 보기" />
-                            </Grid>
-                        </Expander>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" Margin="0,8,0,0">
                     <DataGrid x:Name="_gridParams"
                               HorizontalContentAlignment="Center"
                               AlternatingRowBackground="#FF8B8787"

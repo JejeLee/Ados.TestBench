@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.IO;
+using System.Windows;
 
 namespace Ados.TestBench.Test
 {
@@ -91,6 +92,18 @@ namespace Ados.TestBench.Test
             LogSave();
         }
 
+        public Visibility VisibleAngle
+        {
+            get
+            {
+                var grid = (Application.Current.MainWindow as MainWindow)._outMsg;
+                var v = (LinManager.UnderLoopJob ||  
+                    (grid != null && grid.Uid != "focus") ) ?
+                    Visibility.Visible : Visibility.Collapsed;
+                return v;
+            }
+        }
+
         private const int MAX_LOGS = 10000;
         private const int SAVE_LOGS = 3000;
 
@@ -127,7 +140,7 @@ namespace Ados.TestBench.Test
                 return;
             }
             //  N 이상일 경우 N/2 개 저장 후 제거.
-            if (_logs.Count >= MAX_LOGS)
+            if (_logs.Count >= MAX_LOGS && LinManager.UnderLoopJob == false)
             {
                 var fi = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location);
                 var dir = fi.DirectoryName + "\\Log";
@@ -150,12 +163,13 @@ namespace Ados.TestBench.Test
                 }
 
             }
-           
+            _logs.Add(aData);
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(String propertyName)
+        public void OnPropertyChanged(String propertyName)
         {
             if (PropertyChanged != null)
             {

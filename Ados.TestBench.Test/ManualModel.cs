@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Ados.TestBench.Test
 {
@@ -26,7 +27,8 @@ namespace Ados.TestBench.Test
 
                 LinManager.JobStateChangedEvent += LinManager_JobStateChangedEvent;
 
-                this.ReadDuration = 1000;
+                this.AutoDuration = 1000;
+                this.AutoRepeat = 1;
                 this.UpdateData = true;
             }
             catch(Exception e)
@@ -58,6 +60,7 @@ namespace Ados.TestBench.Test
                 this.CursorVisible = Visibility.Collapsed;
             }
             OnPropertyChanged("CursorVisible");
+            Controller.OnPropertyChanged("VisibleAngle");
         }
 
         public void UpdateStates()
@@ -101,21 +104,26 @@ namespace Ados.TestBench.Test
                     }
                     break;
                 case "dooropen":
-                    if (Controller.LinMgr.WriteCommand(1))
-                    {
-                        ClearStates();
-                        Controller.LinMgr.ReadStateLoopAsync(this.ReadDuration);
-                    }
+                    Controller.LinMgr.WriteCommand(LinManager.DOOR_OPEN);
                     break;
                 case "doorclose":
-                    Controller.LinMgr.WriteCommand(2);
+                    Controller.LinMgr.WriteCommand(LinManager.DOOR_STOP);
                     LinManager.StopLoopJob();
                     break;
                 case "updateGraph":
                     UpdateGraph();
                     break;
-                case "autorun":
+                case "autostart":
                     AutoRunAsync();
+                    break;
+                case "autosave":
+                    AutoSave();
+                    break;
+                case "autoexcel":
+                    AutoExcel();
+                    break;
+                case "doorstates":
+                    ReadStates();
                     break;
             }
         }
@@ -141,21 +149,58 @@ namespace Ados.TestBench.Test
                     break;
                 case "doorclose":
                     break;
-                case "autorun":
+                case "autostart":
+                    break;
+                case "autosave":
+                    break;
+                case "autoexcel":
+                    break;
+                case "doorstates":
                     break;
             }
             return cando;
         }
 
+        void AutoSave()
+        {
+            if (_states.Count > 0)
+            {
+                _csvPath = StateShot.SaveCsv(Helper.NewCSVPath(), this.StatesData);
+            }
+        }
+
+        void AutoExcel()
+        {
+            AutoSave();
+            if (_csvPath != null)
+            {
+                ProcessStartInfo psi = new ProcessStartInfo(_csvPath);
+                psi.UseShellExecute = true;
+                Process.Start(psi);
+            }
+        }
+
+        void ReadStates()
+        {
+            Controller.LinMgr.ReadStateLoopAsync(this.AutoDuration);
+        }
+
+        string _csvPath = null;
+
+        public int AutoDuration { get; set; }
+        public int AutoRepeat { get; set; }
+
         void AutoRunAsync()
         {
+            ClearStates();
+
             Task.Run(() => AutoRun());
         }
 
         void AutoRun()
         {
-            int duration = 100;
-            int repeat = 100;
+            int duration = this.AutoDuration;
+            int repeat = this.AutoRepeat;
 
             try
             {
@@ -242,7 +287,7 @@ namespace Ados.TestBench.Test
 
         void UpdateGraph()
         {
-            this.GraphPage.UpdateGraphInfo();
+            //this.GraphPage.UpdateGraphInfo();
 
             GraphInfo.Save(_graphInfos);
         }
@@ -253,7 +298,7 @@ namespace Ados.TestBench.Test
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(String propertyName)
+        public void OnPropertyChanged(String propertyName)
         {
             if (PropertyChanged != null)
             {
@@ -265,6 +310,7 @@ namespace Ados.TestBench.Test
         {
             _states.Clear();
             Angle = 0;
+            _csvPath = null;
         }
 
         public bool IsActive {
@@ -287,7 +333,7 @@ namespace Ados.TestBench.Test
             }
         }
 
-        public double Angle { get { return _angle * -1; }
+        public double Angle { get { return _angle * 1; }
             set {
                 if (_angle != value)
                 {
@@ -318,8 +364,6 @@ namespace Ados.TestBench.Test
         public ParameterSettings ManaulParameterSetting { get; private set; }
 
         public ManualGraphPage GraphPage { get; set; } 
-
-        public int ReadDuration { get; set; }
 
         private bool _active = false;
 

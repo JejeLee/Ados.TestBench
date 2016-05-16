@@ -36,6 +36,9 @@ namespace Ados.TestBench.Test
             return WriteMessage(PID.COMMAND, aData);
         }
 
+        public const byte DOOR_OPEN = 1;
+        public const byte DOOR_STOP = 2;
+
         public bool ReadState()
         {
             Peak.Lin.TLINRcvMsg rmsg1;
@@ -526,8 +529,6 @@ namespace Ados.TestBench.Test
         static public bool IsRxError { get; private set; }
         static public bool IsTxError { get; private set; }
 
-        public const int DOOR_OPEN = 1;
-        public const int DOOR_STOP = 2;
 
         static Peak.Lin.TLINError Read(byte hClient, out Peak.Lin.TLINRcvMsg aMsg)
         {

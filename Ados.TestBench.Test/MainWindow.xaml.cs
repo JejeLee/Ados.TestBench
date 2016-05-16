@@ -7,6 +7,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Windows.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Ados.TestBench.Test
 {
@@ -101,6 +102,8 @@ namespace Ados.TestBench.Test
             if (_manualPage == null)
                 return;
 
+            _manualPage._autoPanel.IsExpanded = _modeNavigation.SelectedIndex != 0;
+            /*
             if (_modeNavigation.SelectedIndex == 0)
             {
                 _modePages.Navigate(_manualPage);
@@ -113,7 +116,7 @@ namespace Ados.TestBench.Test
                 //Model.Manual.IsActive = false;
                 //Model.Auto.IsActive = true;
             }
-
+            */
         }
 
         private void LogScroll_Click(object sender, RoutedEventArgs e)
@@ -149,6 +152,45 @@ namespace Ados.TestBench.Test
             Model.Manual.SaveSettings();
         }
 
+        private void OutLog_FocusChanged(object sender, RoutedEventArgs e)
+        {
+            _outMsg.Uid = "focus";
+            Model.OnPropertyChanged("VisibleAngle");
+        }
+
+        private void _outMsg_LostFocus(object sender, RoutedEventArgs e)
+        {
+            _outMsg.Uid = "lost";
+            Model.OnPropertyChanged("VisibleAngle");
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.F2:
+                    if (!LinManager.UnderLoopJob)
+                        Model.Manual.ExecuteCommand("doorstates");
+                    break;
+                case Key.F3:
+                    if (!LinManager.UnderLoopJob)
+                        Model.Manual.ExecuteCommand("dooropen");
+                    break;
+                case Key.F4:
+                    if (!LinManager.UnderLoopJob)
+                        Model.Manual.ExecuteCommand("doorclose");
+                    break;
+                case Key.F11:
+                    if (!LinManager.UnderLoopJob)
+                        Model.Manual.ExecuteCommand("autosave");
+                    break;
+                case Key.F12:
+                    if (!LinManager.UnderLoopJob)
+                        Model.Manual.ExecuteCommand("autoexcel");
+                    break;
+            }
+            base.OnKeyDown(e);
+        }
     }
 
 }

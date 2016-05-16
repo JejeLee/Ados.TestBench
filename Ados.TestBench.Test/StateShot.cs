@@ -85,7 +85,7 @@ namespace Ados.TestBench.Test
 
         private byte[] _states = new byte[16];
 
-        public static void SaveCsv(string aPath, IEnumerable<StateShot> aShots)
+        public static string SaveCsv(string aPath, IEnumerable<StateShot> aShots)
         {
             try
             {
@@ -101,10 +101,12 @@ namespace Ados.TestBench.Test
                         ws.WriteLine(str);
                     }
                 }
+                return aPath;
             }
             catch(Exception e)
             {
                 Log.e("데이터 파일(CSV) 저장 중 에러: {0}, Path=[{1}]" , e, aPath);
+                return null;
             }
         }
     }
