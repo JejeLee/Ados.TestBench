@@ -101,9 +101,9 @@
                         CornerRadius="2">
                     <StackPanel Margin="10,10,10,10">
                         <Label FontSize="16">프로그램 명: ADOS TESTBENCH for Test</Label>
-                        <Label FontSize="16">버젼: v1.1, 2016-05-16</Label>
-                        <Label FontSize="16">제작사: MEDIA EVER</Label>
-                        <Label FontSize="16">저작권: MEDIA EVER Co.,Ltd.</Label>
+                        <Label FontSize="16">버젼: v0.9, 2016-05-25</Label>
+                        <Label FontSize="16">제작사: MEDIAEVER</Label>
+                        <Label FontSize="16">저작권: MEDIAEVER Co.,Ltd.</Label>
                     </StackPanel>
                 </Border>
             </metro:Flyout>

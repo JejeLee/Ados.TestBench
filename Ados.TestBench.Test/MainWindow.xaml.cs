@@ -180,6 +180,10 @@ namespace Ados.TestBench.Test
                     if (!LinManager.UnderLoopJob)
                         Model.Manual.ExecuteCommand("doorclose");
                     break;
+                case Key.F5:
+                    if (!LinManager.UnderLoopJob)
+                        Model.Manual.ExecuteCommand("clearstates");
+                    break;
                 case Key.F11:
                     if (!LinManager.UnderLoopJob)
                         Model.Manual.ExecuteCommand("autosave");

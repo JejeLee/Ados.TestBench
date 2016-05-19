@@ -91,6 +91,14 @@ namespace Ados.TestBench.Test
 
             string input = aInput.ToString();
 
+            if (!CanExecuteCommand(input))
+            {
+                Log.i("Can't not run Command <" + input + ">, it is busy...!");
+                return;
+            }
+
+            Log.i("Run Command <" + input + ">");
+
             switch (input)
             {
                 case "readall":
@@ -125,6 +133,9 @@ namespace Ados.TestBench.Test
                 case "doorstates":
                     ReadStates();
                     break;
+                case "clearstates":
+                    ClearStates();
+                    break;
             }
         }
 
@@ -156,6 +167,8 @@ namespace Ados.TestBench.Test
                 case "autoexcel":
                     break;
                 case "doorstates":
+                    break;
+                case "clearstates":
                     break;
             }
             return cando;
@@ -212,10 +225,11 @@ namespace Ados.TestBench.Test
                     Thread.Sleep(100);
 
                     Controller.LinMgr.WriteCommand(1); // door open
-                    Thread.Sleep(100);
+                    //Thread.Sleep(100);
 
                     Controller.LinMgr.ReadStateLoop(duration, false); 
                 }
+                Controller.LinMgr.WriteCommand(2); // door close
             }
             catch(Exception e)
             {

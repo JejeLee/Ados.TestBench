@@ -19,6 +19,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Research.DynamicDataDisplay.Charts.Navigation
 {
+    public delegate void CursorPostionChangedHandler(CursorCoordinateGraph aCursor, Point aNewPos);
 	/// <summary>
 	/// Adds to ChartPlotter two crossed lines, bound to mouse cursor position, and two labels near axes with mouse position in its text.
 	/// </summary>
@@ -225,6 +226,21 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Navigation
 			UpdateUIRepresentation(Mouse.GetPosition(this));
 		}
 
+        public double GetPostionXValue(Point mousePos)
+        {
+            if (Plotter2D == null) return 0;
+
+            var transform = Plotter2D.Viewport.Transform;
+            Rect visible = Plotter2D.Viewport.Visible;
+            Rect output = Plotter2D.Viewport.Output;
+
+            Point mousePosInData = mousePos.ScreenToData(transform);
+
+            double xValue = mousePosInData.X;
+
+            return xValue;           
+        }
+
 		private void UpdateUIRepresentation(Point mousePos)
 		{
 			if (Plotter2D == null) return;
@@ -323,11 +339,17 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Navigation
 			typeof(Point),
 			typeof(CursorCoordinateGraph),
 			new UIPropertyMetadata(new Point(), OnPositionChanged));
+        public static event CursorPostionChangedHandler CursorPostionChangedEvent;
 
-		private static void OnPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			CursorCoordinateGraph graph = (CursorCoordinateGraph)d;
 			graph.UpdateUIRepresentation((Point)e.NewValue);
+
+            if (CursorPostionChangedEvent != null)
+            {
+                CursorPostionChangedEvent(graph, (Point)e.NewValue);
+            }
 		}
 
 		private string GetRoundedValue(double min, double max, double value)

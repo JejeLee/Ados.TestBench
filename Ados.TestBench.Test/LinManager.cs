@@ -588,17 +588,21 @@ namespace Ados.TestBench.Test
                 // If at least one Frame is received by the LinApi.
                 // Check if the received frame is a standard type.
                 // If it is not a standard type than ignore it.
-                if (aMsg.Type == Peak.Lin.TLINMsgType.mstStandard)
+                if (_err == Peak.Lin.TLINError.errOK)
                 {
-                    if (_err == Peak.Lin.TLINError.errOK)
+                    if (aMsg.Type == Peak.Lin.TLINMsgType.mstStandard)
                     {
                         watch.Stop();
                         return true;
                     }
+                    else
+                    {
+                        Log.i("표준 이외의 메세지 타입 수신 - {0}", aMsg.Type.ToString());
+                    }
                 }
                 else
                 {
-                    Log.i("표준 이외의 메세지 타입 수신 - {0}", aMsg.Type.ToString());
+                    LinError("Read Error: ", _err);
                 }
 
                 System.Threading.Thread.Sleep(sleep);
@@ -654,6 +658,11 @@ namespace Ados.TestBench.Test
 
         static private void LinError(string aMsg, Peak.Lin.TLINError aError)
         {
+            Log.e("LIN/Error: {0}, err:{1}={2}", aMsg, aError, GetErrorText(aError));
+        }
+
+        static private string GetErrorText(Peak.Lin.TLINError aError)
+        {
             StringBuilder sErrText = new StringBuilder(255);
             // If any error are occured
             // display the error text in a message box.
@@ -663,7 +672,7 @@ namespace Ados.TestBench.Test
             if (Peak.Lin.PLinApi.GetErrorText(aError, 0x09, sErrText, sErrText.Capacity) != Peak.Lin.TLINError.errOK)
                 sErrText.AppendFormat("An error occurred. Error-code's text ({0}) couldn't be retrieved", aError);
 
-            Log.e("LIN/Error: {0}, err:{1}={2}", aMsg, aError, sErrText.ToString());
+            return sErrText.ToString();
         }
 
         /// <summary>

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.PointMarkers;
+using Microsoft.Research.DynamicDataDisplay.Charts.Navigation;
 
 namespace Ados.TestBench.Test
 {
@@ -130,7 +131,28 @@ namespace Ados.TestBench.Test
             Microsoft.Research.DynamicDataDisplay.Navigation.MouseNavigation.zoomY = false;
 
             ViewportElement2D.ViewAxisXChangedEvent += ViewportElement2D_ViewAxisXChangedEvent;
+
+            CursorCoordinateGraph.CursorPostionChangedEvent += CursorCoordinateGraph_CursorPostionChangedEvent;
         }
+
+        private void CursorCoordinateGraph_CursorPostionChangedEvent(CursorCoordinateGraph aCursor, Point aNewPos)
+        {
+            if (Model.StatesData.Count == 0)
+                return;
+
+            double xTime = _ca2.GetPostionXValue(aNewPos);
+
+            long curTics = (long)((xTime + StateShot.TimeBase) * (10000.0 * 1000.0));
+
+            foreach(var x in Model.StatesData)
+            {
+                if (x.Time.Ticks >= curTics)
+                {
+                    Model.Angle = x.DoorAngle;
+                    break;
+                }
+            }
+    }
 
         private void ViewportElement2D_ViewAxisXChangedEvent(double X, double Width)
         {

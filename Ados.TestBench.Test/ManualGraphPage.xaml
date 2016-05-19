@@ -29,7 +29,7 @@
                                  ShowMinorTicks="True">
                     <d3:VerticalAxisTitle Content="{Binding A1.VerticalTitle}" />
                 </d3:VerticalAxis>
-                <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
+                <d3:CursorCoordinateGraph Name="_ca1" Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
             <d3:ChartPlotter x:Name="a2"
@@ -43,7 +43,7 @@
                                  ShowMinorTicks="True">
                     <d3:VerticalAxisTitle Content="{Binding A2.VerticalTitle}" />
                 </d3:VerticalAxis>
-                <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
+                <d3:CursorCoordinateGraph Name="_ca2" Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
             <d3:ChartPlotter x:Name="a3"
@@ -57,7 +57,7 @@
                                  ShowMinorTicks="True">
                     <d3:VerticalAxisTitle Content="{Binding A3.VerticalTitle}" />
                 </d3:VerticalAxis>
-                <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
+                <d3:CursorCoordinateGraph Name="_ca3" Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
             <d3:ChartPlotter x:Name="a4"
@@ -71,7 +71,7 @@
                                  ShowMinorTicks="True">
                     <d3:VerticalAxisTitle Content="{Binding A4.VerticalTitle}" />
                 </d3:VerticalAxis>
-                <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
+                <d3:CursorCoordinateGraph Name="_ca4" Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <Rectangle Height="{StaticResource rheight}" Fill="{StaticResource rclolor}" />
             <d3:ChartPlotter x:Name="d1"
@@ -85,7 +85,7 @@
                                  ShowMinorTicks="True">
                     <d3:VerticalAxisTitle Content="ON / OFF" />
                 </d3:VerticalAxis>
-                <d3:CursorCoordinateGraph Visibility="{Binding CursorVisible}" />
+                <d3:CursorCoordinateGraph Name="_cd1" Visibility="{Binding CursorVisible}" />
             </d3:ChartPlotter>
             <!-->
                 <Expander Header="{Binding Path=A1.Title}"

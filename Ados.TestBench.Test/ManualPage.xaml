@@ -80,10 +80,10 @@
                     <StackPanel>
                         <Expander Name="_autoPanel"
                                   Grid.Row="1"
-                                  Margin="0"
                                   Collapsed="_autoPanel_Expanded"
                                   Expanded="_autoPanel_Expanded"
-                                  IsExpanded="False">
+                                  IsExpanded="False"
+                                  Style="{StaticResource VerticalSlidingEmptyExpander}">
                             <Grid>
                                 <Label Margin="-5,3,0,0"
                                        HorizontalAlignment="Left"
@@ -93,7 +93,8 @@
                                          Width="70"
                                          Margin="90,3,0,0"
                                          HorizontalAlignment="Left"
-                                         VerticalAlignment="Top" />
+                                         VerticalAlignment="Top"
+                                         Text="{Binding AutoDuration}" />
                                 <Label Margin="171,3,0,0"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
@@ -102,7 +103,8 @@
                                          Width="50"
                                          Margin="234,3,0,0"
                                          HorizontalAlignment="Left"
-                                         VerticalAlignment="Top" />
+                                         VerticalAlignment="Top"
+                                         Text="{Binding AutoRepeat}" />
                                 <Button x:Name="autoStart"
                                         Width="281"
                                         Margin="4,35,0,0"
@@ -151,6 +153,14 @@
                                         Command="{Binding Command}"
                                         CommandParameter="doorclose"
                                         Content="Door Close (F4)" />
+                                <Button x:Name="_btnStates_Copy"
+                                        Width="282"
+                                        Margin="4,160,0,0"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        Command="{Binding Command}"
+                                        CommandParameter="clearstates"
+                                        Content="데이터 지우기 (F5)" />
                             </Grid>
                         </Expander>
                         <Grid>
